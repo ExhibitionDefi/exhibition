@@ -1,0 +1,46 @@
+{
+  "name": "exhibition",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "clean": "hardhat clean",
+    "test": "hardhat test",
+
+    "deploy:nexus-testnet-iii": "hardhat run scripts/deploy.ts --network nexusTestnetIII",
+    "deploy:nexus-testnet": "hardhat run scripts/deploy.ts --network nexus-testnet",
+    "verify:nexus-testnet": "hardhat verify --network nexus-testnet",
+    "test:initial-liquidity": "hardhat run scripts/test-initial-liquidity.ts --network nexus-testnet",
+    "test:add-liquidity": "hardhat run scripts/test_addliquidity_swap_rm.ts --network nexus-testnet",
+
+    "node": "hardhat node",
+    "deploy": "hardhat run scripts/deploy.ts --network localhost",
+    "request": "hardhat run scripts/request-faucet-add-contribution-token.ts --network localhost",
+    "create": "hardhat run scripts/test-create-launchpad-liquidity-lock.ts --network localhost",
+    "fullcircle": "hardhat run scripts/test-project-full-circle.ts --network localhost",
+    "softcap": "hardhat run scripts/test-softcap-withdrawunsoldtokens.ts --network localhost",
+    "lock": "hardhat run scripts/test-mini-lock-duration.ts --network localhost",
+    "debug": "hardhat run scripts/debug-contracts.ts --network localhost",
+    "simple": "hardhat run scripts/simple-balance-check.ts --network localhost"
+
+   
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.9",
+    "@nomicfoundation/hardhat-toolbox": "^6.0.0",
+    "@types/node": "^24.0.13",
+    "dotenv": "^17.2.0",
+    "ethers": "^6.15.0",
+    "hardhat": "^2.25.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.3.0"
+  }
+}

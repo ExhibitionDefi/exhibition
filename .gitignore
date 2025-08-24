@@ -1,0 +1,30 @@
+node_modules
+.env
+
+# Hardhat files
+/cache
+/artifacts
+
+# TypeChain files
+/typechain
+/typechain-types
+
+# solidity-coverage files
+/coverage
+/coverage.json
+
+# Hardhat Ignition default folder for deployments against a local node
+ignition/deployments/chain-31337
+
+# Ignore Hardhat deployment artifacts
+deployed_addresses.json
+deployed_full_platform_addresses_local.json
+
+# interactive scripts on live Nexus-testnet III
+test_initial_liquid-nexus.ts
+test_addliquidity_swap_rm_nexus.ts
+test-create-launchpad-project-exh-nexus.ts
+test-create-launchpad-project-exusdt-nexus.ts
+debug-contracts.ts
+contractconfamation.ts
+tokenFixScript.ts
