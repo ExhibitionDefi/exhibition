@@ -938,3 +938,7 @@ async function main(): Promise<void> {
 }
 
 main();
+=======
+# exhibition
+A comprehensive decentralized launchpad platform for token creation, fundraising, and automated market making on Nexus Layer 1 blockchains.
+>>>>>>> 8f76fca49fa7a945f856f22cfc3184cdb2f0c467
