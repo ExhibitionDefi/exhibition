@@ -97,12 +97,13 @@ async function main() {
         console.log(`New block timestamp: ${newTimestamp}`);
     };
 
+    // --- Helper to get current timestamp with buffer ---
+    const getCurrentTimestamp = async (): Promise<bigint> => {
+        const block = await ethers.provider.getBlock("latest");
+        return BigInt(block?.timestamp || Math.floor(Date.now() / 1000));
+    };
+
     // --- Initial Faucet Requests for Users in This Test ---
-    //console.log("\n--- Requesting Faucet Tokens for Users in this Test ---");
-    //await exhibition.connect(user1).requestFaucetTokens();
-    //await exhibition.connect(user2).requestFaucetTokens();
-    //await exhibition.connect(user3).requestFaucetTokens();
-    //await exhibition.connect(user4).requestFaucetTokens();
     await logBalances("After Faucet Requests for Project Scenario 3");
     
     // --- MIN LOCK DURATION VALIDATION TEST ---
@@ -124,9 +125,8 @@ async function main() {
     const testMaxContribution = ethers.parseUnits("500", 6);
     const testTokenPrice = ethers.parseUnits("0.01", 18); // 0.01 exUSDT per token
     
-    const testCurrentTimestamp = BigInt((await ethers.provider.getBlock("latest"))?.timestamp || Math.floor(Date.now() / 1000));
-    const testStartTime = testCurrentTimestamp + minStartDelay + 100n;
-    const testEndTime = testStartTime + maxProjectDuration;
+    let testCurrentTimestamp = await getCurrentTimestamp();
+    const testBaseStartTime = testCurrentTimestamp + minStartDelay + 300n; // Extra buffer for tests
     const testAmountTokensForSale = ethers.parseUnits("100000", 18);
     const testLiquidityPercentage = 7000n; // 70%
     
@@ -153,6 +153,9 @@ async function main() {
     const invalidLockDuration = minLockDuration - 86400n; // 1 day less than minimum
     console.log(`\n🔴 TEST 1: Attempting to create project with INVALID lock duration (${Number(invalidLockDuration)} seconds)...`);
     
+    const testStartTime1 = testBaseStartTime + 100n;
+    const testEndTime1 = testStartTime1 + maxProjectDuration;
+    
     try {
         await exhibition.connect(deployer).createLaunchpadProject(
             testProjectTokenName,
@@ -165,8 +168,8 @@ async function main() {
             testMinContribution,
             testMaxContribution,
             testTokenPrice,
-            testStartTime,
-            testEndTime,
+            testStartTime1,
+            testEndTime1,
             testAmountTokensForSale,
             testLiquidityPercentage,
             invalidLockDuration, // INVALID - less than minimum
@@ -195,11 +198,12 @@ async function main() {
     const validLockDuration = minLockDuration;
     console.log(`\n🟡 TEST 2: Attempting to create project with MINIMUM valid lock duration (${Number(validLockDuration)} seconds)...`);
     
+    const testStartTime2 = testBaseStartTime + 200n;
+    const testEndTime2 = testStartTime2 + maxProjectDuration;
+    
     try {
         const validTestProjectName = "ValidLockToken";
         const validTestProjectSymbol = "VLT";
-        const validTestStartTime = testStartTime + 200n; // Slightly different timing
-        const validTestEndTime = validTestStartTime + maxProjectDuration;
         
         const validProjectTx = await exhibition.connect(deployer).createLaunchpadProject(
             validTestProjectName,
@@ -212,8 +216,8 @@ async function main() {
             testMinContribution,
             testMaxContribution,
             testTokenPrice,
-            validTestStartTime,
-            validTestEndTime,
+            testStartTime2,
+            testEndTime2,
             testAmountTokensForSale,
             testLiquidityPercentage,
             validLockDuration, // VALID - exactly minimum
@@ -267,11 +271,12 @@ async function main() {
     const extendedLockDuration = minLockDuration + 86400n * 30n; // 30 days more than minimum
     console.log(`\n🟢 TEST 3: Attempting to create project with EXTENDED lock duration (${Number(extendedLockDuration)} seconds)...`);
     
+    const testStartTime3 = testBaseStartTime + 400n;
+    const testEndTime3 = testStartTime3 + maxProjectDuration;
+    
     try {
         const extendedTestProjectName = "ExtendedLockToken";
         const extendedTestProjectSymbol = "ELT";
-        const extendedTestStartTime = testStartTime + 400n; // Different timing
-        const extendedTestEndTime = extendedTestStartTime + maxProjectDuration;
         
         const extendedProjectTx = await exhibition.connect(deployer).createLaunchpadProject(
             extendedTestProjectName,
@@ -284,8 +289,8 @@ async function main() {
             testMinContribution,
             testMaxContribution,
             testTokenPrice,
-            extendedTestStartTime,
-            extendedTestEndTime,
+            testStartTime3,
+            testEndTime3,
             testAmountTokensForSale,
             testLiquidityPercentage,
             extendedLockDuration, // VALID - greater than minimum
@@ -349,8 +354,9 @@ async function main() {
 
     const adjustedTokenPrice = ethers.parseUnits("0.002889", 18); // 1 BON costs 0.002889 exUSDT (in 18 decimals)
 
-    const currentTimestamp = BigInt((await ethers.provider.getBlock("latest"))?.timestamp || Math.floor(Date.now() / 1000));
-    const startTime = currentTimestamp + minStartDelay // Ensure it's after minStartDelay
+    // ✅ FIX: Get fresh timestamp and add proper buffer for main project
+    const mainProjectTimestamp = await getCurrentTimestamp();
+    const startTime = mainProjectTimestamp + minStartDelay + 600n; // Extra buffer after test projects
     const endTime = startTime + maxProjectDuration; // Use the fetched constant (7 days)
 
     const amountTokensForSale = ethers.parseUnits("45000000", 18); // 45,000,000 BON for sale
@@ -371,18 +377,8 @@ async function main() {
     console.log(`Tokens for sale: ${ethers.formatUnits(amountTokensForSale, 18)} BON`);
     console.log(`Hard Cap: ${ethers.formatUnits(fundingGoal, 6)} exUSDT`);
     console.log(`Soft Cap: ${ethers.formatUnits(softCap, 6)} exUSDT`);
-
-    // Admin Action: Add exUSDT as an approved contribution token
-    //try {
-    //    await exhibition.connect(deployer).addExhibitionContributionToken(contributionTokenAddress3);
-    //    console.log(`exUSDT (${contributionTokenAddress3}) successfully added as an approved contribution token.`);
-    //} catch (e: any) {
-    //    if (!e.message.includes("TokenAlreadyApproved()")) {
-    //        console.warn(`Warning: Could not add exUSDT as approved token: ${e.message}`);
-    //    } else {
-    //        console.log("exUSDT is already an approved contribution token.");
-    //    }
-    //}
+    console.log(`Start Time: ${startTime} (${new Date(Number(startTime) * 1000).toISOString()})`);
+    console.log(`End Time: ${endTime} (${new Date(Number(endTime) * 1000).toISOString()})`);
 
     console.log("Calling createLaunchpadProject for Project 3... (NO VESTING)");
     const createProjectTxResponse = await exhibition.connect(deployer).createLaunchpadProject(
@@ -450,10 +446,10 @@ async function main() {
     // --- Contributions for Project 3 (HARD CAP MET - Should Auto Finalize) ---
     console.log("\n--- Contributions for Project 3 (HARD CAP MET - Should Auto Finalize) ---");
     
-    const user1Contribute = ethers.parseUnits("40005", 6); // User1 contributes 3000 exUSDT
-    const user2Contribute = ethers.parseUnits("35000", 6); // User2 contributes 2500 exUSDT  
-    const user3Contribute = ethers.parseUnits("25000", 6); // User3 contributes 2500 exUSDT
-    const user4Contribute = ethers.parseUnits("20000", 6); // User4 contributes 2000 exUSDT
+    const user1Contribute = ethers.parseUnits("40005", 6); // User1 contributes 40005 exUSDT
+    const user2Contribute = ethers.parseUnits("35000", 6); // User2 contributes 35000 exUSDT  
+    const user3Contribute = ethers.parseUnits("25000", 6); // User3 contributes 25000 exUSDT
+    const user4Contribute = ethers.parseUnits("30000", 6); // User4 contributes 30000 exUSDT
     const totalExpectedRaised = user1Contribute + user2Contribute + user3Contribute + user4Contribute; // 130,005 exUSDT (Hard Cap)
 
     console.log(`Planned total contributions: ${ethers.formatUnits(totalExpectedRaised, 6)} exUSDT`);
@@ -502,11 +498,6 @@ async function main() {
     }
     console.log("✅ SUCCESS: Hard cap reached and project auto-finalized!");
 
-    // --- Continue with liquidity deposit and finalization... ---
-    // [Keep the existing liquidity logic from your original script here]
-    
-    // For brevity, I'll jump to the claiming section since that's the main change:
-
     // --- NO VESTING CLAIMING TESTS ---
     console.log(`\n--- Claiming Tests for Project ID ${newProjectId} (NO VESTING) ---`);
 
@@ -547,13 +538,83 @@ async function main() {
 
     if (user1ClaimedAmountTest !== user1TotalBONDue) {
         console.error(`Assertion Failed: User1 claim amount incorrect.`);
+        console.error(`Expected: ${user1TotalBONDue}, Got: ${user1ClaimedAmountTest}`);
         process.exit(1);
     }
     console.log("✅ SUCCESS: User1 claimed correct amount immediately (no vesting)!");
 
+    // Test other users claiming as well
+    console.log("\n--- User2 claiming tokens ---");
+    const user2BalanceBeforeClaimTest = await projectTokenContractBON.balanceOf(user2.address);
+    await exhibition.connect(user2).claimTokens(newProjectId);
+    const user2BalanceAfterClaimTest = await projectTokenContractBON.balanceOf(user2.address);
+    const user2ClaimedAmountTest = user2BalanceAfterClaimTest - user2BalanceBeforeClaimTest;
+
+    console.log(`User2 claimed: ${ethers.formatUnits(user2ClaimedAmountTest, 18)} BON`);
+    if (user2ClaimedAmountTest !== user2TotalBONDue) {
+        console.error(`Assertion Failed: User2 claim amount incorrect.`);
+        process.exit(1);
+    }
+    console.log("✅ SUCCESS: User2 claimed correct amount immediately!");
+
+    console.log("\n--- User3 claiming tokens ---");
+    const user3BalanceBeforeClaimTest = await projectTokenContractBON.balanceOf(user3.address);
+    await exhibition.connect(user3).claimTokens(newProjectId);
+    const user3BalanceAfterClaimTest = await projectTokenContractBON.balanceOf(user3.address);
+    const user3ClaimedAmountTest = user3BalanceAfterClaimTest - user3BalanceBeforeClaimTest;
+
+    console.log(`User3 claimed: ${ethers.formatUnits(user3ClaimedAmountTest, 18)} BON`);
+    if (user3ClaimedAmountTest !== user3TotalBONDue) {
+        console.error(`Assertion Failed: User3 claim amount incorrect.`);
+        process.exit(1);
+    }
+    console.log("✅ SUCCESS: User3 claimed correct amount immediately!");
+
+    console.log("\n--- User4 claiming tokens ---");
+    const user4BalanceBeforeClaimTest = await projectTokenContractBON.balanceOf(user4.address);
+    await exhibition.connect(user4).claimTokens(newProjectId);
+    const user4BalanceAfterClaimTest = await projectTokenContractBON.balanceOf(user4.address);
+    const user4ClaimedAmountTest = user4BalanceAfterClaimTest - user4BalanceBeforeClaimTest;
+
+    console.log(`User4 claimed: ${ethers.formatUnits(user4ClaimedAmountTest, 18)} BON`);
+    if (user4ClaimedAmountTest !== user4TotalBONDue) {
+        console.error(`Assertion Failed: User4 claim amount incorrect.`);
+        process.exit(1);
+    }
+    console.log("✅ SUCCESS: User4 claimed correct amount immediately!");
+
+    // Test attempting to claim again (should fail)
+    console.log("\n--- Testing double claim prevention ---");
+    try {
+        await exhibition.connect(user1).claimTokens(newProjectId);
+        console.error("❌ ASSERTION FAILED: Second claim should have failed!");
+        process.exit(1);
+    } catch (error: any) {
+        if (error.message.includes("NoTokensToClaim") || 
+            error.message.includes("AlreadyClaimed") ||
+            error.message.includes("revert")) {
+            console.log("✅ SUCCESS: Double claiming correctly prevented");
+        } else {
+            console.error("❌ UNEXPECTED ERROR on double claim:", error.message);
+            process.exit(1);
+        }
+    }
+
+    await logBalances("After All Claims");
+
     console.log("\n🎉 NO VESTING TEST COMPLETED SUCCESSFULLY!");
     console.log("✅ Project created with vesting disabled");
     console.log("✅ Users can claim 100% of tokens immediately after project completion");
+    console.log("✅ Double claiming is properly prevented");
+    console.log("✅ Hard cap auto-finalization working correctly");
+    console.log("✅ Lock duration validation working correctly");
+    
+    console.log("\n📊 FINAL TEST SUMMARY:");
+    console.log("🔒 Lock Duration Validation: ✅ PASSED");
+    console.log("🚀 Project Creation (No Vesting): ✅ PASSED");
+    console.log("💰 Hard Cap Auto-Finalization: ✅ PASSED");
+    console.log("🎯 Immediate Token Claims: ✅ PASSED");
+    console.log("🛡️ Double Claim Prevention: ✅ PASSED");
 }
 
 main().catch((error) => {

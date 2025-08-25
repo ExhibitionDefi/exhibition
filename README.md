@@ -829,8 +829,14 @@ interface DeploymentResult {
 ### Environment Variables
 ```env
 PRIVATE_KEY=your_private_key
-RPC_URL=your_rpc_endpoint
-ETHERSCAN_API_KEY=your_api_key
+PRIVATE_KEY_USER1=your_other_key_to_test_multiple_users
+PRIVATE_KEY_USER2=your_other_key_to_test_multiple_users
+PRIVATE_KEY_USER3=your_other_key_to_test_multiple_users
+PRIVATE_KEY_USER4=your_other_key_to_test_multiple_users
+NEXUS_TESTNET_III_CHAIN_ID="3940"
+NEXUS_TESTNET_III_RPC_URL="https://testnet3.rpc.nexus.xyz"
+NEXUS_ALCHEMY_RPC_URL="https://nexus-testnet.g.alchemy.com/public"
+NEXUS_TESTNET_III_EXPLORER_URL="https://testnet3.explorer.nexus.xyz"
 ```
 
 ### Deployment Script Example
@@ -936,6 +942,107 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 }
+
+# Hardhat Local Network Testing Guide
+
+This guide will help you test your smart contracts on a local Hardhat network. Follow the steps below each time you start or restart the Hardhat node.
+
+## Prerequisites
+
+- Ensure your `hardhat.config.ts` is properly configured.
+- Install all dependencies with `npm install`.
+
+---
+
+## 1. Start the Hardhat Node
+
+Start a local Hardhat network in a new terminal window:
+
+```bash
+npx hardhat node
+```
+
+Keep this terminal running throughout your testing session.
+
+---
+
+## 2. Deploy Contracts
+
+**Important:**  
+Every time you start or restart the Hardhat node, the blockchain state is reset.  
+**You must redeploy your contracts before running any tests.**
+
+Run the deployment script:
+
+```bash
+npm run deploy
+```
+
+---
+
+## 3. Request Initial Setup
+
+After deploying, run the request script to set up necessary contract state or mock tokens:
+
+```bash
+npm run request
+```
+
+---
+
+## 4. Run Test Scripts
+
+Now you can run any of the provided testing scripts. Example commands:
+
+| Test        | Command                                                                                   |
+|-------------|-------------------------------------------------------------------------------------------|
+| Create      | `npm run create`                                                                          |
+| Full Circle | `npm run fullcircle`                                                                      |
+| Soft Cap    | `npm run softcap`                                                                         |
+| Lock        | `npm run lock`                                                                            |
+
+These are mapped in your `package.json` as:
+
+```json
+"scripts": {
+  "create": "hardhat run scripts/test-create-launchpad-liquidity-lock.ts --network localhost",
+  "fullcircle": "hardhat run scripts/test-project-full-circle.ts --network localhost",
+  "softcap": "hardhat run scripts/test-softcap-withdrawunsoldtokens.ts --network localhost",
+  "lock": "hardhat run scripts/test-mini-lock-duration.ts --network localhost"
+}
+```
+
+Replace `create`, `fullcircle`, `softcap`, or `lock` with the function you want to test.
+
+---
+
+## Example Workflow
+
+1. Start node:
+    ```bash
+    npx hardhat node
+    ```
+2. Deploy contracts:
+    ```bash
+    npm run deploy
+    ```
+3. Run initial requests:
+    ```bash
+    npm run request
+    ```
+4. Run a specific test:
+    ```bash
+    npm run create
+    # or
+    npm run fullcircle
+    ```
+
+---
+
+**Note:**  
+Repeat steps 2–4 every time you restart the Hardhat node.
+
+---
 
 main();
 =======
