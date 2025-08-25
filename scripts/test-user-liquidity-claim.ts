@@ -108,14 +108,6 @@ async function main() {
         console.log(`New block timestamp: ${newTimestamp}`);
     };
 
-    // --- Initial Faucet Requests for Users in This Test ---
-    console.log("\n💧 Requesting Faucet Tokens for Users in this Test ---");
-    await exhibition.connect(user1).requestFaucetTokens();
-    await exhibition.connect(user2).requestFaucetTokens();
-    await exhibition.connect(user3).requestFaucetTokens();
-    await exhibition.connect(user4).requestFaucetTokens();
-    await logBalances("After Faucet Requests for Project (Hard Cap Test)");
-
     // --- Launchpad Project Creation Test (EXH Contribution - HARD CAP MET) ---
     console.log("\n🚀 Launchpad Project Creation Test (EXH Contribution - HARD CAP MET) ---");
 

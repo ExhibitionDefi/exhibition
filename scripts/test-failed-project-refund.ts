@@ -63,11 +63,11 @@ async function main() {
     };
 
     // Faucet requests
-    console.log("\n--- Requesting Faucet Tokens for Users ---");
-    await exhibition.connect(user1).requestFaucetTokens();
-    await exhibition.connect(user2).requestFaucetTokens();
-    await exhibition.connect(user3).requestFaucetTokens();
-    await logBalances("After Faucet Requests for Project 2");
+    //console.log("\n--- Requesting Faucet Tokens for Users ---");
+    //await exhibition.connect(user1).requestFaucetTokens();
+    //await exhibition.connect(user2).requestFaucetTokens();
+    //await exhibition.connect(user3).requestFaucetTokens();
+    //await logBalances("After Faucet Requests for Project 2");
 
     // Launchpad Project Creation (Project 2: exUSDT, Failed Softcap)
     console.log("\n--- Launchpad Project Creation Test (Project 2: exUSDT, Failed Softcap) ---");

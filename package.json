@@ -20,7 +20,9 @@
     "create": "hardhat run scripts/test-create-launchpad-liquidity-lock.ts --network localhost",
     "fullcircle": "hardhat run scripts/test-project-full-circle.ts --network localhost",
     "softcap": "hardhat run scripts/test-softcap-withdrawunsoldtokens.ts --network localhost",
+    "failed": "hardhat run scripts/test-failed-project-refund.ts --network localhost",
     "lock": "hardhat run scripts/test-mini-lock-duration.ts --network localhost",
+    "liquid-lock": "hardhat run scripts/test-user-liquidity-claim.ts --network localhost",
     "debug": "hardhat run scripts/debug-contracts.ts --network localhost",
     "simple": "hardhat run scripts/simple-balance-check.ts --network localhost"
 

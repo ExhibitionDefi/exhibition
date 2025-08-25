@@ -1000,6 +1000,8 @@ Now you can run any of the provided testing scripts. Example commands:
 | Full Circle | `npm run fullcircle`                                                                      |
 | Soft Cap    | `npm run softcap`                                                                         |
 | Lock        | `npm run lock`                                                                            |
+| failed      | `npm run failed`                                                                          |
+| liquid-lock | `npm run liquid-lock`                                                                     |
 
 These are mapped in your `package.json` as:
 
@@ -1008,7 +1010,9 @@ These are mapped in your `package.json` as:
   "create": "hardhat run scripts/test-create-launchpad-liquidity-lock.ts --network localhost",
   "fullcircle": "hardhat run scripts/test-project-full-circle.ts --network localhost",
   "softcap": "hardhat run scripts/test-softcap-withdrawunsoldtokens.ts --network localhost",
-  "lock": "hardhat run scripts/test-mini-lock-duration.ts --network localhost"
+  "lock": "hardhat run scripts/test-mini-lock-duration.ts --network localhost",
+  "failed": "hardhat run scripts/test-failed-project-refund.ts --network localhost",
+  "liquid-lock": "hardhat run scripts/test-user-liquidity-claim.ts --network localhost"
 }
 ```
 
