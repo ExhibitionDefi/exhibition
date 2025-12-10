@@ -5,19 +5,18 @@ import { time } from "@nomicfoundation/hardhat-network-helpers";
 import { TransactionReceipt } from "ethers";
 
 // Import Typechain generated types for your contracts
-import { Exhibition, Exh, ExhibitionUSDT, ExhibitionNEX, ExhibitionLPTokens, ExhibitionAMM } from "../typechain-types";
+import { Exhibition, ExhibitionToken, ExhibitionUSD, ExhibitionNEX, ExhibitionLPTokens, ExhibitionAMM } from "../typechain-types";
 import { IERC20Metadata } from "../typechain-types/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata";
 
 // Helper function to format status names
 const statusNames: Record<number, string> = {
     0: 'Upcoming',      // Project created, waiting for startTime
     1: 'Active',        // Project is live and accepting contributions
-    2: 'FundingEnded',  // endTime passed OR fundingGoal (hardcap) reached
-    3: 'Successful',    // Project met its softCap during FundingEnded phase
-    4: 'Failed',        // Project did not meet its softCap during FundingEnded phase
-    5: 'Claimable',     // Project is Successful, contributors can claim tokens
-    6: 'Refundable',    // Project is Failed, contributors can request refunds
-    7: 'Completed'      // Project fully completed
+    2: 'Successful',    // Project met its softCap during FundingEnded phase
+    3: 'Failed',        // Project did not meet its softCap during FundingEnded phase
+    4: 'Claimable',     // Project is Successful, contributors can claim tokens
+    5: 'Refundable',    // Project is Failed, contributors can request refunds
+    6: 'Completed'      // Project fully completed
 };
 
 async function main() {
@@ -40,24 +39,24 @@ async function main() {
     }
     const deployedAddresses = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-    const exhTokenAddress = deployedAddresses.ExhToken as string;
-    const exhibitionUSDTAddress = deployedAddresses.ExhibitionUSDT as string;
+    const ExhibitionTokenAddress = deployedAddresses.EXH as string;
+    const exhibitionUSDAddress = deployedAddresses.ExhibitionUSD as string;
     const exhibitionAddress = deployedAddresses.Exhibition as string;
     const exhibitionNEXAddress = deployedAddresses.ExhibitionNEX as string;
     const exhibitionAMMAddress = deployedAddresses.ExhibitionAMM as string;
     const exhibitionLPTokensAddress = deployedAddresses.ExhibitionLPTokens as string;
 
     console.log("\n--- Loaded Deployed Addresses ---");
-    console.log(`Exh Token: ${exhTokenAddress}`);
-    console.log(`ExhibitionUSDT: ${exhibitionUSDTAddress}`);
+    console.log(`EXH: ${ExhibitionTokenAddress}`);
+    console.log(`ExhibitionUSD: ${exhibitionUSDAddress}`);
     console.log(`ExhibitionNEX: ${exhibitionNEXAddress}`);
     console.log(`ExhibitionLPTokens: ${exhibitionLPTokensAddress}`);
     console.log(`ExhibitionAMM: ${exhibitionAMMAddress}`);
     console.log(`Exhibition (Main Platform): ${exhibitionAddress}`);
 
     // --- Get Contract Instances ---
-    const exhToken: Exh = await ethers.getContractAt("Exh", exhTokenAddress, deployer);
-    const exhibitionUSDT: ExhibitionUSDT = await ethers.getContractAt("ExhibitionUSDT", exhibitionUSDTAddress, deployer);
+    const EXH: ExhibitionToken = await ethers.getContractAt("ExhibitionToken", ExhibitionTokenAddress, deployer);
+    const exhibitionUSD: ExhibitionUSD = await ethers.getContractAt("ExhibitionUSD", exhibitionUSDAddress, deployer);
     const exhibition: Exhibition = await ethers.getContractAt("Exhibition", exhibitionAddress, deployer);
     const exhibitionNEX: ExhibitionNEX = await ethers.getContractAt("ExhibitionNEX", exhibitionNEXAddress, deployer);
     const exhibitionAMM: ExhibitionAMM = await ethers.getContractAt("ExhibitionAMM", exhibitionAMMAddress, deployer);
@@ -73,19 +72,19 @@ async function main() {
     // --- Helper to log balances ---
     const logBalances = async (label: string) => {
         console.log(`\n--- ${label} Balances ---`);
-        console.log(`Deployer EXH: ${ethers.formatUnits(await exhToken.balanceOf(deployer.address), 18)}`);
-        console.log(`Deployer exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(deployer.address), 6)}`);
+        console.log(`Deployer EXH: ${ethers.formatUnits(await EXH.balanceOf(deployer.address), 18)}`);
+        console.log(`Deployer exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(deployer.address), 6)}`);
         console.log(`Deployer exNEX: ${ethers.formatUnits(await exhibitionNEX.balanceOf(deployer.address), 18)}`);
-        console.log(`User1 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user1.address), 18)}`);
-        console.log(`User1 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user1.address), 6)}`);
-        console.log(`User2 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user2.address), 18)}`);
-        console.log(`User2 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user2.address), 6)}`);
-        console.log(`User3 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user3.address), 18)}`);
-        console.log(`User3 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user3.address), 6)}`);
-        console.log(`User4 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user4.address), 18)}`);
-        console.log(`User4 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user4.address), 6)}`);
-        console.log(`Exhibition Contract EXH Balance: ${ethers.formatUnits(await exhToken.balanceOf(exhibitionAddress), 18)}`);
-        console.log(`Exhibition Contract exUSDT Balance: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(exhibitionAddress), 6)}`);
+        console.log(`User1 EXH: ${ethers.formatUnits(await EXH.balanceOf(user1.address), 18)}`);
+        console.log(`User1 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user1.address), 6)}`);
+        console.log(`User2 EXH: ${ethers.formatUnits(await EXH.balanceOf(user2.address), 18)}`);
+        console.log(`User2 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user2.address), 6)}`);
+        console.log(`User3 EXH: ${ethers.formatUnits(await EXH.balanceOf(user3.address), 18)}`);
+        console.log(`User3 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user3.address), 6)}`);
+        console.log(`User4 EXH: ${ethers.formatUnits(await EXH.balanceOf(user4.address), 18)}`);
+        console.log(`User4 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user4.address), 6)}`);
+        console.log(`Exhibition Contract EXH Balance: ${ethers.formatUnits(await EXH.balanceOf(exhibitionAddress), 18)}`);
+        console.log(`Exhibition Contract exUSD Balance: ${ethers.formatUnits(await exhibitionUSD.balanceOf(exhibitionAddress), 6)}`);
         if (projectTokenContractNEB) {
             console.log(`Exhibition Contract Project Token Balance: ${ethers.formatUnits(await projectTokenContractNEB.balanceOf(exhibitionAddress), 18)}`);
             console.log(`Exhibition AMM Project Token Balance: ${ethers.formatUnits(await projectTokenContractNEB.balanceOf(exhibitionAMMAddress), 18)}`);
@@ -95,8 +94,8 @@ async function main() {
         }
         console.log(`Exhibition Contract exNEX Balance: ${ethers.formatUnits(await exhibitionNEX.balanceOf(exhibitionAddress), 18)}`);
         console.log(`Exhibition AMM exNEX Balance: ${ethers.formatUnits(await exhibitionNEX.balanceOf(exhibitionAMMAddress), 18)}`);
-        console.log(`Exhibition AMM exUSDT Balance: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(exhibitionAMMAddress), 6)}`);
-        console.log(`Exhibition AMM EXH Balance: ${ethers.formatUnits(await exhToken.balanceOf(exhibitionAMMAddress), 18)}`);
+        console.log(`Exhibition AMM exUSD Balance: ${ethers.formatUnits(await exhibitionUSD.balanceOf(exhibitionAMMAddress), 6)}`);
+        console.log(`Exhibition AMM EXH Balance: ${ethers.formatUnits(await EXH.balanceOf(exhibitionAMMAddress), 18)}`);
     };
 
     // --- Helper to advance time ---
@@ -117,7 +116,7 @@ async function main() {
     const initialTotalSupply = ethers.parseUnits("500000000", 18); // 500 Million NEB
     const projectTokenLogoURI = "https://launchpad.com/NEB_logo.png";
 
-    const contributionTokenAddress = exhTokenAddress; // Using EXH as contribution token
+    const contributionTokenAddress = ExhibitionTokenAddress; // Using EXH as contribution token
     const fundingGoal = ethers.parseUnits("125000", 18); // Hard Cap: 125,000 EXH (18 decimals)
     const softCap = ethers.parseUnits("65000", 18); // Soft Cap: 65,000 EXH (18 decimals)
     const minContribution = ethers.parseUnits("100", 18); // Minimum contribution: 100 EXH
@@ -265,47 +264,47 @@ async function main() {
 
     // User1 contributes
     console.log(`\n💸 User1 contributing ${ethers.formatUnits(user1Contribute, 18)} EXH to Project ID ${newProjectId}...`);
-    await exhToken.connect(user1).approve(exhibitionAddress, user1Contribute); // Approve EXH
+    await EXH.connect(user1).approve(exhibitionAddress, user1Contribute); // Approve EXH
     await exhibition.connect(user1).contribute(newProjectId, user1Contribute);
     console.log("✅ SUCCESS: User1 contributed.");
 
     // Check status after User1
     let projectStatus = await exhibition.projects(newProjectId);
-    console.log(`Project status after User1: ${projectStatus.status} (1=Active, 3=Successful)`);
+    console.log(`Project status after User1: ${projectStatus.status} (1=Active, 2=Successful)`);
     console.log(`Total raised after User1: ${ethers.formatUnits(projectStatus.totalRaised, 18)} EXH`);
 
     // User2 contributes
     console.log(`\n💸 User2 contributing ${ethers.formatUnits(user2Contribute, 18)} EXH to Project ID ${newProjectId}...`);
-    await exhToken.connect(user2).approve(exhibitionAddress, user2Contribute); // Approve EXH
+    await EXH.connect(user2).approve(exhibitionAddress, user2Contribute); // Approve EXH
     await exhibition.connect(user2).contribute(newProjectId, user2Contribute);
     console.log("✅ SUCCESS: User2 contributed.");
 
     // Check status after User2
     projectStatus = await exhibition.projects(newProjectId);
-    console.log(`Project status after User2: ${projectStatus.status} (1=Active, 3=Successful)`);
+    console.log(`Project status after User2: ${projectStatus.status} (1=Active, 2=Successful)`);
     console.log(`Total raised after User2: ${ethers.formatUnits(projectStatus.totalRaised, 18)} EXH`);
 
     // User3 contributes
     console.log(`\n💸 User3 contributing ${ethers.formatUnits(user3Contribute, 18)} EXH to Project ID ${newProjectId}...`);
-    await exhToken.connect(user3).approve(exhibitionAddress, user3Contribute); // Approve EXH
+    await EXH.connect(user3).approve(exhibitionAddress, user3Contribute); // Approve EXH
     await exhibition.connect(user3).contribute(newProjectId, user3Contribute);
     console.log("✅ SUCCESS: User3 contributed.");
 
     // Check status after User3
     projectStatus = await exhibition.projects(newProjectId);
-    console.log(`Project status after User3: ${projectStatus.status} (1=Active, 3=Successful)`);
+    console.log(`Project status after User3: ${projectStatus.status} (1=Active, 2=Successful)`);
     console.log(`Total raised after User3: ${ethers.formatUnits(projectStatus.totalRaised, 18)} EXH`);
 
     // User4 contributes (This should hit the hard cap and auto-finalize)
     console.log(`\n🎯 User4 contributing ${ethers.formatUnits(user4Contribute, 18)} EXH to Project ID ${newProjectId} (SHOULD HIT HARD CAP)...`);
-    await exhToken.connect(user4).approve(exhibitionAddress, user4Contribute); // Approve EXH
+    await EXH.connect(user4).approve(exhibitionAddress, user4Contribute); // Approve EXH
     const user4ContributeTx = await exhibition.connect(user4).contribute(newProjectId, user4Contribute);
     const user4ContributeReceipt = await user4ContributeTx.wait();
     console.log("✅ SUCCESS: User4 contributed (Hard Cap Hit!).");
 
-    // Check final status - should be auto-finalized to Successful (3)
+    // Check final status - should be auto-finalized to Successful (2)
     const projectAfterContributions = await exhibition.projects(newProjectId);
-    console.log(`\n🎉 HARD CAP REACHED! Project status: ${projectAfterContributions.status} (Expected: 3=Successful)`);
+    console.log(`\n🎉 HARD CAP REACHED! Project status: ${projectAfterContributions.status} (Expected: 2=Successful)`);
     console.log(`Final total raised: ${ethers.formatUnits(projectAfterContributions.totalRaised, 18)} EXH`);
     console.log(`Hard cap: ${ethers.formatUnits(fundingGoal, 18)} EXH`);
 
@@ -315,8 +314,8 @@ async function main() {
         process.exit(1);
     }
 
-    if (projectAfterContributions.status !== 3n) { // Should be Successful (3) due to auto-finalization
-        console.error(`🚫 Assertion Failed: Project should be auto-finalized to Successful (3), but got status ${projectAfterContributions.status}.`);
+    if (projectAfterContributions.status !== 2n) { // Should be Successful (2) due to auto-finalization
+        console.error(`🚫 Assertion Failed: Project should be auto-finalized to Successful (2), but got status ${projectAfterContributions.status}.`);
         process.exit(1);
     }
 
@@ -430,7 +429,7 @@ async function main() {
     console.log(`✅ SUCCESS: Deposited liquidity amount verified: ${ethers.formatUnits(depositedAmount, 18)} NEB`);
 
     // Record deployer's initial EXH balance before fund release
-    const deployerInitialEXHBalance = await exhToken.balanceOf(deployer.address);
+    const deployerInitialEXHBalance = await EXH.balanceOf(deployer.address);
     console.log(`Deployer initial EXH balance before fund release: ${ethers.formatUnits(deployerInitialEXHBalance, 18)}`);
 
     const currentTimestampBeforeFinalization = await time.latest();
@@ -449,9 +448,9 @@ async function main() {
 
     // Verify project status is Completed
     const projectCompleted = await exhibition.projects(newProjectId);
-    console.log(`Project ID ${newProjectId} final status: ${projectCompleted.status} (Expected: Completed (7))`);
-    if (projectCompleted.status !== 7n) { // Expected Completed (7)
-        console.error(`🚫 Assertion Failed: Project ID ${newProjectId} final status mismatch. Expected Completed (7), got ${projectCompleted.status}.`);
+    console.log(`Project ID ${newProjectId} final status: ${projectCompleted.status} (Expected: Completed (6))`);
+    if (projectCompleted.status !== 6n) { // Expected Completed (6)
+        console.error(`🚫 Assertion Failed: Project ID ${newProjectId} final status mismatch. Expected Completed (6), got ${projectCompleted.status}.`);
         process.exit(1);
     }
     if (!projectCompleted.liquidityAdded) {
@@ -461,7 +460,7 @@ async function main() {
     console.log("✅ SUCCESS: Project status updated to Completed and liquidityAdded flag set.");
 
     // Verify deployer's final EXH balance (should include remaining funds + platform fee)
-    const deployerFinalEXHBalance = await exhToken.balanceOf(deployer.address);
+    const deployerFinalEXHBalance = await EXH.balanceOf(deployer.address);
     const totalExpectedIncrease = expectedDeployerPayout + platformFeeAmount;
     const actualIncrease = deployerFinalEXHBalance - deployerInitialEXHBalance;
 
@@ -546,9 +545,9 @@ async function main() {
 
     // --- User1 Adds Liquidity ---
     console.log("\n🔄 User1 Adding Liquidity to EXH/NEB Pool...");
-    const user1ExhBalance = await exhToken.balanceOf(user1.address);
+    const user1ExhBalance = await EXH.balanceOf(user1.address);
     const user1NebBalance = await projectTokenContractNEB.balanceOf(user1.address);
-    const ammExhReserve = await exhToken.balanceOf(exhibitionAMMAddress);
+    const ammExhReserve = await EXH.balanceOf(exhibitionAMMAddress);
     const ammNebReserve = await projectTokenContractNEB.balanceOf(exhibitionAMMAddress);
 
     const exhAmount = ethers.parseUnits("500", 18); // 500 EXH
@@ -559,47 +558,49 @@ async function main() {
         process.exit(1);
     }
 
-    await exhToken.connect(user1).approve(exhibitionAMMAddress, exhAmount);
+    await EXH.connect(user1).approve(exhibitionAMMAddress, exhAmount);
     await projectTokenContractNEB.connect(user1).approve(exhibitionAMMAddress, nebAmount);
+    const latestBlock = await ethers.provider.getBlock('latest');
+    const deadline = BigInt(latestBlock!.timestamp + 600);
     const txAddLiquidity = await exhibitionAMM.connect(user1).addLiquidity(
-        exhTokenAddress,                // _tokenA
+        ExhibitionTokenAddress,                // _tokenA
         newProjectTokenAddress,            // _tokenB
         exhAmount,                      // _amountADesired
         nebAmount,                      // _amountBDesired
         ethers.parseUnits("475", 18),   // _amountAMin (5% slippage tolerance)
         nebAmount * 95n / 100n,         // _amountBMin (5% slippage tolerance)
         user1.address,                  // _to (recipient of LP tokens)
-        BigInt(Math.floor(Date.now() / 1000) + 3600) // _deadline (1-hour deadline as BigInt)
+        deadline// _deadline (1-hour deadline as BigInt)
     );
     await txAddLiquidity.wait();
     console.log("✅ User1 added liquidity successfully");
 
-    const user1LPBalance = await exhibitionLPTokens.balanceOf(exhTokenAddress, newProjectTokenAddress, user1.address);
+    const user1LPBalance = await exhibitionLPTokens.balanceOf(ExhibitionTokenAddress, newProjectTokenAddress, user1.address);
     console.log(`User1 LP Balance: ${ethers.formatUnits(user1LPBalance, 18)}`);
 
     // --- Verify Liquidity Locks ---
     console.log("\n🔍 Verifying Liquidity Lock Status...");
 
     // Check Project Owner's Liquidity (should still be locked)
-    const isDeployerLocked = await exhibitionAMM.isLiquidityLocked(newProjectTokenAddress, exhTokenAddress, deployer.address);
+    const isDeployerLocked = await exhibitionAMM.isLiquidityLocked(newProjectTokenAddress, ExhibitionTokenAddress, deployer.address);
     console.log(`Project Owner Liquidity Locked: ${isDeployerLocked} (Expected: true)`);
     if (!isDeployerLocked) {
         console.error("🚫 Assertion Failed: Project owner's liquidity should be locked.");
         process.exit(1);
     }
 
-    const deployerWithdrawable = await exhibitionAMM.getWithdrawableLPAmount(newProjectTokenAddress, exhTokenAddress, deployer.address);
+    const deployerWithdrawable = await exhibitionAMM.getWithdrawableLPAmount(newProjectTokenAddress, ExhibitionTokenAddress, deployer.address);
     console.log(`Deployer Withdrawable LP: ${ethers.formatUnits(deployerWithdrawable, 18)} (Expected: 0)`);
 
     // Check User1's Liquidity (should not be locked)
-    const isUser1Locked = await exhibitionAMM.isLiquidityLocked(newProjectTokenAddress, exhTokenAddress, user1.address);
+    const isUser1Locked = await exhibitionAMM.isLiquidityLocked(newProjectTokenAddress, ExhibitionTokenAddress, user1.address);
     console.log(`User1 Liquidity Locked: ${isUser1Locked} (Expected: false)`);
     if (isUser1Locked) {
         console.error("🚫 Assertion Failed: User1's liquidity should not be locked.");
         process.exit(1);
     }
 
-    const user1Withdrawable = await exhibitionAMM.getWithdrawableLPAmount(newProjectTokenAddress, exhTokenAddress, user1.address);
+    const user1Withdrawable = await exhibitionAMM.getWithdrawableLPAmount(newProjectTokenAddress, ExhibitionTokenAddress, user1.address);
     console.log(`User1 Withdrawable LP: ${ethers.formatUnits(user1Withdrawable, 18)} (Expected: matches LP balance)`);
     if (user1Withdrawable !== user1LPBalance) {
         console.error(`🚫 Assertion Failed: User1 withdrawable LP (${ethers.formatUnits(user1Withdrawable, 18)}) does not match LP balance (${ethers.formatUnits(user1LPBalance, 18)})`);

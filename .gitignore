@@ -28,3 +28,7 @@ test-create-launchpad-project-exusdt-nexus.ts
 debug-contracts.ts
 contractconfamation.ts
 tokenFixScript.ts
+contributors_project_1.csv
+contributors_project_1.json
+configure.ts
+verify.ts

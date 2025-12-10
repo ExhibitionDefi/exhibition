@@ -3,11 +3,11 @@ import * as fs from "fs";
 import * as path from "path";
 import { time } from "@nomicfoundation/hardhat-network-helpers";
 import { TransactionReceipt } from "ethers";
-import { Exhibition, ExhibitionUSDT } from "../typechain-types";
+import { Exhibition, ExhibitionUSD } from "../typechain-types";
 import { IERC20Metadata } from "../typechain-types/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata";
 
 async function main() {
-    console.log("Starting local Project 2 (exUSDT Contribution, Failed Softcap, Refunds, WithdrawUnsoldTokens) testing script...");
+    console.log("Starting local Project 2 (exUSD Contribution, Failed Softcap, Refunds, WithdrawUnsoldTokens) testing script...");
 
     // Get signers
     const [deployer, user1, user2, user3] = await ethers.getSigners();
@@ -23,14 +23,14 @@ async function main() {
         process.exit(1);
     }
     const deployedAddresses = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    const exUSDTAddress = deployedAddresses.ExhibitionUSDT as string;
+    const exUSDAddress = deployedAddresses.ExhibitionUSD as string;
     const exhibitionAddress = deployedAddresses.Exhibition as string;
     console.log("\n--- Loaded Deployed Addresses ---");
-    console.log(`ExhibitionUSDT: ${exUSDTAddress}`);
+    console.log(`ExhibitionUSD: ${exUSDAddress}`);
     console.log(`Exhibition: ${exhibitionAddress}`);
 
     // Get contract instances
-    const exUSDT: ExhibitionUSDT = await ethers.getContractAt("ExhibitionUSDT", exUSDTAddress, deployer);
+    const exUSD: ExhibitionUSD = await ethers.getContractAt("ExhibitionUSD", exUSDAddress, deployer);
     const exhibition: Exhibition = await ethers.getContractAt("Exhibition", exhibitionAddress, deployer);
     const minStartDelay = await exhibition.MIN_START_DELAY();
     const maxProjectDuration = await exhibition.MAX_PROJECT_DURATION();
@@ -39,11 +39,11 @@ async function main() {
     // Helper to log balances
     const logBalances = async (label: string) => {
         console.log(`\n--- ${label} Balances ---`);
-        console.log(`Deployer exUSDT: ${ethers.formatUnits(await exUSDT.balanceOf(deployer.address), 6)}`);
-        console.log(`User1 exUSDT: ${ethers.formatUnits(await exUSDT.balanceOf(user1.address), 6)}`);
-        console.log(`User2 exUSDT: ${ethers.formatUnits(await exUSDT.balanceOf(user2.address), 6)}`);
-        console.log(`User3 exUSDT: ${ethers.formatUnits(await exUSDT.balanceOf(user3.address), 6)}`);
-        console.log(`Exhibition Contract exUSDT Balance: ${ethers.formatUnits(await exUSDT.balanceOf(exhibitionAddress), 6)}`);
+        console.log(`Deployer exUSD: ${ethers.formatUnits(await exUSD.balanceOf(deployer.address), 6)}`);
+        console.log(`User1 exUSD: ${ethers.formatUnits(await exUSD.balanceOf(user1.address), 6)}`);
+        console.log(`User2 exUSD: ${ethers.formatUnits(await exUSD.balanceOf(user2.address), 6)}`);
+        console.log(`User3 exUSD: ${ethers.formatUnits(await exUSD.balanceOf(user3.address), 6)}`);
+        console.log(`Exhibition Contract exUSD Balance: ${ethers.formatUnits(await exUSD.balanceOf(exhibitionAddress), 6)}`);
         if (projectTokenContractAFT) {
             console.log(`Deployer AFT Balance: ${ethers.formatUnits(await projectTokenContractAFT.balanceOf(deployer.address), 18)}`);
             console.log(`Exhibition Contract AFT Balance: ${ethers.formatUnits(await projectTokenContractAFT.balanceOf(exhibitionAddress), 18)}`);
@@ -69,17 +69,17 @@ async function main() {
     //await exhibition.connect(user3).requestFaucetTokens();
     //await logBalances("After Faucet Requests for Project 2");
 
-    // Launchpad Project Creation (Project 2: exUSDT, Failed Softcap)
-    console.log("\n--- Launchpad Project Creation Test (Project 2: exUSDT, Failed Softcap) ---");
+    // Launchpad Project Creation (Project 2: exUSD, Failed Softcap)
+    console.log("\n--- Launchpad Project Creation Test (Project 2: exUSD, Failed Softcap) ---");
     const projectTokenName2 = "AFTToken";
     const projectTokenSymbol2 = "AFT";
-    const initialTotalSupply2 = ethers.parseUnits("1000000", 18); // 1M AFT
+    const initialTotalSupply2 = ethers.parseUnits("1600000", 18); // 1.6M AFT
     const projectTokenLogoURI2 = "https://launchpad.com/aft_logo.png";
-    const contributionTokenAddress2 = exUSDTAddress; // exUSDT
+    const contributionTokenAddress2 = exUSDAddress; // exUSD
     const amountTokensForSale2 = ethers.parseUnits("800000", 18); // 800,000 AFT
-    const tokenPrice2 = ethers.parseUnits("0.01", 18); // 1 AFT = 0.01 exUSDT (1 exUSDT = 100 AFT)
-    const fundingGoal2 = ethers.parseUnits("8000", 6); // Hardcap: 8,000 exUSDT
-    const softCap2 = ethers.parseUnits("4000", 6); // Softcap: 4,000 exUSDT (50% of funding goal)
+    const tokenPrice2 = ethers.parseUnits("0.01", 18); // 1 AFT = 0.01 exUSD (1 exUSD = 100 AFT)
+    const fundingGoal2 = ethers.parseUnits("8000", 6); // Hardcap: 8,000 exUSD
+    const softCap2 = ethers.parseUnits("4080", 6); // Softcap: 4,080 exUSD (50% of funding goal)
     const minContribution2 = ethers.parseUnits("100", 6);
     const maxContribution2 = ethers.parseUnits("2000", 6);
     const currentTimestamp2 = BigInt((await ethers.provider.getBlock("latest"))?.timestamp || Math.floor(Date.now() / 1000));
@@ -92,21 +92,21 @@ async function main() {
 
     console.log("\n--- Token Price Configuration ---");
     console.log(`Token Price (raw): ${tokenPrice2.toString()}`);
-    console.log(`Token Price (formatted): ${ethers.formatUnits(tokenPrice2, 18)} exUSDT per AFT`);
-    console.log(`Expected: 1 AFT costs 0.01 exUSDT`);
-    console.log(`Expected: 100 AFT for 1 exUSDT`);
+    console.log(`Token Price (formatted): ${ethers.formatUnits(tokenPrice2, 18)} exUSD per AFT`);
+    console.log(`Expected: 1 AFT costs 0.01 exUSD`);
+    console.log(`Expected: 100 AFT for 1 exUSD`);
     console.log(`Tokens for sale: ${ethers.formatUnits(amountTokensForSale2, 18)} AFT`);
-    console.log(`Max raise at full sale: ${ethers.formatUnits((amountTokensForSale2 * tokenPrice2) / ethers.parseUnits("1", 18), 18)} exUSDT`);
+    console.log(`Max raise at full sale: ${ethers.formatUnits((amountTokensForSale2 * tokenPrice2) / ethers.parseUnits("1", 18), 18)} exUSD`);
 
-    // Approve exUSDT as contribution token
+    // Approve exUSD as contribution token
     try {
         await exhibition.connect(deployer).addExhibitionContributionToken(contributionTokenAddress2);
-        console.log(`exUSDT (${contributionTokenAddress2}) added as approved contribution token.`);
+        console.log(`exUSD (${contributionTokenAddress2}) added as approved contribution token.`);
     } catch (e: any) {
         if (!e.message.includes("TokenAlreadyApproved()")) {
-            console.warn(`Warning: Could not add exUSDT: ${e.message}`);
+            console.warn(`Warning: Could not add exUSD: ${e.message}`);
         } else {
-            console.log("exUSDT is already an approved contribution token.");
+            console.log("exUSD is already an approved contribution token.");
         }
     }
 
@@ -167,12 +167,12 @@ async function main() {
     console.log("SUCCESS: Tokens for sale deposited and Project 2 activated.");
     await logBalances("After Tokens for Sale Deposit");
 
-    // Contributions (below softcap: 3,500 exUSDT)
+    // Contributions (below softcap: 3,500 exUSD)
     console.log("\n--- Contributions for Project 2 (Below Softcap) ---");
-    const user1Contribute2 = ethers.parseUnits("1000", 6); // 1,000 exUSDT
-    const user2Contribute2 = ethers.parseUnits("1200", 6); // 1,200 exUSDT
-    const user3Contribute2 = ethers.parseUnits("1300", 6); // 1,300 exUSDT
-    const totalExpectedRaised2 = user1Contribute2 + user2Contribute2 + user3Contribute2; // 3,500 exUSDT
+    const user1Contribute2 = ethers.parseUnits("1000", 6); // 1,000 exUSD
+    const user2Contribute2 = ethers.parseUnits("1200", 6); // 1,200 exUSD
+    const user3Contribute2 = ethers.parseUnits("1300", 6); // 1,300 exUSD
+    const totalExpectedRaised2 = user1Contribute2 + user2Contribute2 + user3Contribute2; // 3,500 exUSD
 
     const projectToAdvance2 = await exhibition.projects(newProjectId2);
     const projectStartTime2 = Number(projectToAdvance2.startTime);
@@ -186,24 +186,24 @@ async function main() {
         console.log("Project 2 is already open for contributions.");
     }
 
-    console.log(`\nUser1 contributing ${ethers.formatUnits(user1Contribute2, 6)} exUSDT to Project ID ${newProjectId2}...`);
-    await exUSDT.connect(user1).approve(exhibitionAddress, user1Contribute2);
+    console.log(`\nUser1 contributing ${ethers.formatUnits(user1Contribute2, 6)} exUSD to Project ID ${newProjectId2}...`);
+    await exUSD.connect(user1).approve(exhibitionAddress, user1Contribute2);
     await exhibition.connect(user1).contribute(newProjectId2, user1Contribute2);
     console.log("SUCCESS: User1 contributed.");
 
-    console.log(`\nUser2 contributing ${ethers.formatUnits(user2Contribute2, 6)} exUSDT to Project ID ${newProjectId2}...`);
-    await exUSDT.connect(user2).approve(exhibitionAddress, user2Contribute2);
+    console.log(`\nUser2 contributing ${ethers.formatUnits(user2Contribute2, 6)} exUSD to Project ID ${newProjectId2}...`);
+    await exUSD.connect(user2).approve(exhibitionAddress, user2Contribute2);
     await exhibition.connect(user2).contribute(newProjectId2, user2Contribute2);
     console.log("SUCCESS: User2 contributed.");
 
-    console.log(`\nUser3 contributing ${ethers.formatUnits(user3Contribute2, 6)} exUSDT to Project ID ${newProjectId2}...`);
-    await exUSDT.connect(user3).approve(exhibitionAddress, user3Contribute2);
+    console.log(`\nUser3 contributing ${ethers.formatUnits(user3Contribute2, 6)} exUSD to Project ID ${newProjectId2}...`);
+    await exUSD.connect(user3).approve(exhibitionAddress, user3Contribute2);
     await exhibition.connect(user3).contribute(newProjectId2, user3Contribute2);
     console.log("SUCCESS: User3 contributed.");
 
     await logBalances("After Contributions for Project 2");
     const projectAfterContributions2 = await exhibition.projects(newProjectId2);
-    console.log(`Project 2 Total Raised: ${ethers.formatUnits(projectAfterContributions2.totalRaised, 6)} exUSDT (Expected: ${ethers.formatUnits(totalExpectedRaised2, 6)})`);
+    console.log(`Project 2 Total Raised: ${ethers.formatUnits(projectAfterContributions2.totalRaised, 6)} exUSD (Expected: ${ethers.formatUnits(totalExpectedRaised2, 6)})`);
     console.log(`Project 2 Status: ${projectAfterContributions2.status} (Expected: Active (1))`);
     if (projectAfterContributions2.totalRaised !== totalExpectedRaised2) {
         console.error(`Assertion Failed: Total raised incorrect. Expected ${ethers.formatUnits(totalExpectedRaised2, 6)}, got ${ethers.formatUnits(projectAfterContributions2.totalRaised, 6)}.`);
@@ -220,7 +220,7 @@ async function main() {
     const preRefundTotalRaised = projectAfterContributions2.totalRaised;
     const contributionIn18Decimal = preRefundTotalRaised * (10n ** 12n);
     const preRefundTokensAllocated = (contributionIn18Decimal * ethers.parseUnits("1", 18)) / tokenPrice2;
-    console.log(`Pre-Refund Total Raised: ${ethers.formatUnits(preRefundTotalRaised, 6)} exUSDT`);
+    console.log(`Pre-Refund Total Raised: ${ethers.formatUnits(preRefundTotalRaised, 6)} exUSD`);
     console.log(`Pre-Refund Tokens Allocated: ${ethers.formatUnits(preRefundTokensAllocated, 18)} AFT`);
 
     // Finalize Project (Failed)
@@ -236,8 +236,8 @@ async function main() {
     console.log(`Calling finalizeProject for Project ID ${newProjectId2}...`);
     await exhibition.connect(deployer).finalizeProject(newProjectId2);
     const projectFinalized2 = await exhibition.projects(newProjectId2);
-    console.log(`Project ID ${newProjectId2} final status: ${projectFinalized2.status} (Expected: Failed (4))`);
-    if (projectFinalized2.status !== 4n) {
+    console.log(`Project ID ${newProjectId2} final status: ${projectFinalized2.status} (Expected: Failed (3))`);
+    if (projectFinalized2.status !== 3n) {
         console.error(`Assertion Failed: Project status mismatch. Expected Failed (4), got ${projectFinalized2.status}.`);
         process.exit(1);
     }
@@ -245,29 +245,29 @@ async function main() {
 
     // Refunds
     console.log("\n--- Refund Contributions for Project 2 ---");
-    const user1BalanceBeforeRefund = await exUSDT.balanceOf(user1.address);
-    const user2BalanceBeforeRefund = await exUSDT.balanceOf(user2.address);
-    const user3BalanceBeforeRefund = await exUSDT.balanceOf(user3.address);
-    const contractBalanceBeforeRefund = await exUSDT.balanceOf(exhibitionAddress);
+    const user1BalanceBeforeRefund = await exUSD.balanceOf(user1.address);
+    const user2BalanceBeforeRefund = await exUSD.balanceOf(user2.address);
+    const user3BalanceBeforeRefund = await exUSD.balanceOf(user3.address);
+    const contractBalanceBeforeRefund = await exUSD.balanceOf(exhibitionAddress);
 
-    console.log(`\nUser1 refunding ${ethers.formatUnits(user1Contribute2, 6)} exUSDT...`);
+    console.log(`\nUser1 refunding ${ethers.formatUnits(user1Contribute2, 6)} exUSD...`);
     await exhibition.connect(user1).requestRefund(newProjectId2);
-    console.log(`User2 refunding ${ethers.formatUnits(user2Contribute2, 6)} exUSDT...`);
+    console.log(`User2 refunding ${ethers.formatUnits(user2Contribute2, 6)} exUSD...`);
     await exhibition.connect(user2).requestRefund(newProjectId2);
-    console.log(`User3 refunding ${ethers.formatUnits(user3Contribute2, 6)} exUSDT...`);
+    console.log(`User3 refunding ${ethers.formatUnits(user3Contribute2, 6)} exUSD...`);
     await exhibition.connect(user3).requestRefund(newProjectId2);
 
-    const user1BalanceAfterRefund = await exUSDT.balanceOf(user1.address);
-    const user2BalanceAfterRefund = await exUSDT.balanceOf(user2.address);
-    const user3BalanceAfterRefund = await exUSDT.balanceOf(user3.address);
-    const contractBalanceAfterRefund = await exUSDT.balanceOf(exhibitionAddress);
+    const user1BalanceAfterRefund = await exUSD.balanceOf(user1.address);
+    const user2BalanceAfterRefund = await exUSD.balanceOf(user2.address);
+    const user3BalanceAfterRefund = await exUSD.balanceOf(user3.address);
+    const contractBalanceAfterRefund = await exUSD.balanceOf(exhibitionAddress);
     const projectAfterRefunds = await exhibition.projects(newProjectId2);
 
     console.log("\n--- Balances After Refunds ---");
-    console.log(`User1 exUSDT: ${ethers.formatUnits(user1BalanceAfterRefund, 6)} (Increase: ${ethers.formatUnits(user1BalanceAfterRefund - user1BalanceBeforeRefund, 6)})`);
-    console.log(`User2 exUSDT: ${ethers.formatUnits(user2BalanceAfterRefund, 6)} (Increase: ${ethers.formatUnits(user2BalanceAfterRefund - user2BalanceBeforeRefund, 6)})`);
-    console.log(`User3 exUSDT: ${ethers.formatUnits(user3BalanceAfterRefund, 6)} (Increase: ${ethers.formatUnits(user3BalanceAfterRefund - user3BalanceBeforeRefund, 6)})`);
-    console.log(`Exhibition Contract exUSDT: ${ethers.formatUnits(contractBalanceAfterRefund, 6)}`);
+    console.log(`User1 exUSD: ${ethers.formatUnits(user1BalanceAfterRefund, 6)} (Increase: ${ethers.formatUnits(user1BalanceAfterRefund - user1BalanceBeforeRefund, 6)})`);
+    console.log(`User2 exUSD: ${ethers.formatUnits(user2BalanceAfterRefund, 6)} (Increase: ${ethers.formatUnits(user2BalanceAfterRefund - user2BalanceBeforeRefund, 6)})`);
+    console.log(`User3 exUSD: ${ethers.formatUnits(user3BalanceAfterRefund, 6)} (Increase: ${ethers.formatUnits(user3BalanceAfterRefund - user3BalanceBeforeRefund, 6)})`);
+    console.log(`Exhibition Contract exUSD: ${ethers.formatUnits(contractBalanceAfterRefund, 6)}`);
 
     if (user1BalanceAfterRefund - user1BalanceBeforeRefund !== user1Contribute2) {
         console.error(`Assertion Failed: User1 refund incorrect. Expected ${ethers.formatUnits(user1Contribute2, 6)}, got ${ethers.formatUnits(user1BalanceAfterRefund - user1BalanceBeforeRefund, 6)}.`);
@@ -282,12 +282,12 @@ async function main() {
         process.exit(1);
     }
     if (contractBalanceAfterRefund !== 0n) {
-        console.error(`Assertion Failed: Contract exUSDT balance not zero. Got ${ethers.formatUnits(contractBalanceAfterRefund, 6)}.`);
+        console.error(`Assertion Failed: Contract exUSD balance not zero. Got ${ethers.formatUnits(contractBalanceAfterRefund, 6)}.`);
         process.exit(1);
     }
-    console.log(`Project 2 Status: ${projectAfterRefunds.status} (Expected: Refundable (6))`);
-    if (projectAfterRefunds.status !== 6n) {
-        console.error(`Assertion Failed: Project status mismatch. Expected Refundable (6), got ${projectAfterRefunds.status}.`);
+    console.log(`Project 2 Status: ${projectAfterRefunds.status} (Expected: Refundable (5))`);
+    if (projectAfterRefunds.status !== 5n) {
+        console.error(`Assertion Failed: Project status mismatch. Expected Refundable (5), got ${projectAfterRefunds.status}.`);
         process.exit(1);
     }
     console.log("SUCCESS: Refunds for Project 2 verified.");
@@ -312,12 +312,12 @@ async function main() {
     const tokenPriceBigInt = projectBeforeWithdraw.tokenPrice;
 
     // Get token decimals
-    const contributionDecimals = 6; // exUSDT has 6 decimals
+    const contributionDecimals = 6; // exUSD has 6 decimals
     const projectDecimals = 18; // AFT has 18 decimals
 
     // Calculate tokens allocated using the same logic as TokenCalculationLib
     // Step 1: Scale contribution amount to 18 decimals
-    // For 6-decimal exUSDT: multiply by 10^(18-6) = 10^12
+    // For 6-decimal exUSD: multiply by 10^(18-6) = 10^12
     const contributionIn18Decimals = totalRaisedBigInt * (10n ** 12n);
 
     // Step 2: Calculate tokens in 18 decimals using the formula from the library
@@ -327,15 +327,15 @@ async function main() {
     // Step 3: Scale to project token decimals (already 18 for AFT, so no change)
     const tokensAllocatedBigInt = tokensIn18Decimals;
 
-    // Update unsoldTokensBigInt to use amountTokensForSale for status = 6
+    // Update unsoldTokensBigInt to use amountTokensForSale for status = 5
     let unsoldTokensBigInt = amountTokensForSale2; // Default for Refundable status
-    if (projectBeforeWithdraw.status !== 6n) {
+    if (projectBeforeWithdraw.status !== 5n) {
         unsoldTokensBigInt = amountTokensForSale2 - tokensAllocatedBigInt;
     }
 
     console.log("\n--- DEBUG: WithdrawUnsoldTokens Calculation ---");
-    console.log(`Total Raised: ${ethers.formatUnits(totalRaisedBigInt, 6)} exUSDT`);
-    console.log(`Token Price: ${ethers.formatUnits(tokenPriceBigInt, 18)} exUSDT per AFT`);
+    console.log(`Total Raised: ${ethers.formatUnits(totalRaisedBigInt, 6)} exUSD`);
+    console.log(`Token Price: ${ethers.formatUnits(tokenPriceBigInt, 18)} exUSD per AFT`);
     console.log(`Contribution in 18 decimal : ${ethers.formatUnits(contributionIn18Decimals, 18)}`);
     console.log(`Tokens Allocated: ${ethers.formatUnits(tokensAllocatedBigInt, 18)} AFT`);
     console.log(`Amount Tokens For Sale: ${ethers.formatUnits(amountTokensForSale2, 18)} AFT`);
@@ -407,7 +407,7 @@ async function main() {
     }
     console.log("SUCCESS: WithdrawUnsoldTokens for Project 2 verified.");
 
-    console.log("\nProject 2 (exUSDT Contribution, Failed Softcap, Refunds, WithdrawUnsoldTokens) testing script finished successfully!");
+    console.log("\nProject 2 (exUSD Contribution, Failed Softcap, Refunds, WithdrawUnsoldTokens) testing script finished successfully!");
 }
 
 main().catch((error) => {

@@ -5,11 +5,11 @@ import { time } from "@nomicfoundation/hardhat-network-helpers";
 import { TransactionReceipt } from "ethers";
 
 // Import Typechain generated types for your contracts
-import { Exhibition, Exh, ExhibitionUSDT, ExhibitionNEX, ExhibitionLPTokens, ExhibitionAMM } from "../typechain-types";
+import { Exhibition, ExhibitionToken, ExhibitionUSD, ExhibitionNEX, ExhibitionLPTokens, ExhibitionAMM } from "../typechain-types";
 import { IERC20Metadata } from "../typechain-types/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata";
 
 async function main() {
-    console.log("Starting local Project Scenario 3 (exUSDT Contribution, addliquidtiy and Swap) testing script...");
+    console.log("Starting local Project Scenario 3 (exUSD Contribution, addliquidtiy and Swap) testing script...");
 
     // Get all 5 signers from Hardhat's configured accounts
     const [deployer, user1, user2, user3, user4] = await ethers.getSigners();
@@ -28,24 +28,24 @@ async function main() {
     }
     const deployedAddresses = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-    const exhTokenAddress = deployedAddresses.ExhToken as string;
-    const exhibitionUSDTAddress = deployedAddresses.ExhibitionUSDT as string;
+    const ExhibitionTokenAddress = deployedAddresses.EXH as string;
+    const exhibitionUSDAddress = deployedAddresses.ExhibitionUSD as string;
     const exhibitionAddress = deployedAddresses.Exhibition as string;
     const exhibitionNEXAddress = deployedAddresses.ExhibitionNEX as string;
     const exhibitionAMMAddress = deployedAddresses.ExhibitionAMM as string;
     const exhibitionLPTokensAddress = deployedAddresses.ExhibitionLPTokens as string;
 
     console.log("\n--- Loaded Deployed Addresses ---");
-    console.log(`Exh Token: ${exhTokenAddress}`);
-    console.log(`ExhibitionUSDT: ${exhibitionUSDTAddress}`);
+    console.log(`EXH: ${ExhibitionTokenAddress}`);
+    console.log(`ExhibitionUSD: ${exhibitionUSDAddress}`);
     console.log(`ExhibitionNEX: ${exhibitionNEXAddress}`);
     console.log(`ExhibitionLPTokens: ${exhibitionLPTokensAddress}`);
     console.log(`ExhibitionAMM: ${exhibitionAMMAddress}`);
     console.log(`Exhibition (Main Platform): ${exhibitionAddress}`);
 
     // --- Get Contract Instances ---
-    const exhToken: Exh = await ethers.getContractAt("Exh", exhTokenAddress, deployer);
-    const exhibitionUSDT: ExhibitionUSDT = await ethers.getContractAt("ExhibitionUSDT", exhibitionUSDTAddress, deployer);
+    const EXH: ExhibitionToken = await ethers.getContractAt("ExhibitionToken", ExhibitionTokenAddress, deployer);
+    const exhibitionUSD: ExhibitionUSD = await ethers.getContractAt("ExhibitionUSD", exhibitionUSDAddress, deployer);
     const exhibition: Exhibition = await ethers.getContractAt("Exhibition", exhibitionAddress, deployer);
     const exhibitionNEX: ExhibitionNEX = await ethers.getContractAt("ExhibitionNEX", exhibitionNEXAddress, deployer);
     const exhibitionAMM: ExhibitionAMM = await ethers.getContractAt("ExhibitionAMM", exhibitionAMMAddress, deployer);
@@ -61,19 +61,19 @@ async function main() {
     // --- Helper to log balances ---
     const logBalances = async (label: string) => {
         console.log(`\n--- ${label} Balances ---`);
-        console.log(`Deployer EXH: ${ethers.formatUnits(await exhToken.balanceOf(deployer.address), 18)}`);
-        console.log(`Deployer exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(deployer.address), 6)}`);
+        console.log(`Deployer EXH: ${ethers.formatUnits(await EXH.balanceOf(deployer.address), 18)}`);
+        console.log(`Deployer exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(deployer.address), 6)}`);
         console.log(`Deployer exNEX: ${ethers.formatUnits(await exhibitionNEX.balanceOf(deployer.address), 18)}`);
-        console.log(`User1 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user1.address), 18)}`);
-        console.log(`User1 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user1.address), 6)}`);
-        console.log(`User2 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user2.address), 18)}`);
-        console.log(`User2 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user2.address), 6)}`);
-        console.log(`User3 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user3.address), 18)}`);
-        console.log(`User3 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user3.address), 6)}`);
-        console.log(`User4 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user4.address), 18)}`);
-        console.log(`User4 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user4.address), 6)}`);
-        console.log(`Exhibition Contract EXH Balance: ${ethers.formatUnits(await exhToken.balanceOf(exhibitionAddress), 18)}`);
-        console.log(`Exhibition Contract exUSDT Balance: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(exhibitionAddress), 6)}`);
+        console.log(`User1 EXH: ${ethers.formatUnits(await EXH.balanceOf(user1.address), 18)}`);
+        console.log(`User1 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user1.address), 6)}`);
+        console.log(`User2 EXH: ${ethers.formatUnits(await EXH.balanceOf(user2.address), 18)}`);
+        console.log(`User2 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user2.address), 6)}`);
+        console.log(`User3 EXH: ${ethers.formatUnits(await EXH.balanceOf(user3.address), 18)}`);
+        console.log(`User3 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user3.address), 6)}`);
+        console.log(`User4 EXH: ${ethers.formatUnits(await EXH.balanceOf(user4.address), 18)}`);
+        console.log(`User4 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user4.address), 6)}`);
+        console.log(`Exhibition Contract EXH Balance: ${ethers.formatUnits(await EXH.balanceOf(exhibitionAddress), 18)}`);
+        console.log(`Exhibition Contract exUSD Balance: ${ethers.formatUnits(await exhibitionUSD.balanceOf(exhibitionAddress), 6)}`);
         // Conditionally log project token balance
         if (projectTokenContractPOT3) { // Check if it's initialized
             console.log(`Exhibition Contract Project Token Balance: ${ethers.formatUnits(await projectTokenContractPOT3.balanceOf(exhibitionAddress), 18)}`);
@@ -84,8 +84,8 @@ async function main() {
         }
         console.log(`Exhibition Contract exNEX Balance: ${ethers.formatUnits(await exhibitionNEX.balanceOf(exhibitionAddress), 18)}`);
         console.log(`Exhibition AMM exNEX Balance: ${ethers.formatUnits(await exhibitionNEX.balanceOf(exhibitionAMMAddress), 18)}`);
-        console.log(`Exhibition AMM exUSDT Balance: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(exhibitionAMMAddress), 6)}`);
-        console.log(`Exhibition AMM EXH Balance: ${ethers.formatUnits(await exhToken.balanceOf(exhibitionAMMAddress), 18)}`);
+        console.log(`Exhibition AMM exUSD Balance: ${ethers.formatUnits(await exhibitionUSD.balanceOf(exhibitionAMMAddress), 6)}`);
+        console.log(`Exhibition AMM EXH Balance: ${ethers.formatUnits(await EXH.balanceOf(exhibitionAMMAddress), 18)}`);
     };
 
     // --- Helper to advance time ---
@@ -96,18 +96,9 @@ async function main() {
         const newTimestamp = (await ethers.provider.getBlock("latest"))?.timestamp;
         console.log(`New block timestamp: ${newTimestamp}`);
     };
-    
-    // --- Initial Faucet Requests for Users in This Test ---
-    console.log("\n--- Requesting Faucet Tokens for Users in this Test ---");
-    await exhibition.connect(user1).requestFaucetTokens();
-    await exhibition.connect(user2).requestFaucetTokens();
-    await exhibition.connect(user3).requestFaucetTokens();
-    await exhibition.connect(user4).requestFaucetTokens();
-    await logBalances("After Faucet Requests for Project Scenario 3");
 
-
-    // --- Launchpad Project Creation Test (Scenario 3: exUSDT Contribution) ---
-    console.log("\n--- Launchpad Project Creation Test (Scenario 3: exUSDT Contribution) ---");
+    // --- Launchpad Project Creation Test (Scenario 3: exUSD Contribution) ---
+    console.log("\n--- Launchpad Project Creation Test (Scenario 3: exUSD Contribution) ---");
 
     // Define parameters for a new launchpad project
     const projectTokenName3 = "ProjectThreeToken";
@@ -115,22 +106,22 @@ async function main() {
     const initialTotalSupply3 = ethers.parseUnits("100000000", 18); // 100 million POT3
     const projectTokenLogoURI3 = "https://launchpad.com/pot3_logo.png";
 
-    const contributionTokenAddress3 = exhibitionUSDTAddress; // Using exUSDT as contribution token
-    const fundingGoal3 = ethers.parseUnits("10000", 6); // Hard Cap: 10000 exUSDT
-    const softCap3 = ethers.parseUnits("5000", 6); // Soft Cap: 5000 exUSDT
-    const minContribution3 = ethers.parseUnits("500", 6); // Minimum contribution: 500 exUSDT
+    const contributionTokenAddress3 = exhibitionUSDAddress; // Using exUSD as contribution token
+    const fundingGoal3 = ethers.parseUnits("10000", 6); // Hard Cap: 10000 exUSD
+    const softCap3 = ethers.parseUnits("5100", 6); // Soft Cap: 5100 exUSD
+    const minContribution3 = ethers.parseUnits("500", 6); // Minimum contribution: 500 exUSD
     const maxContribution3 = ethers.parseUnits("2000", 6);
 
-    // contribution token (exUSDT has 6 decimals) but the contract logic required 18 decimals format.
-    const adjustedTokenPrice3 = ethers.parseUnits("0.01", 18); // 1 POT3 costs 0.01 exUSDT (in 6 decimals)
+    // contribution token (exUSD has 6 decimals) but the contract logic required 18 decimals format.
+    const adjustedTokenPrice3 = ethers.parseUnits("0.01", 18); // 1 POT3 costs 0.01 exUSD (in 6 decimals)
 
     const currentTimestamp3 = BigInt((await ethers.provider.getBlock("latest"))?.timestamp || Math.floor(Date.now() / 1000));
     const startTime3 = currentTimestamp3 + minStartDelay + 100n; // Ensure it's after minStartDelay
-    const endTime3 = startTime3 + maxProjectDuration; // Use the fetched constant (7 days)
+    const endTime3 = startTime3 + maxProjectDuration; // Use the fetched constant (21 days)
 
     // Corrected tokens for sale calculation:
-    // If 10000 exUSDT can be raised and 1 POT3 costs 0.01 exUSDT:
-    // Maximum POT3 that can be sold = 10000 exUSDT / 0.01 exUSDT per POT3 = 1,000,000 POT3
+    // If 10000 exUSD can be raised and 1 POT3 costs 0.01 exUSD:
+    // Maximum POT3 that can be sold = 10000 exUSD / 0.01 exUSD per POT3 = 1,000,000 POT3
     const amountTokensForSale3 = ethers.parseUnits("1000000", 18); // 1,000,000 POT3 for sale
 
     const liquidityPercentage3 = 7000n; // 70%
@@ -146,25 +137,25 @@ async function main() {
     // ADD LOGGING FOR VERIFICATION
     console.log("\n--- Token Price Configuration ---");
     console.log(`Token Price (raw): ${adjustedTokenPrice3.toString()}`);
-    console.log(`Token Price (formatted): ${ethers.formatUnits(adjustedTokenPrice3, 18)} exUSDT per POT3`);
-    console.log(`Expected: 1 POT3 costs 0.01 exUSDT`);
-    console.log(`Expected: 100 POT3 for 1 exUSDT`);
+    console.log(`Token Price (formatted): ${ethers.formatUnits(adjustedTokenPrice3, 18)} exUSD per POT3`);
+    console.log(`Expected: 1 POT3 costs 0.01 exUSD`);
+    console.log(`Expected: 100 POT3 for 1 exUSD`);
     console.log(`Tokens for sale: ${ethers.formatUnits(amountTokensForSale3, 18)} POT3`);
     const tokensForSaleFormatted = ethers.formatUnits(amountTokensForSale3, 18);
     const tokenPriceFormatted = ethers.formatUnits(adjustedTokenPrice3, 18);
     const maxRaiseFormatted = parseFloat(tokensForSaleFormatted) * parseFloat(tokenPriceFormatted);
-    console.log(`Max raise at full sale: ${maxRaiseFormatted} exUSDT`);
+    console.log(`Max raise at full sale: ${maxRaiseFormatted} exUSD`);
 
 
-    // Admin Action: Add exUSDT as an approved contribution token
+    // Admin Action: Add exUSD as an approved contribution token
     try {
         await exhibition.connect(deployer).addExhibitionContributionToken(contributionTokenAddress3);
-        console.log(`exUSDT (${contributionTokenAddress3}) successfully added as an approved contribution token.`);
+        console.log(`exUSD (${contributionTokenAddress3}) successfully added as an approved contribution token.`);
     } catch (e: any) {
         if (!e.message.includes("TokenAlreadyApproved()")) {
-            console.warn(`Warning: Could not add exUSDT as approved token: ${e.message}`);
+            console.warn(`Warning: Could not add exUSD as approved token: ${e.message}`);
         } else {
-            console.log("exUSDT is already an approved contribution token.");
+            console.log("exUSD is already an approved contribution token.");
         }
     }
 
@@ -243,13 +234,13 @@ async function main() {
 
     // --- Contributions for Project 3 (Soft Cap Met, Hard Cap Not Met) ---
     console.log("\n--- Contributions for Project 3 (Soft Cap Met, Hard Cap Not Met) ---");
-    // Target: Raise 6550 exUSDT (soft cap 6550, below hard cap 10000)
+    // Target: Raise 6550 exUSD (soft cap 6550, below hard cap 10000)
 
-    const user1Contribute3 = ethers.parseUnits("2000", 6); // User1 contributes 2000 exUSDT
-    const user2Contribute3 = ethers.parseUnits("1500", 6); // User2 contributes 1500 exUSDT
-    const user3Contribute3 = ethers.parseUnits("1500", 6); // User3 contributes 1500 exUSDT
-    const user4Contribute3 = ethers.parseUnits("1550", 6); // User4 contributes 1550 exUSDT
-    const totalExpectedRaised3 = user1Contribute3 + user2Contribute3 + user3Contribute3 + user4Contribute3; // 6550 exUSDT
+    const user1Contribute3 = ethers.parseUnits("2000", 6); // User1 contributes 2000 exUSD
+    const user2Contribute3 = ethers.parseUnits("1500", 6); // User2 contributes 1500 exUSD
+    const user3Contribute3 = ethers.parseUnits("1500", 6); // User3 contributes 1500 exUSD
+    const user4Contribute3 = ethers.parseUnits("1550", 6); // User4 contributes 1550 exUSD
+    const totalExpectedRaised3 = user1Contribute3 + user2Contribute3 + user3Contribute3 + user4Contribute3; // 6550 exUSD
 
     // Ensure enough time has passed for the project to be active for contributions
     const projectToAdvance3 = await exhibition.projects(newProjectId3);
@@ -267,26 +258,26 @@ async function main() {
     }
     
     // User1 contributes
-    console.log(`\nUser1 contributing ${ethers.formatUnits(user1Contribute3, 6)} exUSDT to Project ID ${newProjectId3}...`);
-    await exhibitionUSDT.connect(user1).approve(exhibitionAddress, user1Contribute3); // Approve exUSDT
+    console.log(`\nUser1 contributing ${ethers.formatUnits(user1Contribute3, 6)} exUSD to Project ID ${newProjectId3}...`);
+    await exhibitionUSD.connect(user1).approve(exhibitionAddress, user1Contribute3); // Approve exUSD
     await exhibition.connect(user1).contribute(newProjectId3, user1Contribute3);
     console.log("SUCCESS: User1 contributed.");
 
     // User2 contributes
-    console.log(`\nUser2 contributing ${ethers.formatUnits(user2Contribute3, 6)} exUSDT to Project ID ${newProjectId3}...`);
-    await exhibitionUSDT.connect(user2).approve(exhibitionAddress, user2Contribute3); // Approve exUSDT
+    console.log(`\nUser2 contributing ${ethers.formatUnits(user2Contribute3, 6)} exUSD to Project ID ${newProjectId3}...`);
+    await exhibitionUSD.connect(user2).approve(exhibitionAddress, user2Contribute3); // Approve exUSD
     await exhibition.connect(user2).contribute(newProjectId3, user2Contribute3);
     console.log("SUCCESS: User2 contributed.");
 
     // User3 contributes
-    console.log(`\nUser3 contributing ${ethers.formatUnits(user3Contribute3, 6)} exUSDT to Project ID ${newProjectId3}...`);
-    await exhibitionUSDT.connect(user3).approve(exhibitionAddress, user3Contribute3); // Approve exUSDT
+    console.log(`\nUser3 contributing ${ethers.formatUnits(user3Contribute3, 6)} exUSD to Project ID ${newProjectId3}...`);
+    await exhibitionUSD.connect(user3).approve(exhibitionAddress, user3Contribute3); // Approve exUSD
     await exhibition.connect(user3).contribute(newProjectId3, user3Contribute3);
     console.log("SUCCESS: User3 contributed.");
 
      // User4 contributes
-    console.log(`\nUser4 contributing ${ethers.formatUnits(user4Contribute3, 6)} exUSDT to Project ID ${newProjectId3}...`);
-    await exhibitionUSDT.connect(user4).approve(exhibitionAddress, user4Contribute3); // Approve exUSDT
+    console.log(`\nUser4 contributing ${ethers.formatUnits(user4Contribute3, 6)} exUSD to Project ID ${newProjectId3}...`);
+    await exhibitionUSD.connect(user4).approve(exhibitionAddress, user4Contribute3); // Approve exUSD
     await exhibition.connect(user4).contribute(newProjectId3, user4Contribute3);
     console.log("SUCCESS: User4 contributed.");
 
@@ -323,9 +314,9 @@ async function main() {
 
     // Verify final status
     const projectFinalized3 = await exhibition.projects(newProjectId3);
-    console.log(`Project ID ${newProjectId3} final status: ${projectFinalized3.status} (Expected: Successful (3))`);
-    if (projectFinalized3.status !== 3n) { // Expected Successful (3)
-        console.error(`Assertion Failed: Project ID ${newProjectId3} final status mismatch. Expected Successful (3), got ${projectFinalized3.status}.`);
+    console.log(`Project ID ${newProjectId3} final status: ${projectFinalized3.status} (Expected: Successful (2))`);
+    if (projectFinalized3.status !== 2n) { // Expected Successful (2)
+        console.error(`Assertion Failed: Project ID ${newProjectId3} final status mismatch. Expected Successful (2), got ${projectFinalized3.status}.`);
         process.exit(1);
     }
     console.log("SUCCESS: Project 3 finalization to Successful verified.");
@@ -336,10 +327,10 @@ async function main() {
     // --- 🔴 DEBUG: On-chain State Check Before Liquidity Deposit ---
     console.log("\n--- 🔴 DEBUG: On-chain State Check Before Liquidity Deposit ---");
     const projectStateBeforeDeposit = await exhibition.projects(newProjectId3);
-    console.log(`On-chain project.totalRaised: ${ethers.formatUnits(projectStateBeforeDeposit.totalRaised, 6)} exUSDT`);
-    console.log(`On-chain project.softCap: ${ethers.formatUnits(projectStateBeforeDeposit.softCap, 6)} exUSDT`);
+    console.log(`On-chain project.totalRaised: ${ethers.formatUnits(projectStateBeforeDeposit.totalRaised, 6)} exUSD`);
+    console.log(`On-chain project.softCap: ${ethers.formatUnits(projectStateBeforeDeposit.softCap, 6)} exUSD`);
     console.log(`On-chain project.liquidityPercentage: ${projectStateBeforeDeposit.liquidityPercentage.toString()}`);
-    console.log(`On-chain project.tokenPrice: ${ethers.formatUnits(projectStateBeforeDeposit.tokenPrice, 6)} exUSDT per POT3`);
+    console.log(`On-chain project.tokenPrice: ${ethers.formatUnits(projectStateBeforeDeposit.tokenPrice, 6)} exUSD per POT3`);
 
     // Re-calculate the required values locally using the on-chain state
     const platformFeePercentage = await exhibition.platformFeePercentage();
@@ -355,11 +346,11 @@ async function main() {
     const contributionTokensForLiquidity = (netRaisedAfterFee * liquidityPercentageOnChain) / 10000n;
 
     // ✅ CORRECTION: Match the contract's _calculateTokensDue logic exactly
-    const contributionDecimals = 6n; // exUSDT
+    const contributionDecimals = 6n; // exUSD
     const projectDecimals = 18n; // POT3
     
     // Step 1: Normalize contribution to 18 decimals (like the contract does)
-    const scaleFactor = 10n ** (18n - contributionDecimals); // 10^12 for exUSDT
+    const scaleFactor = 10n ** (18n - contributionDecimals); // 10^12 for exUSD
     const normalizedContribution = contributionTokensForLiquidity * scaleFactor;
     
     // Step 2: Apply the same calculation as the contract
@@ -369,9 +360,9 @@ async function main() {
     const expectedDeployerPayout = netRaisedAfterFee - contributionTokensForLiquidity;
     
     console.log("\n--- 🟢 DEBUG: Local Recalculation using Corrected Logic ---");
-    console.log(`Local Calculated Platform Fee: ${ethers.formatUnits(platformFeeAmount, 6)} exUSDT`);
-    console.log(`Local Calculated Net Raised After Fee: ${ethers.formatUnits(netRaisedAfterFee, 6)} exUSDT`);
-    console.log(`Local Calculated Contribution Tokens for Liquidity: ${ethers.formatUnits(contributionTokensForLiquidity, 6)} exUSDT`);
+    console.log(`Local Calculated Platform Fee: ${ethers.formatUnits(platformFeeAmount, 6)} exUSD`);
+    console.log(`Local Calculated Net Raised After Fee: ${ethers.formatUnits(netRaisedAfterFee, 6)} exUSD`);
+    console.log(`Local Calculated Contribution Tokens for Liquidity: ${ethers.formatUnits(contributionTokensForLiquidity, 6)} exUSD`);
     console.log(`Local Calculated Required Project Tokens for Liquidity: ${ethers.formatUnits(requiredProjectTokensForLiquidity, 18)} POT3`);
     console.log("---------------------------------------------------------");
 
@@ -412,17 +403,17 @@ async function main() {
     }
     console.log("SUCCESS: Deposited liquidity amount verified.");
 
-    // Record deployer's initial exUSDT balance before fund release
-    const deployerInitialexUSDTBalance = await exhibitionUSDT.balanceOf(deployer.address);
-    console.log(`Deployer initial exUSDT balance before fund release: ${ethers.formatUnits(deployerInitialexUSDTBalance, 6)}`);
+    // Record deployer's initial exUSD balance before fund release
+    const deployerInitialexUSDBalance = await exhibitionUSD.balanceOf(deployer.address);
+    console.log(`Deployer initial exUSD balance before fund release: ${ethers.formatUnits(deployerInitialexUSDBalance, 6)}`);
 
     // DEBUG: Log balances before finalizing liquidity and releasing funds
     console.log("\n--- DEBUG: Balances Before Finalizing Liquidity & Releasing Funds ---");
-    console.log(`Deployer exUSDT Balance: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(deployer.address), 6)}`);
+    console.log(`Deployer exUSD Balance: ${ethers.formatUnits(await exhibitionUSD.balanceOf(deployer.address), 6)}`);
     console.log(`Deployer POT3 Balance: ${ethers.formatUnits(await projectTokenContractPOT3.balanceOf(deployer.address), 18)}`);
-    console.log(`Exhibition Contract exUSDT Balance: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(exhibitionAddress), 6)}`);
+    console.log(`Exhibition Contract exUSD Balance: ${ethers.formatUnits(await exhibitionUSD.balanceOf(exhibitionAddress), 6)}`);
     console.log(`Exhibition Contract POT3 Balance: ${ethers.formatUnits(await projectTokenContractPOT3.balanceOf(exhibitionAddress), 18)}`);
-    console.log(`Exhibition AMM exUSDT Balance: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(exhibitionAMMAddress), 6)}`);
+    console.log(`Exhibition AMM exUSD Balance: ${ethers.formatUnits(await exhibitionUSD.balanceOf(exhibitionAMMAddress), 6)}`);
     console.log(`Exhibition AMM POT3 Balance: ${ethers.formatUnits(await projectTokenContractPOT3.balanceOf(exhibitionAMMAddress), 18)}`);
 
     // Finalize liquidity and release funds
@@ -433,9 +424,9 @@ async function main() {
 
     // Verify project status is Completed
     const projectCompleted = await exhibition.projects(newProjectId3);
-    console.log(`Project ID ${newProjectId3} final status: ${projectCompleted.status} (Expected: Completed (7))`);
-    if (projectCompleted.status !== 7n) { // Expected Completed (7)
-        console.error(`Assertion Failed: Project ID ${newProjectId3} final status mismatch. Expected Completed (7), got ${projectCompleted.status}.`);
+    console.log(`Project ID ${newProjectId3} final status: ${projectCompleted.status} (Expected: Completed (6))`);
+    if (projectCompleted.status !== 6n) { // Expected Completed (6)
+        console.error(`Assertion Failed: Project ID ${newProjectId3} final status mismatch. Expected Completed (6), got ${projectCompleted.status}.`);
         process.exit(1);
     }
     if (!projectCompleted.liquidityAdded) {
@@ -444,24 +435,24 @@ async function main() {
     }
     console.log("SUCCESS: Project status updated to Completed and liquidityAdded flag set.");
 
-    // Verify deployer's final exUSDT balance (should include remaining funds + platform fee)
-    const deployerFinalexUSDTBalance = await exhibitionUSDT.balanceOf(deployer.address);
+    // Verify deployer's final exUSD balance (should include remaining funds + platform fee)
+    const deployerFinalexUSDBalance = await exhibitionUSD.balanceOf(deployer.address);
     // The expected payout is now based on the net raised AFTER the fee and AFTER the liquidity portion
     const totalExpectedIncrease = expectedDeployerPayout + platformFeeAmount;
-    const actualIncrease = deployerFinalexUSDTBalance - deployerInitialexUSDTBalance;
+    const actualIncrease = deployerFinalexUSDBalance - deployerInitialexUSDBalance;
 
-    console.log(`Deployer final exUSDT balance: ${ethers.formatUnits(deployerFinalexUSDTBalance, 6)}`);
-    console.log(`Expected owner payout: ${ethers.formatUnits(expectedDeployerPayout, 6)} exUSDT`);
-    console.log(`Expected platform fee payout: ${ethers.formatUnits(platformFeeAmount, 6)} exUSDT`);
-    console.log(`Total expected increase for Deployer: ${ethers.formatUnits(totalExpectedIncrease, 6)} exUSDT`);
-    console.log(`Actual increase for Deployer: ${ethers.formatUnits(actualIncrease, 6)} exUSDT`);
+    console.log(`Deployer final exUSD balance: ${ethers.formatUnits(deployerFinalexUSDBalance, 6)}`);
+    console.log(`Expected owner payout: ${ethers.formatUnits(expectedDeployerPayout, 6)} exUSD`);
+    console.log(`Expected platform fee payout: ${ethers.formatUnits(platformFeeAmount, 6)} exUSD`);
+    console.log(`Total expected increase for Deployer: ${ethers.formatUnits(totalExpectedIncrease, 6)} exUSD`);
+    console.log(`Actual increase for Deployer: ${ethers.formatUnits(actualIncrease, 6)} exUSD`);
 
     // Allow for minor floating point discrepancies if any, by comparing BigInts directly
     if (actualIncrease !== totalExpectedIncrease) {
-        console.error(`Assertion Failed: Deployer exUSDT balance increase incorrect. Expected ${ethers.formatUnits(totalExpectedIncrease, 6)}, got ${ethers.formatUnits(actualIncrease, 6)}.`);
+        console.error(`Assertion Failed: Deployer exUSD balance increase incorrect. Expected ${ethers.formatUnits(totalExpectedIncrease, 6)}, got ${ethers.formatUnits(actualIncrease, 6)}.`);
         process.exit(1);
     }
-    console.log("SUCCESS: Deployer's exUSDT balance increase verified (includes owner payout + platform fee).");
+    console.log("SUCCESS: Deployer's exUSD balance increase verified (includes owner payout + platform fee).");
 
     // Verify FundsReleasedToProjectOwner event
     let fundsReleasedEventFound = false;
@@ -471,7 +462,7 @@ async function main() {
                 const parsedLog = exhibition.interface.parseLog(log as any);
                 if (parsedLog && parsedLog.name === "FundsReleasedToProjectOwner" && parsedLog.args.projectOwner === deployer.address) {
                     fundsReleasedEventFound = true;
-                    // ✅ CORRECTION: Use correct 6 decimals for exUSDT in log
+                    // ✅ CORRECTION: Use correct 6 decimals for exUSD in log
                     console.log(`FundsReleasedToProjectOwner event emitted: Project ID ${parsedLog.args.projectId}, Owner ${parsedLog.args.projectOwner}, Amount ${ethers.formatUnits(parsedLog.args.amountReleased, 6)}`);
                     if (parsedLog.args.amountReleased !== expectedDeployerPayout) {
                         console.error(`Assertion Failed: FundsReleasedToProjectOwner amount mismatch. Expected ${ethers.formatUnits(expectedDeployerPayout, 6)}, got ${ethers.formatUnits(parsedLog.args.amountReleased, 6)}.`);
@@ -519,51 +510,51 @@ async function main() {
 
 
     // --- Swap Test on ExhibitionAMM (EXH for POT3) ---
-    console.log("\n--- Swap Test on ExhibitionAMM (exUSDT for POT3) ---");
+    console.log("\n--- Swap Test on ExhibitionAMM (exUSD for POT3) ---");
 
-    const swapAmountexUSDT = ethers.parseUnits("477", 6); // User1 wants to swap 477 exUSDT
+    const swapAmountexUSD = ethers.parseUnits("477", 6); // User1 wants to swap 477 exUSD
     // Calculate expected POT3 out based on AMM's current reserves
     // Formula: amountOut = (amountIn * reserveOut * 997) / (reserveIn * 1000 + amountIn * 997)
     // Assuming 0.3% fee (997/1000)
-    const ammexUSDTReserveBeforeSwap = await exhibitionUSDT.balanceOf(exhibitionAMMAddress);
+    const ammexUSDReserveBeforeSwap = await exhibitionUSD.balanceOf(exhibitionAMMAddress);
     const ammPot3ReserveBeforeSwap = await projectTokenContractPOT3.balanceOf(exhibitionAMMAddress);
 
-    if (ammexUSDTReserveBeforeSwap === 0n || ammPot3ReserveBeforeSwap === 0n) {
-        console.error("ERROR: AMM has zero reserves for exUSDT or POT3. Cannot perform swap. This might mean liquidity wasn't added correctly or AMM not initialized with these pairs.");
+    if (ammexUSDReserveBeforeSwap === 0n || ammPot3ReserveBeforeSwap === 0n) {
+        console.error("ERROR: AMM has zero reserves for exUSD or POT3. Cannot perform swap. This might mean liquidity wasn't added correctly or AMM not initialized with these pairs.");
         process.exit(1);
     }
 
-    const expectedPot3Out = (swapAmountexUSDT * ammPot3ReserveBeforeSwap * 997n) / (ammexUSDTReserveBeforeSwap * 1000n + swapAmountexUSDT * 997n);
+    const expectedPot3Out = (swapAmountexUSD * ammPot3ReserveBeforeSwap * 997n) / (ammexUSDReserveBeforeSwap * 1000n + swapAmountexUSD * 997n);
     const minOutAmountPOT3 = expectedPot3Out * 99n / 100n; // Allow 1% slippage for test (99% of expected)
 
-    console.log(`AMM exUSDT Reserve before swap: ${ethers.formatUnits(ammexUSDTReserveBeforeSwap, 6)}`);
+    console.log(`AMM exUSD Reserve before swap: ${ethers.formatUnits(ammexUSDReserveBeforeSwap, 6)}`);
     console.log(`AMM POT3 Reserve before swap: ${ethers.formatUnits(ammPot3ReserveBeforeSwap, 18)}`);
     console.log(`Expected POT3 out: ${ethers.formatUnits(expectedPot3Out, 18)}`);
     console.log(`Minimum POT3 out for swap: ${ethers.formatUnits(minOutAmountPOT3, 18)}`);
 
 
     // Capture User1's balances BEFORE the swap transaction
-    const user1exUSDTBalanceBeforeSwap = await exhibitionUSDT.balanceOf(user1.address);
+    const user1exUSDBalanceBeforeSwap = await exhibitionUSD.balanceOf(user1.address);
     const user1Pot3BalanceBeforeSwap = await projectTokenContractPOT3.balanceOf(user1.address);
 
-    console.log(`User1 initial exUSDT balance: ${ethers.formatUnits(user1exUSDTBalanceBeforeSwap, 6)}`);
+    console.log(`User1 initial exUSD balance: ${ethers.formatUnits(user1exUSDBalanceBeforeSwap, 6)}`);
     console.log(`User1 initial POT3 balance: ${ethers.formatUnits(user1Pot3BalanceBeforeSwap, 18)}`);
 
 
-    // User1 approves AMM to spend exuSDT
-    console.log(`User1 approving ExhibitionAMM (${exhibitionAMMAddress}) to spend ${ethers.formatUnits(swapAmountexUSDT, 6)} exUSDT for swap...`);
-    await exhibitionUSDT.connect(user1).approve(exhibitionAMMAddress, swapAmountexUSDT);
-    console.log("SUCCESS: User1 approved AMM for exUSDT swap.");
+    // User1 approves AMM to spend exUSD
+    console.log(`User1 approving ExhibitionAMM (${exhibitionAMMAddress}) to spend ${ethers.formatUnits(swapAmountexUSD, 6)} exUSD for swap...`);
+    await exhibitionUSD.connect(user1).approve(exhibitionAMMAddress, swapAmountexUSD);
+    console.log("SUCCESS: User1 approved AMM for exUSD swap.");
 
     // Define a deadline for the swap (e.g., 10 minutes from now)
     const swapDeadline = BigInt((await ethers.provider.getBlock("latest"))?.timestamp || Math.floor(Date.now() / 1000)) + 600n; // 10 minutes from current block timestamp
 
-    // Perform the swap (exuSDT for POT3)
-    console.log(`User1 calling swapTokenForToken on AMM to swap ${ethers.formatUnits(swapAmountexUSDT, 6)} exUSDT for POT3 with deadline ${swapDeadline}...`);
+    // Perform the swap (exUSD for POT3)
+    console.log(`User1 calling swapTokenForToken on AMM to swap ${ethers.formatUnits(swapAmountexUSD, 6)} exUSD for POT3 with deadline ${swapDeadline}...`);
     await exhibitionAMM.connect(user1).swapTokenForToken(
-        exhibitionUSDTAddress,        // _tokenIn (address)
+        exhibitionUSDAddress,        // _tokenIn (address)
         newProjectTokenAddress3, // _tokenOut (address)
-        swapAmountexUSDT,          // _amountIn (uint256)
+        swapAmountexUSD,          // _amountIn (uint256)
         minOutAmountPOT3,       // _minAmountOut (uint256)
         user1.address,          // _to (address)
         swapDeadline            // _deadline (uint256)
@@ -571,19 +562,19 @@ async function main() {
     console.log("SUCCESS: User1 performed swap on AMM.");
 
     // Verify balances after swap
-    const user1FinalexUSDTBalance = await exhibitionUSDT.balanceOf(user1.address);
+    const user1FinalexUSDBalance = await exhibitionUSD.balanceOf(user1.address);
     const user1FinalPot3Balance = await projectTokenContractPOT3.balanceOf(user1.address);
-    const ammFinalexUSDTBalance = await exhibitionUSDT.balanceOf(exhibitionAMMAddress);
+    const ammFinalexUSDBalance = await exhibitionUSD.balanceOf(exhibitionAMMAddress);
     const ammFinalPot3Balance = await projectTokenContractPOT3.balanceOf(exhibitionAMMAddress);
 
-    console.log(`User1 final exUSDT balance: ${ethers.formatUnits(user1FinalexUSDTBalance, 6)}`);
+    console.log(`User1 final exUSD balance: ${ethers.formatUnits(user1FinalexUSDBalance, 6)}`);
     console.log(`User1 final POT3 balance: ${ethers.formatUnits(user1FinalPot3Balance, 18)}`);
-    console.log(`AMM final exUSDT balance: ${ethers.formatUnits(ammFinalexUSDTBalance, 6)}`);
+    console.log(`AMM final exUSD balance: ${ethers.formatUnits(ammFinalexUSDBalance, 6)}`);
     console.log(`AMM final POT3 balance: ${ethers.formatUnits(ammFinalPot3Balance, 18)}`);
 
-    // Assertion 1: User1's exUSDT balance should have decreased
-    if (user1FinalexUSDTBalance >= user1exUSDTBalanceBeforeSwap) {
-        console.error("Assertion Failed: User1 exUSDT balance did not decrease after swap.");
+    // Assertion 1: User1's exUSD balance should have decreased
+    if (user1FinalexUSDBalance >= user1exUSDBalanceBeforeSwap) {
+        console.error("Assertion Failed: User1 exUSD balance did not decrease after swap.");
         process.exit(1);
     }
     // Assertion 2: User1's POT3 balance should have increased
@@ -615,12 +606,12 @@ async function main() {
    const user1TotalPOT3Due = (user1normalizedContribution * projectTokenScaleFactor) / adjustedTokenPrice3;
    const user2TotalPOT3Due = (user2normalizedContribution * projectTokenScaleFactor) / adjustedTokenPrice3;
    
-   console.log(`User1 contribution amount: ${ethers.formatUnits(user1ContributionAmountForClaim, 6)} exUSDT`);
+   console.log(`User1 contribution amount: ${ethers.formatUnits(user1ContributionAmountForClaim, 6)} exUSD`);
    console.log(`Normalized contribution (18 decimals): ${ethers.formatUnits(user1normalizedContribution, 18)}`);
    console.log(`Token price: ${ethers.formatUnits(adjustedTokenPrice3, 18)}`);
    console.log(`Calculated POT3 due to User1: ${ethers.formatUnits(user1TotalPOT3Due, 18)}`);
 
-   console.log(`User2 contribution amount: ${ethers.formatUnits(user2ContributionAmountForClaim, 6)} exUSDT`);
+   console.log(`User2 contribution amount: ${ethers.formatUnits(user2ContributionAmountForClaim, 6)} exUSD`);
    console.log(`Normalized contribution (18 decimals): ${ethers.formatUnits(user2normalizedContribution, 18)}`);
    console.log(`Token price: ${ethers.formatUnits(adjustedTokenPrice3, 18)}`);
    console.log(`Calculated POT3 due to User2: ${ethers.formatUnits(user2TotalPOT3Due, 18)}`);
@@ -791,7 +782,7 @@ async function main() {
             console.log("WARNING: Expected 'NoTokensCurrentlyVested()' error, but got a different one.");
         }
     }
-    console.log("\nProject Scenario 3 (exUSDT Contribution, addliquidity, swap and claim) testing script finished successfully!");
+    console.log("\nProject Scenario 3 (exUSD Contribution, addliquidity, swap and claim) testing script finished successfully!");
 }
 main().catch((error) => {
     console.error(error);

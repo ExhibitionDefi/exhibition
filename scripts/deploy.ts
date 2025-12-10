@@ -3,8 +3,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 // Import Typechain generated types for your contracts
-// Ensure these are available after a successful 'npx hardhat compile'
-import { Exhibition, Exh, ExhibitionUSDT, ExhibitionFactory, ExhibitionNEX, ExhibitionLPTokens, ExhibitionAMM } from "../typechain-types";
+import { Exhibition, ExhibitionToken, ExhibitionUSD, ExhibitionFactory, ExhibitionNEX, ExhibitionLPTokens, ExhibitionAMM } from "../typechain-types";
 
 async function main() {
     console.log("Deploying Full Exhibition Platform (Faucet + Factory + AMM + Launchpad Structs)...");
@@ -13,20 +12,20 @@ async function main() {
 
     console.log(`Deploying contracts with the account: ${deployer.address}`);
 
-    // --- 1. Deploy Core Tokens (Exh, ExhibitionUSDT) ---
-    const Exh = await ethers.getContractFactory("Exh");
-    const exh = await Exh.deploy(deployer.address);
-    await exh.waitForDeployment();
-    const exhAddress = await exh.getAddress();
-    console.log(`Exh Token deployed to: ${exhAddress}`);
+    // --- 1. Deploy Core Tokens (ExhibitionToken, ExhibitionUSD) ---
+    const ExhibitionTokenFactory = await ethers.getContractFactory("ExhibitionToken");
+    const EXH = await ExhibitionTokenFactory.deploy(deployer.address);
+    await EXH.waitForDeployment();
+    const ExhibitionTokenAddress = await EXH.getAddress();
+    console.log(`ExhibitionToken (EXH) deployed to: ${ExhibitionTokenAddress}`);
 
-    const ExhibitionUSDT = await ethers.getContractFactory("ExhibitionUSDT");
-    const exhibitionUSDT = await ExhibitionUSDT.deploy(deployer.address);
-    await exhibitionUSDT.waitForDeployment();
-    const exhibitionUSDTAddress = await exhibitionUSDT.getAddress();
-    console.log(`ExhibitionUSDT deployed to: ${exhibitionUSDTAddress}`);
+    const ExhibitionUSD = await ethers.getContractFactory("ExhibitionUSD");
+    const exhibitionUSD = await ExhibitionUSD.deploy(deployer.address);
+    await exhibitionUSD.waitForDeployment();
+    const exhibitionUSDAddress = await exhibitionUSD.getAddress();
+    console.log(`ExhibitionUSD deployed to: ${exhibitionUSDAddress}`);
 
-    // --- 2. Deploy ExhibitionNEX (Real exNEX) ---
+    // --- 2. Deploy ExhibitionNEX (exNEX) ---
     const ExhibitionNEXFactory = await ethers.getContractFactory("ExhibitionNEX");
     const exhibitionNEX = await ExhibitionNEXFactory.deploy(); // ExhibitionNEX constructor takes no args
     await exhibitionNEX.waitForDeployment();
@@ -34,21 +33,16 @@ async function main() {
     console.log(`ExhibitionNEX (exNEX) deployed to: ${exhibitionNEXAddress}`);
 
     // --- Provide initial token supply to deployer for testing ---
-    const initialDeployerSupplyExh = ethers.parseUnits("10000000", 18); // 10 million EXH
+    // NOTE: ExhibitionToken already minted 10M EXH to deployer in constructor
     const initialDeployerSupplyNEX = ethers.parseUnits("5000", 18); // 5,000 native NEX (ETH)
 
-    console.log(`\nMinting initial ${ethers.formatUnits(initialDeployerSupplyExh, 18)} EXH to Deployer...`);
-    // Note: The first mint happens in the constructor of Exh.sol, so this is an additional mint.
-    // If the constructor already minted 10M, this will add another 10M.
-    // Ensure your initialDeployerSupplyExh here aligns with your testing needs.
-    // Since the deployer is initially the minter, this call will succeed.
-    await exh.mint(deployer.address, initialDeployerSupplyExh);
-    console.log("SUCCESS: EXH minted to Deployer.");
+    console.log(`\nExhibitionToken automatically minted 10M EXH to Deployer in constructor.`);
+    console.log(`Deployer EXH: ${ethers.formatUnits(await EXH.balanceOf(deployer.address), 18)}`);
 
     console.log(`Depositing initial ${ethers.formatUnits(initialDeployerSupplyNEX, 18)} native NEX to get exNEX for Deployer...`);
     await exhibitionNEX.deposit({ value: initialDeployerSupplyNEX });
     console.log("SUCCESS: exNEX acquired by Deployer via deposit.");
-    // --- END NEW ---
+    console.log(`Deployer exNEX: ${ethers.formatUnits(await exhibitionNEX.balanceOf(deployer.address), 18)}`);
 
     // --- 3. Deploy ExhibitionLPTokens (Real LP Token Manager) ---
     const ExhibitionLPTokensFactory = await ethers.getContractFactory("ExhibitionLPTokens");
@@ -58,7 +52,14 @@ async function main() {
 
     // --- 4. Deploy ExhibitionAMM (Real AMM) ---
     const ExhibitionAMMFactory = await ethers.getContractFactory("ExhibitionAMM");
-    const exhibitionAMM = await ExhibitionAMMFactory.deploy();
+
+    // Constructor args: (uint256 _tradingFeeBps, uint256 _protocolFeeBps, address _feeRecipient)
+    const tradingFeeBps = 30;     // 0.30% trading fee
+    const protocolFeeBps = 1667;  // 16.67% of trading fee (example)
+    const feeRecipient = deployer.address;
+
+    const exhibitionAMM = await ExhibitionAMMFactory.deploy(tradingFeeBps, protocolFeeBps, feeRecipient);
+    await exhibitionAMM.waitForDeployment();
     const exhibitionAMMAddress = await exhibitionAMM.getAddress();
     console.log(`ExhibitionAMM deployed to: ${exhibitionAMMAddress}`);
 
@@ -82,32 +83,32 @@ async function main() {
     const exhibitionAddress = await exhibition.getAddress();
     console.log(`Exhibition (Main Platform) deployed to: ${exhibitionAddress}`);
 
-    // --- NEW: Set Exhibition contract as the minter for Exh and ExhibitionUSDT ---
-    console.log("\nSetting Exhibition contract as minter for Exh and ExhibitionUSDT...");
-    tx = await exh.setMinter(exhibitionAddress);
+    // --- Set Exhibition contract as the minter for ExhibitionToken and ExhibitionUSD ---
+    console.log("\nSetting Exhibition contract as minter for ExhibitionToken and ExhibitionUSD...");
+    tx = await EXH.setMinter(exhibitionAddress);
     await tx.wait();
-    console.log(`Exh Token minter set to ${exhibitionAddress}`);
+    console.log(`ExhibitionToken minter set to ${exhibitionAddress}`);
 
-    tx = await exhibitionUSDT.setMinter(exhibitionAddress);
+    tx = await exhibitionUSD.setMinter(exhibitionAddress);
     await tx.wait();
-    console.log(`ExhibitionUSDT minter set to ${exhibitionAddress}`);
+    console.log(`ExhibitionUSD minter set to ${exhibitionAddress}`);
 
     console.log("\nSetting faucet token addresses and amounts...");
-    tx = await exhibition.setExhTokenAddress(exhAddress);
+    tx = await exhibition.setExhTokenAddress(ExhibitionTokenAddress);
     await tx.wait();
-    console.log(`Exhibition.sol: Exh Token Address set to ${exhAddress}`);
+    console.log(`Exhibition.sol: ExhibitionToken Address set to ${ExhibitionTokenAddress}`);
 
-    tx = await exhibition.setExUSDTTokenAddress(exhibitionUSDTAddress);
+    tx = await exhibition.setExUSDTokenAddress(exhibitionUSDAddress);
     await tx.wait();
-    console.log(`Exhibition.sol: ExhibitionUSDT Address set to ${exhibitionUSDTAddress}`);
+    console.log(`Exhibition.sol: ExhibitionUSD Address set to ${exhibitionUSDAddress}`);
 
     tx = await exhibition.setFaucetAmountEXH(ethers.parseUnits("50000", 18));
     await tx.wait();
     console.log(`Exhibition.sol: Faucet EXH Amount set to ${ethers.formatUnits(await exhibition.faucetAmountEXH(), 18)}`);
 
-    tx = await exhibition.setFaucetAmountUSDT(ethers.parseUnits("50000", 6));
+    tx = await exhibition.setFaucetAmountexUSD(ethers.parseUnits("50000", 6));
     await tx.wait();
-    console.log(`Exhibition.sol: Faucet USDT Amount set to ${ethers.formatUnits(await exhibition.faucetAmountUSDT(), 6)}`);
+    console.log(`Exhibition.sol: Faucet exUSD Amount set to ${ethers.formatUnits(await exhibition.faucetAmountexUSD(), 6)}`);
 
     tx = await exhibition.setFaucetCooldown(86400);
     await tx.wait();
@@ -138,20 +139,20 @@ async function main() {
     await tx.wait();
     console.log(`ExhibitionAMM.sol: ExhibitionLPTokens Contract Address set to ${exhibitionLPTokensAddress}`);
 
-    console.log("\nSetting ExhToken contract address on ExhibitionAMM...");
-    tx = await exhibitionAMM.setExhTokenAddress(exhAddress);
+    console.log("\nSetting ExhibitionToken contract address on ExhibitionAMM...");
+    tx = await exhibitionAMM.setExhTokenAddress(ExhibitionTokenAddress);
     await tx.wait();
-    console.log(`ExhibitionAMM.sol: ExhToken Contract Address set to ${exhAddress}`);
+    console.log(`ExhibitionAMM.sol: ExhibitionToken Contract Address set to ${ExhibitionTokenAddress}`);
 
-    console.log("\nSetting exhibitionUSDT contract address on ExhibitionAMM...");
-    tx = await exhibitionAMM.setExUSDTAddress(exhibitionUSDTAddress);
+    console.log("\nSetting exhibitionUSD contract address on ExhibitionAMM...");
+    tx = await exhibitionAMM.setExUSDAddress(exhibitionUSDAddress);
     await tx.wait();
-    console.log(`ExhibitionAMM.sol: exhibitionUSDT Contract Address set to ${exhibitionUSDTAddress}`);
+    console.log(`ExhibitionAMM.sol: exhibitionUSD Contract Address set to ${exhibitionUSDAddress}`);
 
-    console.log("\nSetting ExNEX contract address on ExhibitionAMM...");
+    console.log("\nSetting exxNEX contract address on ExhibitionAMM...");
     tx = await exhibitionAMM.setExNEXAddress(exhibitionNEXAddress);
     await tx.wait();
-    console.log(`ExhibitionAMM.sol: ExNEX Contract Address set to ${exhibitionNEXAddress}`);
+    console.log(`ExhibitionAMM.sol: exNEX Contract Address set to ${exhibitionNEXAddress}`);
 
     console.log("\nSetting platform-wide fees...");
     tx = await exhibition.setPlatformFeePercentage(300); // 3.00%
@@ -164,8 +165,8 @@ async function main() {
 
     // Save deployed addresses to a JSON file for testing scripts
     const deployedAddresses = {
-        ExhToken: exhAddress,
-        ExhibitionUSDT: exhibitionUSDTAddress,
+        EXH: ExhibitionTokenAddress,
+        ExhibitionUSD: exhibitionUSDAddress,
         ExhibitionNEX: exhibitionNEXAddress,
         ExhibitionLPTokens: exhibitionLPTokensAddress,
         ExhibitionFactory: factoryAddress,

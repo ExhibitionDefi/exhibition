@@ -4,19 +4,24 @@ import * as path from "path";
 import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 // Import Typechain generated types for your contracts
-import { Exhibition, Exh, ExhibitionUSDT, ExhibitionNEX, ExhibitionLPTokens, ExhibitionAMM } from "../typechain-types";
+import { Exhibition, ExhibitionToken, ExhibitionUSD, ExhibitionNEX, ExhibitionLPTokens, ExhibitionAMM } from "../typechain-types";
 
 async function main() {
     console.log("Starting Faucet Request and Token Setup Script...");
 
     // Get all signers from Hardhat's configured accounts
-    const [deployer, user1, user2, user3, user4] = await ethers.getSigners();
+    const [deployer, user1, user2, user3, user4, user5, user6, user7, user8, user9] = await ethers.getSigners();
 
     console.log(`Testing with Deployer account: ${deployer.address}`);
     console.log(`Testing with User1 account: ${user1.address}`);
     console.log(`Testing with User2 account: ${user2.address}`);
     console.log(`Testing with User3 account: ${user3.address}`);
     console.log(`Testing with User4 account: ${user4.address}`);
+    console.log(`Testing with User5 account: ${user5.address}`);
+    console.log(`Testing with User6 account: ${user6.address}`);
+    console.log(`Testing with User7 account: ${user7.address}`);
+    console.log(`Testing with User8 account: ${user8.address}`);
+    console.log(`Testing with User9 account: ${user9.address}`);
 
     // --- Load deployed addresses ---
     const filePath = path.join(__dirname, 'deployed_full_platform_addresses_local.json');
@@ -26,24 +31,24 @@ async function main() {
     }
     const deployedAddresses = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-    const exhTokenAddress = deployedAddresses.ExhToken as string;
-    const exhibitionUSDTAddress = deployedAddresses.ExhibitionUSDT as string;
+    const ExhibitionTokenAddress = deployedAddresses.EXH as string;
+    const exhibitionUSDAddress = deployedAddresses.ExhibitionUSD as string;
     const exhibitionAddress = deployedAddresses.Exhibition as string;
     const exhibitionNEXAddress = deployedAddresses.ExhibitionNEX as string;
     const exhibitionAMMAddress = deployedAddresses.ExhibitionAMM as string;
     const exhibitionLPTokensAddress = deployedAddresses.ExhibitionLPTokens as string;
 
     console.log("\n--- Loaded Deployed Addresses ---");
-    console.log(`Exh Token: ${exhTokenAddress}`);
-    console.log(`ExhibitionUSDT: ${exhibitionUSDTAddress}`);
+    console.log(`EXH: ${ExhibitionTokenAddress}`);
+    console.log(`ExhibitionUSD: ${exhibitionUSDAddress}`);
     console.log(`ExhibitionNEX: ${exhibitionNEXAddress}`);
     console.log(`ExhibitionLPTokens: ${exhibitionLPTokensAddress}`);
     console.log(`ExhibitionAMM: ${exhibitionAMMAddress}`);
     console.log(`Exhibition (Main Platform): ${exhibitionAddress}`);
 
     // --- Get Contract Instances ---
-    const exhToken: Exh = await ethers.getContractAt("Exh", exhTokenAddress, deployer);
-    const exhibitionUSDT: ExhibitionUSDT = await ethers.getContractAt("ExhibitionUSDT", exhibitionUSDTAddress, deployer);
+    const EXH: ExhibitionToken = await ethers.getContractAt("ExhibitionToken", ExhibitionTokenAddress, deployer);
+    const exhibitionUSD: ExhibitionUSD = await ethers.getContractAt("ExhibitionUSD", exhibitionUSDAddress, deployer);
     const exhibition: Exhibition = await ethers.getContractAt("Exhibition", exhibitionAddress, deployer);
     const exhibitionNEX: ExhibitionNEX = await ethers.getContractAt("ExhibitionNEX", exhibitionNEXAddress, deployer);
     const exhibitionAMM: ExhibitionAMM = await ethers.getContractAt("ExhibitionAMM", exhibitionAMMAddress, deployer);
@@ -52,23 +57,31 @@ async function main() {
     // --- Helper to log balances ---
     const logBalances = async (label: string) => {
         console.log(`\n--- ${label} Balances ---`);
-        console.log(`Deployer EXH: ${ethers.formatUnits(await exhToken.balanceOf(deployer.address), 18)}`);
-        console.log(`Deployer exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(deployer.address), 6)}`);
+        console.log(`Deployer EXH: ${ethers.formatUnits(await EXH.balanceOf(deployer.address), 18)}`);
+        console.log(`Deployer exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(deployer.address), 6)}`);
         console.log(`Deployer exNEX: ${ethers.formatUnits(await exhibitionNEX.balanceOf(deployer.address), 18)}`);
-        console.log(`User1 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user1.address), 18)}`);
-        console.log(`User1 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user1.address), 6)}`);
-        console.log(`User2 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user2.address), 18)}`);
-        console.log(`User2 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user2.address), 6)}`);
-        console.log(`User3 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user3.address), 18)}`);
-        console.log(`User3 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user3.address), 6)}`);
-        console.log(`User4 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user4.address), 18)}`);
-        console.log(`User4 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user4.address), 6)}`);
-        console.log(`Exhibition Contract EXH Balance: ${ethers.formatUnits(await exhToken.balanceOf(exhibitionAddress), 18)}`);
-        console.log(`Exhibition Contract exUSDT Balance: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(exhibitionAddress), 6)}`);
+        console.log(`User1 EXH: ${ethers.formatUnits(await EXH.balanceOf(user1.address), 18)}`);
+        console.log(`User1 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user1.address), 6)}`);
+        console.log(`User2 EXH: ${ethers.formatUnits(await EXH.balanceOf(user2.address), 18)}`);
+        console.log(`User2 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user2.address), 6)}`);
+        console.log(`User3 EXH: ${ethers.formatUnits(await EXH.balanceOf(user3.address), 18)}`);
+        console.log(`User3 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user3.address), 6)}`);
+        console.log(`User4 EXH: ${ethers.formatUnits(await EXH.balanceOf(user4.address), 18)}`);
+        console.log(`User4 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user4.address), 6)}`);
+        console.log(`User5 EXH: ${ethers.formatUnits(await EXH.balanceOf(user5.address), 18)}`);
+        console.log(`User5 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user5.address), 6)}`);
+        console.log(`User6 EXH: ${ethers.formatUnits(await EXH.balanceOf(user6.address), 18)}`);
+        console.log(`User6 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user6.address), 6)}`);
+        console.log(`User7 EXH: ${ethers.formatUnits(await EXH.balanceOf(user7.address), 18)}`);
+        console.log(`User7 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user7.address), 6)}`);
+        console.log(`User8 EXH: ${ethers.formatUnits(await EXH.balanceOf(user8.address), 18)}`);
+        console.log(`User8 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user8.address), 6)}`);
+        console.log(`Exhibition Contract EXH Balance: ${ethers.formatUnits(await EXH.balanceOf(exhibitionAddress), 18)}`);
+        console.log(`Exhibition Contract exUSD Balance: ${ethers.formatUnits(await exhibitionUSD.balanceOf(exhibitionAddress), 6)}`);
         console.log(`Exhibition Contract exNEX Balance: ${ethers.formatUnits(await exhibitionNEX.balanceOf(exhibitionAddress), 18)}`);
         console.log(`Exhibition AMM exNEX Balance: ${ethers.formatUnits(await exhibitionNEX.balanceOf(exhibitionAMMAddress), 18)}`);
-        console.log(`Exhibition AMM exUSDT Balance: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(exhibitionAMMAddress), 6)}`);
-        console.log(`Exhibition AMM EXH Balance: ${ethers.formatUnits(await exhToken.balanceOf(exhibitionAMMAddress), 18)}`);
+        console.log(`Exhibition AMM exUSD Balance: ${ethers.formatUnits(await exhibitionUSD.balanceOf(exhibitionAMMAddress), 6)}`);
+        console.log(`Exhibition AMM EXH Balance: ${ethers.formatUnits(await EXH.balanceOf(exhibitionAMMAddress), 18)}`);
     };
 
     // --- Initial Faucet Requests for Users ---
@@ -90,14 +103,32 @@ async function main() {
     await exhibition.connect(user4).requestFaucetTokens();
     console.log("SUCCESS: User4 faucet request completed.");
 
-    await logBalances("After Faucet Requests");
+    console.log("User5 requesting faucet tokens...");
+    await exhibition.connect(user5).requestFaucetTokens();
+    console.log("SUCCESS: User5 faucet request completed.");
+
+    console.log("User6 requesting faucet tokens...");
+    await exhibition.connect(user6).requestFaucetTokens();
+    console.log("SUCCESS: User6 faucet request completed.");
+
+    console.log("User7 requesting faucet tokens...");
+    await exhibition.connect(user7).requestFaucetTokens();
+    console.log("SUCCESS: User7 faucet request completed.");
+
+    console.log("User8 requesting faucet tokens...");
+    await exhibition.connect(user8).requestFaucetTokens();
+    console.log("SUCCESS: User8 faucet request completed.");
+
+    console.log("User9 requesting faucet tokens...");
+    await exhibition.connect(user9).requestFaucetTokens();
+    console.log("SUCCESS: User9 faucet request completed.");
 
     // --- Add EXH as Approved Contribution Token ---
     console.log("\n--- Adding EXH as Approved Contribution Token ---");
     
     try {
-        await exhibition.connect(deployer).addExhibitionContributionToken(exhTokenAddress);
-        console.log(`SUCCESS: EXH (${exhTokenAddress}) added as an approved contribution token.`);
+        await exhibition.connect(deployer).addExhibitionContributionToken(ExhibitionTokenAddress);
+        console.log(`SUCCESS: EXH (${ExhibitionTokenAddress}) added as an approved contribution token.`);
     } catch (e: any) {
         if (!e.message.includes("TokenAlreadyApproved()")) {
             console.warn(`Warning: Could not add EXH as approved token: ${e.message}`);
@@ -107,7 +138,7 @@ async function main() {
     }
 
     // Verify EXH is now approved
-    const isEXHApproved = await exhibition.isExhibitionContributionToken(exhTokenAddress);
+    const isEXHApproved = await exhibition.isExhibitionContributionToken(ExhibitionTokenAddress);
     console.log(`EXH contribution token approved status: ${isEXHApproved}`);
     
     if (!isEXHApproved) {
@@ -116,35 +147,35 @@ async function main() {
     }
 
     console.log("\n--- Final Token Status ---");
-    console.log(`EXH Token Address: ${exhTokenAddress}`);
+    console.log(`EXH Token Address: ${ExhibitionTokenAddress}`);
     console.log(`EXH Approved as Contribution Token: ${isEXHApproved}`);
 
-    // --- Add exUSDT as Approved Contribution Token ---
-    console.log("\n--- Adding exUSDT as Approved Contribution Token ---");
+    // --- Add exUSD as Approved Contribution Token ---
+    console.log("\n--- Adding exUSD as Approved Contribution Token ---");
     
     try {
-        await exhibition.connect(deployer).addExhibitionContributionToken(exhibitionUSDTAddress);
-        console.log(`SUCCESS: exUSDT (${exhibitionUSDTAddress}) added as an approved contribution token.`);
+        await exhibition.connect(deployer).addExhibitionContributionToken(exhibitionUSDAddress);
+        console.log(`SUCCESS: exUSD (${exhibitionUSDAddress}) added as an approved contribution token.`);
     } catch (e: any) {
         if (!e.message.includes("TokenAlreadyApproved()")) {
-            console.warn(`Warning: Could not add exUSDT as approved token: ${e.message}`);
+            console.warn(`Warning: Could not add exUSD as approved token: ${e.message}`);
         } else {
-            console.log("exUSDT is already an approved contribution token.");
+            console.log("exUSD is already an approved contribution token.");
         }
     }
 
     // Verify exUSDT is now approved
-    const isexUSDTApproved = await exhibition.isExhibitionContributionToken(exhibitionUSDTAddress);
-    console.log(`exUSDT contribution token approved status: ${isexUSDTApproved}`);
+    const isexUSDApproved = await exhibition.isExhibitionContributionToken(exhibitionUSDAddress);
+    console.log(`exUSD contribution token approved status: ${isexUSDApproved}`);
     
-    if (!isexUSDTApproved) {
-        console.error("ERROR: exUSDT is not marked as approved contribution token after addition.");
+    if (!isexUSDApproved) {
+        console.error("ERROR: exUSD is not marked as approved contribution token after addition.");
         process.exit(1);
     }
 
     console.log("\n--- Final Token Status ---");
-    console.log(`exUSDT Token Address: ${exhibitionUSDTAddress}`);
-    console.log(`exUSDT Approved as Contribution Token: ${isexUSDTApproved}`);
+    console.log(`exUSD Token Address: ${exhibitionUSDAddress}`);
+    console.log(`exUSD Approved as Contribution Token: ${isexUSDApproved}`);
 
     // --- Add exNEX as Approved Contribution Token ---
     console.log("\n--- Adding exNEX as Approved Contribution Token ---");

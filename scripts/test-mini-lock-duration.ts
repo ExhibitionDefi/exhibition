@@ -5,11 +5,11 @@ import { time } from "@nomicfoundation/hardhat-network-helpers";
 import { TransactionReceipt } from "ethers";
 
 // Import Typechain generated types for your contracts
-import { Exhibition, Exh, ExhibitionUSDT, ExhibitionNEX, ExhibitionLPTokens, ExhibitionAMM } from "../typechain-types";
+import { Exhibition, ExhibitionToken, ExhibitionUSD, ExhibitionNEX, ExhibitionLPTokens, ExhibitionAMM } from "../typechain-types";
 import { IERC20Metadata } from "../typechain-types/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata";
 
 async function main() {
-    console.log("Starting local Project Scenario 3 (exUSDT Contribution - HARD CAP MET - Auto Finalization - NO VESTING) testing script...");
+    console.log("Starting local Project Scenario 3 (exUSD Contribution - HARD CAP MET - Auto Finalization - NO VESTING) testing script...");
 
     // Get all 5 signers from Hardhat's configured accounts
     const [deployer, user1, user2, user3, user4] = await ethers.getSigners();
@@ -28,24 +28,24 @@ async function main() {
     }
     const deployedAddresses = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-    const exhTokenAddress = deployedAddresses.ExhToken as string;
-    const exhibitionUSDTAddress = deployedAddresses.ExhibitionUSDT as string;
+    const ExhibitionTokenAddress = deployedAddresses.EXH as string;
+    const exhibitionUSDAddress = deployedAddresses.ExhibitionUSD as string;
     const exhibitionAddress = deployedAddresses.Exhibition as string;
     const exhibitionNEXAddress = deployedAddresses.ExhibitionNEX as string;
     const exhibitionAMMAddress = deployedAddresses.ExhibitionAMM as string;
     const exhibitionLPTokensAddress = deployedAddresses.ExhibitionLPTokens as string;
 
     console.log("\n--- Loaded Deployed Addresses ---");
-    console.log(`Exh Token: ${exhTokenAddress}`);
-    console.log(`ExhibitionUSDT: ${exhibitionUSDTAddress}`);
+    console.log(`EXH: ${ExhibitionTokenAddress}`);
+    console.log(`ExhibitionUSD: ${exhibitionUSDAddress}`);
     console.log(`ExhibitionNEX: ${exhibitionNEXAddress}`);
     console.log(`ExhibitionLPTokens: ${exhibitionLPTokensAddress}`);
     console.log(`ExhibitionAMM: ${exhibitionAMMAddress}`);
     console.log(`Exhibition (Main Platform): ${exhibitionAddress}`);
 
     // --- Get Contract Instances ---
-    const exhToken: Exh = await ethers.getContractAt("Exh", exhTokenAddress, deployer);
-    const exhibitionUSDT: ExhibitionUSDT = await ethers.getContractAt("ExhibitionUSDT", exhibitionUSDTAddress, deployer);
+    const EXH: ExhibitionToken = await ethers.getContractAt("ExhibitionToken", ExhibitionTokenAddress, deployer);
+    const exhibitionUSD: ExhibitionUSD = await ethers.getContractAt("ExhibitionUSD", exhibitionUSDAddress, deployer);
     const exhibition: Exhibition = await ethers.getContractAt("Exhibition", exhibitionAddress, deployer);
     const exhibitionNEX: ExhibitionNEX = await ethers.getContractAt("ExhibitionNEX", exhibitionNEXAddress, deployer);
     const exhibitionAMM: ExhibitionAMM = await ethers.getContractAt("ExhibitionAMM", exhibitionAMMAddress, deployer);
@@ -61,19 +61,19 @@ async function main() {
     // --- Helper to log balances ---
     const logBalances = async (label: string) => {
         console.log(`\n--- ${label} Balances ---`);
-        console.log(`Deployer EXH: ${ethers.formatUnits(await exhToken.balanceOf(deployer.address), 18)}`);
-        console.log(`Deployer exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(deployer.address), 6)}`);
+        console.log(`Deployer EXH: ${ethers.formatUnits(await EXH.balanceOf(deployer.address), 18)}`);
+        console.log(`Deployer exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(deployer.address), 6)}`);
         console.log(`Deployer exNEX: ${ethers.formatUnits(await exhibitionNEX.balanceOf(deployer.address), 18)}`);
-        console.log(`User1 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user1.address), 18)}`);
-        console.log(`User1 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user1.address), 6)}`);
-        console.log(`User2 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user2.address), 18)}`);
-        console.log(`User2 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user2.address), 6)}`);
-        console.log(`User3 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user3.address), 18)}`);
-        console.log(`User3 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user3.address), 6)}`);
-        console.log(`User4 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user4.address), 18)}`);
-        console.log(`User4 exUSDT: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(user4.address), 6)}`);
-        console.log(`Exhibition Contract EXH Balance: ${ethers.formatUnits(await exhToken.balanceOf(exhibitionAddress), 18)}`);
-        console.log(`Exhibition Contract exUSDT Balance: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(exhibitionAddress), 6)}`);
+        console.log(`User1 EXH: ${ethers.formatUnits(await EXH.balanceOf(user1.address), 18)}`);
+        console.log(`User1 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user1.address), 6)}`);
+        console.log(`User2 EXH: ${ethers.formatUnits(await EXH.balanceOf(user2.address), 18)}`);
+        console.log(`User2 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user2.address), 6)}`);
+        console.log(`User3 EXH: ${ethers.formatUnits(await EXH.balanceOf(user3.address), 18)}`);
+        console.log(`User3 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user3.address), 6)}`);
+        console.log(`User4 EXH: ${ethers.formatUnits(await EXH.balanceOf(user4.address), 18)}`);
+        console.log(`User4 exUSD: ${ethers.formatUnits(await exhibitionUSD.balanceOf(user4.address), 6)}`);
+        console.log(`Exhibition Contract EXH Balance: ${ethers.formatUnits(await EXH.balanceOf(exhibitionAddress), 18)}`);
+        console.log(`Exhibition Contract exUSD Balance: ${ethers.formatUnits(await exhibitionUSD.balanceOf(exhibitionAddress), 6)}`);
         // Conditionally log project token balance
         if (projectTokenContractBON) { // Check if it's initialized
             console.log(`Exhibition Contract Project Token Balance: ${ethers.formatUnits(await projectTokenContractBON.balanceOf(exhibitionAddress), 18)}`);
@@ -84,8 +84,8 @@ async function main() {
         }
         console.log(`Exhibition Contract exNEX Balance: ${ethers.formatUnits(await exhibitionNEX.balanceOf(exhibitionAddress), 18)}`);
         console.log(`Exhibition AMM exNEX Balance: ${ethers.formatUnits(await exhibitionNEX.balanceOf(exhibitionAMMAddress), 18)}`);
-        console.log(`Exhibition AMM exUSDT Balance: ${ethers.formatUnits(await exhibitionUSDT.balanceOf(exhibitionAMMAddress), 6)}`);
-        console.log(`Exhibition AMM EXH Balance: ${ethers.formatUnits(await exhToken.balanceOf(exhibitionAMMAddress), 18)}`);
+        console.log(`Exhibition AMM exUSD Balance: ${ethers.formatUnits(await exhibitionUSD.balanceOf(exhibitionAMMAddress), 6)}`);
+        console.log(`Exhibition AMM EXH Balance: ${ethers.formatUnits(await EXH.balanceOf(exhibitionAMMAddress), 18)}`);
     };
 
     // --- Helper to advance time ---
@@ -118,12 +118,12 @@ async function main() {
     const testProjectTokenSymbol = "TLT";
     const testInitialTotalSupply = ethers.parseUnits("1000000", 18);
     const testProjectTokenLogoURI = "https://test.com/logo.png";
-    const testContributionTokenAddress = exhibitionUSDTAddress; // Using exUSDT
-    const testFundingGoal = ethers.parseUnits("1000", 6); // 1000 exUSDT
-    const testSoftCap = ethers.parseUnits("500", 6); // 500 exUSDT
+    const testContributionTokenAddress = exhibitionUSDAddress; // Using exUSD
+    const testFundingGoal = ethers.parseUnits("1000", 6); // 1000 exUSD
+    const testSoftCap = ethers.parseUnits("510", 6); // 510 exUSD
     const testMinContribution = ethers.parseUnits("100", 6);
     const testMaxContribution = ethers.parseUnits("500", 6);
-    const testTokenPrice = ethers.parseUnits("0.01", 18); // 0.01 exUSDT per token
+    const testTokenPrice = ethers.parseUnits("0.01", 18); // 0.01 exUSD per token
     
     let testCurrentTimestamp = await getCurrentTimestamp();
     const testBaseStartTime = testCurrentTimestamp + minStartDelay + 300n; // Extra buffer for tests
@@ -137,15 +137,15 @@ async function main() {
     const testVestingInterval = 0n;
     const testVestingInitialRelease = 0n;
 
-    // Admin Action: Add exUSDT as an approved contribution token
+    // Admin Action: Add exUSD as an approved contribution token
     try {
         await exhibition.connect(deployer).addExhibitionContributionToken(testContributionTokenAddress);
-        console.log(`exUSDT (${testContributionTokenAddress}) successfully added as an approved contribution token.`);
+        console.log(`exUSD (${testContributionTokenAddress}) successfully added as an approved contribution token.`);
     } catch (e: any) {
         if (!e.message.includes("TokenAlreadyApproved()")) {
-            console.warn(`Warning: Could not add exUSDT as approved token: ${e.message}`);
+            console.warn(`Warning: Could not add exUSD as approved token: ${e.message}`);
         } else {
-            console.log("exUSDT is already an approved contribution token.");
+            console.log("exUSD is already an approved contribution token.");
         }
     }
 
@@ -337,8 +337,8 @@ async function main() {
     // Continue with the main project creation test...
     await logBalances("After Min Lock Duration Tests");
 
-    // --- Launchpad Project Creation Test (Scenario 3: exUSDT Contribution - Hard Cap - NO VESTING) ---
-    console.log("\n--- Launchpad Project Creation Test (Scenario 3: exUSDT Contribution - HARD CAP MET - NO VESTING) ---");
+    // --- Launchpad Project Creation Test (Scenario 3: exUSD Contribution - Hard Cap - NO VESTING) ---
+    console.log("\n--- Launchpad Project Creation Test (Scenario 3: exUSD Contribution - HARD CAP MET - NO VESTING) ---");
 
     // Define parameters for a new launchpad project
     const projectTokenName = "Builders On Nexus";
@@ -346,18 +346,18 @@ async function main() {
     const initialTotalSupply = ethers.parseUnits("100000000", 18); // 100 million BON
     const projectTokenLogoURI = "https://launchpad.com/BON_logo.png";
 
-    const contributionTokenAddress = exhibitionUSDTAddress; // Using exUSDT as contribution token
-    const fundingGoal = ethers.parseUnits("130005", 6); // Hard Cap: 130005 exUSDT
-    const softCap = ethers.parseUnits("70000", 6); // Soft Cap: 70000 exUSDT
-    const minContribution = ethers.parseUnits("500", 6); // Minimum contribution: 500 exUSDT
+    const contributionTokenAddress = exhibitionUSDAddress; // Using exUSD as contribution token
+    const fundingGoal = ethers.parseUnits("130005", 6); // Hard Cap: 130005 exUSD
+    const softCap = ethers.parseUnits("70000", 6); // Soft Cap: 70000 exUSD
+    const minContribution = ethers.parseUnits("500", 6); // Minimum contribution: 500 exUSD
     const maxContribution = ethers.parseUnits("50000", 6); // Increased max contribution to allow hard cap
 
-    const adjustedTokenPrice = ethers.parseUnits("0.002889", 18); // 1 BON costs 0.002889 exUSDT (in 18 decimals)
+    const adjustedTokenPrice = ethers.parseUnits("0.002889", 18); // 1 BON costs 0.002889 exUSD (in 18 decimals)
 
     // ✅ FIX: Get fresh timestamp and add proper buffer for main project
     const mainProjectTimestamp = await getCurrentTimestamp();
     const startTime = mainProjectTimestamp + minStartDelay + 600n; // Extra buffer after test projects
-    const endTime = startTime + maxProjectDuration; // Use the fetched constant (7 days)
+    const endTime = startTime + maxProjectDuration; // Use the fetched constant (21 days)
 
     const amountTokensForSale = ethers.parseUnits("45000000", 18); // 45,000,000 BON for sale
 
@@ -375,8 +375,8 @@ async function main() {
     console.log(`Vesting Enabled: ${vestingEnabled}`);
     console.log(`Token Price: ${ethers.formatUnits(adjustedTokenPrice, 18)} per BON`);
     console.log(`Tokens for sale: ${ethers.formatUnits(amountTokensForSale, 18)} BON`);
-    console.log(`Hard Cap: ${ethers.formatUnits(fundingGoal, 6)} exUSDT`);
-    console.log(`Soft Cap: ${ethers.formatUnits(softCap, 6)} exUSDT`);
+    console.log(`Hard Cap: ${ethers.formatUnits(fundingGoal, 6)} exUSD`);
+    console.log(`Soft Cap: ${ethers.formatUnits(softCap, 6)} exUSD`);
     console.log(`Start Time: ${startTime} (${new Date(Number(startTime) * 1000).toISOString()})`);
     console.log(`End Time: ${endTime} (${new Date(Number(endTime) * 1000).toISOString()})`);
 
@@ -446,14 +446,14 @@ async function main() {
     // --- Contributions for Project 3 (HARD CAP MET - Should Auto Finalize) ---
     console.log("\n--- Contributions for Project 3 (HARD CAP MET - Should Auto Finalize) ---");
     
-    const user1Contribute = ethers.parseUnits("40005", 6); // User1 contributes 40005 exUSDT
-    const user2Contribute = ethers.parseUnits("35000", 6); // User2 contributes 35000 exUSDT  
-    const user3Contribute = ethers.parseUnits("25000", 6); // User3 contributes 25000 exUSDT
-    const user4Contribute = ethers.parseUnits("30000", 6); // User4 contributes 30000 exUSDT
-    const totalExpectedRaised = user1Contribute + user2Contribute + user3Contribute + user4Contribute; // 130,005 exUSDT (Hard Cap)
+    const user1Contribute = ethers.parseUnits("40005", 6); // User1 contributes 40005 exUSD
+    const user2Contribute = ethers.parseUnits("35000", 6); // User2 contributes 35000 exUSD  
+    const user3Contribute = ethers.parseUnits("25000", 6); // User3 contributes 25000 exUSD
+    const user4Contribute = ethers.parseUnits("30000", 6); // User4 contributes 30000 exUSD
+    const totalExpectedRaised = user1Contribute + user2Contribute + user3Contribute + user4Contribute; // 130,005 exUSD (Hard Cap)
 
-    console.log(`Planned total contributions: ${ethers.formatUnits(totalExpectedRaised, 6)} exUSDT`);
-    console.log(`Hard Cap: ${ethers.formatUnits(fundingGoal, 6)} exUSDT`);
+    console.log(`Planned total contributions: ${ethers.formatUnits(totalExpectedRaised, 6)} exUSD`);
+    console.log(`Hard Cap: ${ethers.formatUnits(fundingGoal, 6)} exUSD`);
 
     // Ensure enough time has passed for the project to be active for contributions
     const projectToAdvance = await exhibition.projects(newProjectId);
@@ -471,29 +471,29 @@ async function main() {
     }
     
     // All users contribute to reach hard cap
-    console.log(`\nUser1 contributing ${ethers.formatUnits(user1Contribute, 6)} exUSDT...`);
-    await exhibitionUSDT.connect(user1).approve(exhibitionAddress, user1Contribute);
+    console.log(`\nUser1 contributing ${ethers.formatUnits(user1Contribute, 6)} exUSD...`);
+    await exhibitionUSD.connect(user1).approve(exhibitionAddress, user1Contribute);
     await exhibition.connect(user1).contribute(newProjectId, user1Contribute);
 
-    console.log(`\nUser2 contributing ${ethers.formatUnits(user2Contribute, 6)} exUSDT...`);
-    await exhibitionUSDT.connect(user2).approve(exhibitionAddress, user2Contribute);
+    console.log(`\nUser2 contributing ${ethers.formatUnits(user2Contribute, 6)} exUSD...`);
+    await exhibitionUSD.connect(user2).approve(exhibitionAddress, user2Contribute);
     await exhibition.connect(user2).contribute(newProjectId, user2Contribute);
 
-    console.log(`\nUser3 contributing ${ethers.formatUnits(user3Contribute, 6)} exUSDT...`);
-    await exhibitionUSDT.connect(user3).approve(exhibitionAddress, user3Contribute);
+    console.log(`\nUser3 contributing ${ethers.formatUnits(user3Contribute, 6)} exUSD...`);
+    await exhibitionUSD.connect(user3).approve(exhibitionAddress, user3Contribute);
     await exhibition.connect(user3).contribute(newProjectId, user3Contribute);
 
-    console.log(`\n🎯 User4 contributing ${ethers.formatUnits(user4Contribute, 6)} exUSDT (SHOULD HIT HARD CAP)...`);
-    await exhibitionUSDT.connect(user4).approve(exhibitionAddress, user4Contribute);
+    console.log(`\n🎯 User4 contributing ${ethers.formatUnits(user4Contribute, 6)} exUSD (SHOULD HIT HARD CAP)...`);
+    await exhibitionUSD.connect(user4).approve(exhibitionAddress, user4Contribute);
     await exhibition.connect(user4).contribute(newProjectId, user4Contribute);
 
     // Check final status - should be auto-finalized to Successful
     const projectAfterContributions3 = await exhibition.projects(newProjectId);
-    console.log(`\n🎉 HARD CAP REACHED! Project status: ${projectAfterContributions3.status} (Expected: 3=Successful)`);
-    console.log(`Final total raised: ${ethers.formatUnits(projectAfterContributions3.totalRaised, 6)} exUSDT`);
+    console.log(`\n🎉 HARD CAP REACHED! Project status: ${projectAfterContributions3.status} (Expected: 2=Successful)`);
+    console.log(`Final total raised: ${ethers.formatUnits(projectAfterContributions3.totalRaised, 6)} exUSD`);
 
-    if (projectAfterContributions3.status !== 3n) {
-        console.error(`Assertion Failed: Project 3 should be auto-finalized to Successful (3), but got status ${projectAfterContributions3.status}.`);
+    if (projectAfterContributions3.status !== 2n) {
+        console.error(`Assertion Failed: Project 3 should be auto-finalized to Successful (2), but got status ${projectAfterContributions3.status}.`);
         process.exit(1);
     }
     console.log("✅ SUCCESS: Hard cap reached and project auto-finalized!");
@@ -506,7 +506,7 @@ async function main() {
     console.log(`Project status before claims: ${currentProjectStatus.status}`);
 
     // Calculate expected tokens for each user
-    const contributionDecimalsForClaim = 6n; // exUSDT
+    const contributionDecimalsForClaim = 6n; // exUSD
     const projectDecimalsForClaim = 18n; // BON
     const scaleFactorForClaim = 10n ** (18n - contributionDecimalsForClaim);
     const projectTokenScaleFactorForClaim = 10n ** projectDecimalsForClaim;

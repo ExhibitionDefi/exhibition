@@ -15,7 +15,7 @@
     "test:add-liquidity": "hardhat run scripts/test_addliquidity_swap_rm.ts --network nexus-testnet",
 
     "node": "hardhat node",
-    "deploy": "hardhat run scripts/deploy.ts --network localhost",
+    "deploy": "hardhat run scripts/deploy.ts --network nexusTestnet",
     "request": "hardhat run scripts/request-faucet-add-contribution-token.ts --network localhost",
     "create": "hardhat run scripts/test-create-launchpad-liquidity-lock.ts --network localhost",
     "fullcircle": "hardhat run scripts/test-project-full-circle.ts --network localhost",
@@ -23,8 +23,10 @@
     "failed": "hardhat run scripts/test-failed-project-refund.ts --network localhost",
     "lock": "hardhat run scripts/test-mini-lock-duration.ts --network localhost",
     "liquid-lock": "hardhat run scripts/test-user-liquidity-claim.ts --network localhost",
-    "debug": "hardhat run scripts/debug-contracts.ts --network localhost",
-    "simple": "hardhat run scripts/simple-balance-check.ts --network localhost"
+    "fees": "hardhat run scripts/test-amm-fees.ts --network localhost",
+    "query": "hardhat run scripts/query_contributors.ts --network localhost",
+    "emergency": "hardhat run scripts/emergency_refund.ts --network localhost",
+    "emergency_refund": "hardhat run scripts/emergency_refund_on_completed.ts --network localhost"
 
    
   },

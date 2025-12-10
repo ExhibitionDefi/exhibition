@@ -4,7 +4,7 @@ import * as path from "path";
 import { time } from "@nomicfoundation/hardhat-network-helpers";
 import { TransactionReceipt } from "ethers";
 import { IERC20Metadata } from "../typechain-types/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata";
-import { Exhibition, Exh, ExhibitionUSDT, ExhibitionNEX, ExhibitionLPTokens, ExhibitionAMM } from "../typechain-types";
+import { Exhibition, ExhibitionToken, ExhibitionUSD, ExhibitionNEX, ExhibitionLPTokens, ExhibitionAMM } from "../typechain-types";
 
 async function main() {
     console.log("Starting local Project 2 (EXH Contribution, Softcap Met, Refunds, WithdrawUnsoldTokens) testing script...");
@@ -24,16 +24,16 @@ async function main() {
     }
     const deployedAddresses = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-    const exhTokenAddress = deployedAddresses.ExhToken as string;
+    const ExhibitionTokenAddress = deployedAddresses.ExhToken as string;
     const exhibitionAddress = deployedAddresses.Exhibition as string;
     const exhibitionAMMAddress = deployedAddresses.ExhibitionAMM as string;
     console.log("\n--- Loaded Deployed Addresses ---");
-    console.log(`Exh Token: ${exhTokenAddress}`);
+    console.log(`EXH: ${ExhibitionTokenAddress}`);
     console.log(`Exhibition: ${exhibitionAddress}`);
     console.log(`ExhibitionAMM: ${exhibitionAMMAddress}`);
 
     // Get contract instances
-    const exhToken: Exh = await ethers.getContractAt("Exh", exhTokenAddress, deployer);
+    const EXH: ExhibitionToken = await ethers.getContractAt("ExhibitionToken", ExhibitionTokenAddress, deployer);
     const exhibition: Exhibition = await ethers.getContractAt("Exhibition", exhibitionAddress, deployer);
     const exhibitionAMM: ExhibitionAMM = await ethers.getContractAt("ExhibitionAMM", exhibitionAMMAddress, deployer);
     const minStartDelay = await exhibition.MIN_START_DELAY();
@@ -43,11 +43,11 @@ async function main() {
     // Helper to log balances
     const logBalances = async (label: string) => {
         console.log(`\n--- ${label} Balances ---`);
-        console.log(`Deployer EXH: ${ethers.formatUnits(await exhToken.balanceOf(deployer.address), 18)}`);
-        console.log(`User1 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user1.address), 18)}`);
-        console.log(`User2 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user2.address), 18)}`);
-        console.log(`User3 EXH: ${ethers.formatUnits(await exhToken.balanceOf(user3.address), 18)}`);
-        console.log(`Exhibition Contract EXH Balance: ${ethers.formatUnits(await exhToken.balanceOf(exhibitionAddress), 18)}`);
+        console.log(`Deployer EXH: ${ethers.formatUnits(await EXH.balanceOf(deployer.address), 18)}`);
+        console.log(`User1 EXH: ${ethers.formatUnits(await EXH.balanceOf(user1.address), 18)}`);
+        console.log(`User2 EXH: ${ethers.formatUnits(await EXH.balanceOf(user2.address), 18)}`);
+        console.log(`User3 EXH: ${ethers.formatUnits(await EXH.balanceOf(user3.address), 18)}`);
+        console.log(`Exhibition Contract EXH Balance: ${ethers.formatUnits(await EXH.balanceOf(exhibitionAddress), 18)}`);
         if (projectTokenContractAFT) {
             console.log(`Deployer AFT Balance: ${ethers.formatUnits(await projectTokenContractAFT.balanceOf(deployer.address), 18)}`);
             console.log(`Exhibition Contract AFT Balance: ${ethers.formatUnits(await projectTokenContractAFT.balanceOf(exhibitionAddress), 18)}`);
@@ -74,7 +74,7 @@ async function main() {
     const projectTokenSymbol2 = "AFT";
     const initialTotalSupply2 = ethers.parseUnits("10000000", 18); // 10M AFT
     const projectTokenLogoURI2 = "https://launchpad.com/aft_logo.png";
-    const contributionTokenAddress2 = exhTokenAddress; // EXH
+    const contributionTokenAddress2 = ExhibitionTokenAddress; // EXH
     const fundingGoal2 = ethers.parseUnits("50000", 18); // Hardcap: 50,000 EXH
     const softCap2 = ethers.parseUnits("25500", 18); // Softcap: 25,500 EXH
     const minContribution2 = ethers.parseUnits("100", 18);
@@ -155,10 +155,10 @@ async function main() {
 
     // Contributions (Above softcap: 25,500 EXH)
     console.log("\n--- Contributions for Project 2 (Above Softcap) ---");
-    const user1Contribute2 = ethers.parseUnits("14901", 18); // 14,901 exUSDT
-    const user2Contribute2 = ethers.parseUnits("10009", 18); // 10009 exUSDT
-    const user3Contribute2 = ethers.parseUnits("5590", 18); // 5590 exUSDT
-    const totalExpectedRaised2 = user1Contribute2 + user2Contribute2 + user3Contribute2; // 30,500 exUSDT
+    const user1Contribute2 = ethers.parseUnits("14901", 18); // 14,901 EXH
+    const user2Contribute2 = ethers.parseUnits("10009", 18); // 10009 EXH
+    const user3Contribute2 = ethers.parseUnits("5590", 18); // 5590 EXH
+    const totalExpectedRaised2 = user1Contribute2 + user2Contribute2 + user3Contribute2; // 30,500 EXH
 
     const projectToAdvance2 = await exhibition.projects(newProjectId2);
     const projectStartTime2 = Number(projectToAdvance2.startTime);
@@ -173,17 +173,17 @@ async function main() {
     }
 
     console.log(`\nUser1 contributing ${ethers.formatUnits(user1Contribute2, 18)} EXH to Project ID ${newProjectId2}...`);
-    await exhToken.connect(user1).approve(exhibitionAddress, user1Contribute2);
+    await EXH.connect(user1).approve(exhibitionAddress, user1Contribute2);
     await exhibition.connect(user1).contribute(newProjectId2, user1Contribute2);
     console.log("SUCCESS: User1 contributed.");
 
     console.log(`\nUser2 contributing ${ethers.formatUnits(user2Contribute2, 18)} EXH to Project ID ${newProjectId2}...`);
-    await exhToken.connect(user2).approve(exhibitionAddress, user2Contribute2);
+    await EXH.connect(user2).approve(exhibitionAddress, user2Contribute2);
     await exhibition.connect(user2).contribute(newProjectId2, user2Contribute2);
     console.log("SUCCESS: User2 contributed.");
 
     console.log(`\nUser3 contributing ${ethers.formatUnits(user3Contribute2, 18)} EXH to Project ID ${newProjectId2}...`);
-    await exhToken.connect(user3).approve(exhibitionAddress, user3Contribute2);
+    await EXH.connect(user3).approve(exhibitionAddress, user3Contribute2);
     await exhibition.connect(user3).contribute(newProjectId2, user3Contribute2);
     console.log("SUCCESS: User3 contributed.");
 
@@ -215,13 +215,13 @@ async function main() {
     await exhibition.connect(deployer).finalizeProject(newProjectId2);
     const projectFinalized2 = await exhibition.projects(newProjectId2);
     console.log(`Project ID ${newProjectId2} final status: ${projectFinalized2.status} (Expected: Successful (3))`);
-    if (projectFinalized2.status !== 3n) {
-        console.error(`Assertion Failed: Project status mismatch. Expected Successful (3), got ${projectFinalized2.status}.`);
+    if (projectFinalized2.status !== 2n) {
+        console.error(`Assertion Failed: Project status mismatch. Expected Successful (2), got ${projectFinalized2.status}.`);
         process.exit(1);
     }
     console.log("SUCCESS: Project 2 finalization to  verified.");
 
-    // --- Liquidity Deposit and Finalization for Project 3 ---
+    // --- Liquidity Deposit and Finalization for Project 2 ---
     console.log(`\n--- Liquidity Deposit and Finalization for Project ID ${newProjectId2} ---`);
 
     // --- 🔴 DEBUG: On-chain State Check Before Liquidity Deposit ---
@@ -302,16 +302,16 @@ async function main() {
     console.log("SUCCESS: Deposited liquidity amount verified.");
 
     // Record deployer's initial EXH balance before fund release
-    const deployerInitialEXHBalance = await exhToken.balanceOf(deployer.address);
+    const deployerInitialEXHBalance = await EXH.balanceOf(deployer.address);
     console.log(`Deployer initial EXH balance before fund release: ${ethers.formatUnits(deployerInitialEXHBalance, 18)}`);
 
     // DEBUG: Log balances before finalizing liquidity and releasing funds
     console.log("\n--- DEBUG: Balances Before Finalizing Liquidity & Releasing Funds ---");
-    console.log(`Deployer EXH Balance: ${ethers.formatUnits(await exhToken.balanceOf(deployer.address), 18)}`);
+    console.log(`Deployer EXH Balance: ${ethers.formatUnits(await EXH.balanceOf(deployer.address), 18)}`);
     console.log(`Deployer POT3 Balance: ${ethers.formatUnits(await projectTokenContractAFT.balanceOf(deployer.address), 18)}`);
-    console.log(`Exhibition Contract EXH Balance: ${ethers.formatUnits(await exhToken.balanceOf(exhibitionAddress), 18)}`);
+    console.log(`Exhibition Contract EXH Balance: ${ethers.formatUnits(await EXH.balanceOf(exhibitionAddress), 18)}`);
     console.log(`Exhibition Contract POT3 Balance: ${ethers.formatUnits(await projectTokenContractAFT.balanceOf(exhibitionAddress), 18)}`);
-    console.log(`Exhibition AMM EXH Balance: ${ethers.formatUnits(await exhToken.balanceOf(exhibitionAMMAddress), 18)}`);
+    console.log(`Exhibition AMM EXH Balance: ${ethers.formatUnits(await EXH.balanceOf(exhibitionAMMAddress), 18)}`);
     console.log(`Exhibition AMM POT3 Balance: ${ethers.formatUnits(await projectTokenContractAFT.balanceOf(exhibitionAMMAddress), 18)}`);
 
 
@@ -323,9 +323,9 @@ async function main() {
 
     // Verify project status is Completed
     const projectCompleted = await exhibition.projects(newProjectId2);
-    console.log(`Project ID ${newProjectId2} final status: ${projectCompleted.status} (Expected: Completed (7))`);
-    if (projectCompleted.status !== 7n) { // Expected Completed (7)
-        console.error(`Assertion Failed: Project ID ${newProjectId2} final status mismatch. Expected Completed (7), got ${projectCompleted.status}.`);
+    console.log(`Project ID ${newProjectId2} final status: ${projectCompleted.status} (Expected: Completed (6))`);
+    if (projectCompleted.status !== 6n) { // Expected Completed (6)
+        console.error(`Assertion Failed: Project ID ${newProjectId2} final status mismatch. Expected Completed (6), got ${projectCompleted.status}.`);
         process.exit(1);
     }
     if (!projectCompleted.liquidityAdded) {
@@ -335,7 +335,7 @@ async function main() {
     console.log("SUCCESS: Project status updated to Completed and liquidityAdded flag set.");
 
     // Verify deployer's final EXH balance (should include remaining funds + platform fee)
-    const deployerFinalEXHBalance = await exhToken.balanceOf(deployer.address);
+    const deployerFinalEXHBalance = await EXH.balanceOf(deployer.address);
     // The expected payout is now based on the net raised AFTER the fee and AFTER the liquidity portion
     const totalExpectedIncrease = expectedDeployerPayout + platformFeeAmount;
     const actualIncrease = deployerFinalEXHBalance - deployerInitialEXHBalance;
@@ -443,7 +443,7 @@ async function main() {
 
     // Update unsoldTokensBigInt to use amountTokensForSale for status = 6
     let unsoldTokensBigInt = amountTokensForSale2; // Default for Refundable status
-    if (projectBeforeWithdraw.status !== 6n) {
+    if (projectBeforeWithdraw.status !== 5n) {
         unsoldTokensBigInt = amountTokensForSale2 - tokensAllocatedBigInt;
     }
 

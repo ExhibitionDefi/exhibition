@@ -67,20 +67,24 @@ error CalculationResultsInZeroTokens();
 error ResultTooLarge();
 error ExcessiveLiquidityDeposit();
 error FinalCalculationResultsInZeroTokens();
+error TokensForSaleMismatch();
+error SoftCapBelowMinimum();
+error InsufficientTokensForLiquidity();
+error LiquidityDeadlineNotReached();
+error LiquidityDeadlineExpired();
 
 // =============================================================================
 //                                ENUMS
 // =============================================================================
 
 enum ProjectStatus {
-    Upcoming,        // 0: Project created, waiting for its 'startTime'.
-    Active,          // 1: Project is live and accepting 'contributions'.
-    FundingEnded,    // 2: The 'endTime' has passed OR 'fundingGoal' (hardcap) has been reached.
-    Successful,      // 3: Project met its 'softCap' during the 'FundingEnded' phase.
-    Failed,          // 4: Project did NOT meet its 'softCap' during the 'FundingEnded' phase.
-    Claimable,       // 5: Project is 'Successful', and contributors can claim their tokens (immediately or via vesting).
-    Refundable,      // 6: Project is 'Failed', and contributors can request refunds.
-    Completed        // 7: Project has been fully processed (e.g., all claims/refunds done, liquidity added).
+    Upcoming,        // 0: Project created, awaiting token deposit from project owner
+    Active,          // 1: Tokens deposited; accepts contributions once start time is reached
+    Successful,      // 2: Funding goal met; tokens claimable, owner has 7 days to add liquidity
+    Failed,          // 3: Soft cap not reached by end time; eligible for refunds
+    Claimable,       // 4: Token claiming initiated; users can claim, liquidity deadline active
+    Refundable,      // 5: Refunds active - triggered by first refund from Failed (normal) or Successful/Claimable after deadline (emergency)
+    Completed        // 6: Liquidity added and locked on AMM, funds released to owner; tokens still claimable
 }
 
 // =============================================================================
@@ -90,7 +94,7 @@ enum ProjectStatus {
 struct Project {
     address projectOwner;             // The address of the project creator
     address projectToken;             // The address of the token being launched (created via ExhibitionFactory)
-    address contributionTokenAddress; // The ERC20 token used for contributions (e.g., exUSDT, exNEX)
+    address contributionTokenAddress; // The ERC20 token used for contributions (e.g., exUSD, exNEX)
     uint256 fundingGoal;              // Target amount in contribution tokens (equivalent to Hard Cap)
     uint256 softCap;                  // Minimum amount in contribution tokens to raise for project to be successful
     uint256 minContribution;          // Minimum allowed contribution per participant in contribution tokens
@@ -104,7 +108,7 @@ struct Project {
     uint256 amountTokensForSale;      // The subset of totalProjectTokenSupply sent to Exhibition.sol for distribution to contributors
     uint256 liquidityPercentage;      // The percentage of net raised funds committed to initial liquidity by project creator (e.g., 70-100%)
     uint256 lockDuration;             // Duration in seconds for which the initial liquidity will be locked in the AMM
-    ProjectStatus status;             // Current status of the project (using enum from ExInterfaces)
+    ProjectStatus status;             // Current status of the project (using enum from IExhibitionPlatform)
     bool liquidityAdded;              // Flag to indicate if initial liquidity has been added to the AMM
     bool vestingEnabled;
     uint256 vestingCliff; // In seconds, relative to project startTime
@@ -136,7 +140,7 @@ interface IExhibition {
     function setExhibitionFactoryAddress(address _exhibitionFactoryAddress) external;
     function setExhibitionAMMAddress(address _exhibitionAMMAddress) external;
     function setExhTokenAddress(address _exhTokenAddress) external;
-    function setExUSDTTokenAddress(address _exUSDTTokenAddress) external; 
+    function setExUSDTokenAddress(address _exUSDTokenAddress) external; 
     function setFaucetAmounts(uint256 _exhAmount, uint256 _usdtAmount) external;
     function setFaucetCooldown(uint256 _cooldownSeconds) external;
     function addExhibitionContributionToken(address _tokenAddress) external;
@@ -190,6 +194,10 @@ interface IExhibition {
     function finalizeLiquidityAndReleaseFunds(uint256 _projectId) external;
     function addLiquidity(uint256 _projectId) external;
     function withdrawUnsoldTokens(uint256 _projectId) external;
+    function isProjectToken(address token) external view returns (bool);
+    function projectTokenToProjectId(address token) external view returns (uint256);
+    function isEmergencyRefundAvailable(uint256 projectId) external view returns (bool available, uint256 deadline, uint256 timeRemaining);
+    function getLiquidityDeadline(uint256 projectId) external view returns (uint256);
 
     // --- View Functions ---
     function projectCounter() external view returns (uint256);
@@ -240,12 +248,11 @@ interface IExhibition {
     event ProjectStatusUpdated(uint256 indexed projectId, ProjectStatus newStatus);
     event PlatformFeePercentageUpdated(uint256 oldPercentage, uint256 newPercentage);
     event PlatformFeeRecipientUpdated(address oldRecipient, address newRecipient);
-    event FeesWithdrawn(address indexed tokenAddress, address indexed recipient, uint256 amount);
     event ExhibitionContributionTokenAdded(address indexed tokenAddress);
     event ExhibitionContributionTokenRemoved(address indexed tokenAddress);
     event AmmApprovedForToken(address indexed token, address indexed spender, uint256 amount); // If AMM approval is managed here
     event ExhTokenAddressSet(address indexed tokenAddress);
-    event ExhibitionUSDTAddressSet(address indexed tokenAddress); 
+    event ExhibitionUSDAddressSet(address indexed tokenAddress); 
     event ProjectCreated(
         uint256 indexed projectId,
         address indexed projectOwner,
@@ -352,6 +359,7 @@ interface IExhibition {
 /**
  * @title ITokenCalculation
  * @dev Interface defining all structs, errors, and function signatures
+ * @notice All Exhibition project tokens use 18 decimals - projectTokenAddress parameter removed for gas optimization
  */
 interface ITokenCalculation {
     // ========================================
@@ -371,7 +379,6 @@ interface ITokenCalculation {
     struct SystemConstants {
         uint256 minTokenPrice;
         uint256 maxTokenPrice;
-        uint8 maxTokenDecimals;
         uint256 priceDecimals;
     }
 
@@ -390,42 +397,80 @@ interface ITokenCalculation {
     //          FUNCTION SIGNATURES
     // ========================================
 
+    /**
+     * @dev Calculate tokens due for a contribution
+     * @param contributorContribution Amount contributed in contribution token decimals
+     * @param tokenPrice Price per project token (always 18 decimals)
+     * @param contributionTokenAddress Address of the contribution token (e.g., exUSD)
+     * @return Amount of project tokens due (in 18 decimals)
+     */
     function calculateTokensDue(
         uint256 contributorContribution,
         uint256 tokenPrice,
-        address contributionTokenAddress,
-        address projectTokenAddress
+        address contributionTokenAddress
     ) external view returns (uint256);
 
+    /**
+     * @dev Get detailed calculation preview
+     * @param contributorContribution Amount contributed in contribution token decimals
+     * @param tokenPrice Price per project token (always 18 decimals)
+     * @param contributionTokenAddress Address of the contribution token
+     * @return CalculationPreview struct with detailed calculation results
+     */
     function getCalculationPreview(
         uint256 contributorContribution,
         uint256 tokenPrice,
-        address contributionTokenAddress,
-        address projectTokenAddress
+        address contributionTokenAddress
     ) external view returns (CalculationPreview memory);
 
+    /**
+     * @dev Validate calculation parameters
+     * @param contributorContribution Amount contributed in contribution token decimals
+     * @param tokenPrice Price per project token (always 18 decimals)
+     * @param contributionTokenAddress Address of the contribution token
+     * @return ValidationResult struct indicating if calculation is valid
+     */
     function validateCalculation(
         uint256 contributorContribution,
         uint256 tokenPrice,
-        address contributionTokenAddress,
-        address projectTokenAddress
+        address contributionTokenAddress
     ) external view returns (ValidationResult memory);
 
+    /**
+     * @dev Get minimum contribution required for 1 project token
+     * @param tokenPrice Price per project token (always 18 decimals)
+     * @param contributionTokenAddress Address of the contribution token
+     * @return Minimum contribution amount in contribution token decimals
+     */
     function getMinimumContribution(
         uint256 tokenPrice,
-        address contributionTokenAddress,
-        address projectTokenAddress
+        address contributionTokenAddress
     ) external view returns (uint256);
 
+    /**
+     * @dev Get token information (decimals, symbol, name)
+     * @param tokenAddress Address of the token to query
+     * @return TokenInfo struct with token details
+     */
     function getTokenInfo(address tokenAddress) external view returns (TokenInfo memory);
 
+    /**
+     * @dev Batch calculate tokens for multiple contributions
+     * @param contributionAmounts Array of contribution amounts
+     * @param tokenPrice Price per project token (always 18 decimals)
+     * @param contributionTokenAddress Address of the contribution token
+     * @return Array of project token amounts due (in 18 decimals)
+     */
     function batchCalculateTokens(
         uint256[] calldata contributionAmounts,
         uint256 tokenPrice,
-        address contributionTokenAddress,
-        address projectTokenAddress
+        address contributionTokenAddress
     ) external view returns (uint256[] memory);
 
+    /**
+     * @dev Get system constants (price limits, decimals)
+     * @return SystemConstants struct with system configuration
+     */
     function getSystemConstants() external view returns (SystemConstants memory);
 }
 
@@ -481,10 +526,10 @@ interface IExhibitionFactory {
 }
 
 /**
- * @title IExh
- * @dev Interface for the EXH token
+ * @title IExhibitionToken
+ * @dev Interface for the Exhibition token
  */
-interface IExh {
+interface IExhibitionToken {
     function mint(address to, uint256 amount) external;
     function transferOwnership(address newOwner) external;
     function owner() external view returns (address);
@@ -497,10 +542,10 @@ interface IExh {
 }
 
 /**
- * @title IExhibitionUSDT
- * @dev Interface for the ExhibitionUSDT token
+ * @title IExhibitionUSD
+ * @dev Interface for the ExhibitionUSD token
  */
-interface IExhibitionUSDT {
+interface IExhibitionUSD {
     function mint(address to, uint256 amount) external;
     function transferOwnership(address newOwner) external;
     function owner() external view returns (address);

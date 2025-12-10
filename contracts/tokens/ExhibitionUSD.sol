@@ -5,12 +5,12 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
- * @title ExhibitionUSDT
- * @dev A mock ERC20 token contract to represent exUSDT on the Nexus testnet.
+ * @title ExhibitionUSD
+ * @dev A mock ERC20 token contract to represent exUSD on the Nexus testnet.
  * It's a standard ERC20 with a fixed name, symbol, decimals, and an initial supply
  * minted to the deployer. It is Ownable, allowing the owner to manage the minter role.
  */
-contract ExhibitionUSDT is ERC20, Ownable {
+contract ExhibitionUSD is ERC20, Ownable {
     // Custom error for when a non-minter attempts to mint.
     error NotMinter();
 
@@ -31,10 +31,10 @@ contract ExhibitionUSDT is ERC20, Ownable {
      * This is typically the deployer's address.
      */
     constructor(address initialOwner)
-        ERC20("Exhibition USDT", "exUSDT")
+        ERC20("Exhibition USD", "exUSD")
         Ownable(initialOwner)
     {
-        // Mint 1,000,000 exUSDT tokens to the deployer for testing.
+        // Mint 1,000,000 exUSD tokens to the deployer for testing.
         // 1,000,000 * (10 ** 6) = 1,000,000,000,000
         _mint(initialOwner, 1_000_000 * (10**_DECIMALS));
 
@@ -45,7 +45,7 @@ contract ExhibitionUSDT is ERC20, Ownable {
 
     /**
      * @dev Returns the number of decimals used to get its user representation.
-     * For exUSDT, this is 6.
+     * For exUSD, this is 6.
      */
     function decimals() public pure override returns (uint8) {
         return _DECIMALS;

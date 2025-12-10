@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "contracts/interfaces/ExInterfaces.sol"; // For custom errors
+import "contracts/libraries/IExhibitionPlatform.sol"; // For custom errors
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 
 /**
@@ -56,10 +56,10 @@ library ExLibrary {
      */
     function _sortTokens(address tokenA, address tokenB) internal pure returns (address token0, address token1) {
         if (tokenA == address(0) || tokenB == address(0)) {
-            revert InvalidTokenAddress(); // Error from ExInterfaces.sol
+            revert InvalidTokenAddress(); // Error from IExhibitionPlatform.sol
         }
         if (tokenA == tokenB) {
-            revert InvalidPair(); // Error from ExInterfaces.sol
+            revert InvalidPair(); // Error from IExhibitionPlatform.sol
         }
         (token0, token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
     }
@@ -85,10 +85,10 @@ library ExLibrary {
      */
     function _getAmountOut(uint256 amountIn, uint256 reserveIn, uint256 reserveOut) internal pure returns (uint256 amountOut) {
         if (reserveIn == 0 || reserveOut == 0) {
-            revert InsufficientLiquidity(); // Error from ExInterfaces.sol
+            revert InsufficientLiquidity(); // Error from IExhibitionPlatform.sol
         }
         if (amountIn == 0) {
-            revert ZeroAmount(); // Error from ExInterfaces.sol
+            revert ZeroAmount(); // Error from IExhibitionPlatform.sol
         }
 
         uint256 amountInWithFee = amountIn * 997;
@@ -98,7 +98,7 @@ library ExLibrary {
         amountOut = numerator / denominator;
 
         if (amountOut == 0) {
-            revert ZeroAmount(); // Error from ExInterfaces.sol
+            revert ZeroAmount(); // Error from IExhibitionPlatform.sol
         }
     }
 }
@@ -110,6 +110,7 @@ library ExLibrary {
 /**
  * @title TokenCalculationLib
  * @dev Library containing all calculation logic
+ * @notice All Exhibition project tokens use 18 decimals - hardcoded throughout for maximum gas optimization
  */
 library TokenCalculationLib {
     
@@ -119,7 +120,6 @@ library TokenCalculationLib {
     
     uint256 public constant MIN_TOKEN_PRICE = 1e12;     // 0.000001 in 18 decimals
     uint256 public constant MAX_TOKEN_PRICE = 1e24;     // 1,000,000 in 18 decimals
-    uint8 public constant MAX_TOKEN_DECIMALS = 30;
     uint256 public constant PRICE_DECIMALS = 18;
 
     // Error codes
@@ -140,43 +140,37 @@ library TokenCalculationLib {
 
     /**
      * @dev Main calculation function
+     * @notice All Exhibition project tokens use 18 decimals (hardcoded)
      */
     function calculateTokensDue(
         uint256 contributorContribution,
         uint256 tokenPrice,
-        address contributionTokenAddress,
-        address projectTokenAddress
+        address contributionTokenAddress
     ) internal view returns (uint256) {
         if (contributorContribution == 0) return 0;
         validateTokenPrice(tokenPrice);
 
         uint8 contributionDecimals = getTokenDecimals(contributionTokenAddress);
-        uint8 projectDecimals = getTokenDecimals(projectTokenAddress);
-
-        if (contributionDecimals > MAX_TOKEN_DECIMALS || projectDecimals > MAX_TOKEN_DECIMALS) {
-            revert InvalidTokenDecimals();
-        }
 
         return performCalculation(
             contributorContribution,
             tokenPrice,
             contributionDecimals,
-            projectDecimals
+            18  // All Exhibition project tokens use 18 decimals
         );
     }
 
     /**
-     * @dev Get detailed calculation preview No try-catch on internal calls
+     * @dev Get detailed calculation preview
+     * @notice All Exhibition project tokens use 18 decimals (hardcoded)
      */
     function getCalculationPreview(
         uint256 contributorContribution,
         uint256 tokenPrice,
-        address contributionTokenAddress,
-        address projectTokenAddress
+        address contributionTokenAddress
     ) internal view returns (ITokenCalculation.CalculationPreview memory) {
         
         uint8 contributionDecimals = getTokenDecimals(contributionTokenAddress);
-        uint8 projectDecimals = getTokenDecimals(projectTokenAddress);
         
         uint256 contributionIn18Decimals = scaleToDecimals(
             contributorContribution, 
@@ -191,26 +185,22 @@ library TokenCalculationLib {
         if (contributorContribution == 0 || 
             tokenPrice == 0 || 
             tokenPrice < MIN_TOKEN_PRICE || 
-            tokenPrice > MAX_TOKEN_PRICE ||
-            contributionDecimals > MAX_TOKEN_DECIMALS || 
-            projectDecimals > MAX_TOKEN_DECIMALS) {
+            tokenPrice > MAX_TOKEN_PRICE
+        ) {
             tokensReceived = 0;
             isValid = false;
         } else {
-            // Use internal validation before calling
             tokensReceived = TokenCalculationLib.calculateTokensDue(
                 contributorContribution,
                 tokenPrice,
-                contributionTokenAddress,
-                projectTokenAddress
+                contributionTokenAddress
             );
             isValid = tokensReceived > 0;
         }
 
         uint256 minimumContribution = getMinimumContribution(
             tokenPrice,
-            contributionTokenAddress,
-            projectTokenAddress
+            contributionTokenAddress
         );
 
         return ITokenCalculation.CalculationPreview({
@@ -218,20 +208,20 @@ library TokenCalculationLib {
             contributionIn18Decimals: contributionIn18Decimals,
             effectivePrice: tokenPrice,
             contributionDecimals: contributionDecimals,
-            projectDecimals: projectDecimals,
+            projectDecimals: 18,  // All Exhibition project tokens use 18 decimals
             minimumContribution: minimumContribution,
             isValid: isValid
         });
     }
 
     /**
-     * @dev Validate calculation without reverting  No try-catch
+     * @dev Validate calculation without reverting
+     * @notice All Exhibition project tokens use 18 decimals (hardcoded)
      */
     function validateCalculation(
         uint256 contributorContribution,
         uint256 tokenPrice,
-        address contributionTokenAddress,
-        address projectTokenAddress
+        address contributionTokenAddress
     ) internal view returns (ITokenCalculation.ValidationResult memory) {
         
         if (contributorContribution == 0) {
@@ -249,19 +239,11 @@ library TokenCalculationLib {
             return ITokenCalculation.ValidationResult(false, ERROR_PRICE_TOO_HIGH);
         }
         
-        uint8 contributionDecimals = getTokenDecimals(contributionTokenAddress);
-        uint8 projectDecimals = getTokenDecimals(projectTokenAddress);
-        
-        if (contributionDecimals > MAX_TOKEN_DECIMALS || projectDecimals > MAX_TOKEN_DECIMALS) {
-            return ITokenCalculation.ValidationResult(false, ERROR_INVALID_DECIMALS);
-        }
-        
         // Manual validation instead of try-catch
         uint256 tokens = TokenCalculationLib.calculateTokensDue(
             contributorContribution,
             tokenPrice,
-            contributionTokenAddress,
-            projectTokenAddress
+            contributionTokenAddress
         );
         
         if (tokens == 0) {
@@ -273,16 +255,16 @@ library TokenCalculationLib {
 
     /**
      * @dev Get minimum contribution for 1 token
+     * @notice All Exhibition project tokens use 18 decimals (hardcoded)
      */
     function getMinimumContribution(
         uint256 tokenPrice,
-        address contributionTokenAddress,
-        address projectTokenAddress
+        address contributionTokenAddress
     ) internal view returns (uint256) {
         uint8 contributionDecimals = getTokenDecimals(contributionTokenAddress);
-        uint8 projectDecimals = getTokenDecimals(projectTokenAddress);
         
-        uint256 oneTokenIn18Decimals = scaleToDecimals(1, projectDecimals, 18);
+        // scaleToDecimals(1, 18, 18) = 1, so we can simplify
+        uint256 oneTokenIn18Decimals = 1;  // 1 token in 18 decimals is just 1
         uint256 costIn18Decimals = (oneTokenIn18Decimals * tokenPrice) / 1e18;
         
         return scaleToDecimals(costIn18Decimals, 18, contributionDecimals);
@@ -290,6 +272,7 @@ library TokenCalculationLib {
 
     /**
      * @dev Get token information
+     * @notice This is a general utility function that works for any token
      */
     function getTokenInfo(address tokenAddress) 
         internal 
@@ -300,7 +283,7 @@ library TokenCalculationLib {
         string memory symbol = "TOKEN"; // default
         string memory name = "Unknown Token"; // default
 
-        //  Use low-level calls instead of try-catch for better gas efficiency
+        // Use low-level calls instead of try-catch for better gas efficiency
         (bool success, bytes memory data) = tokenAddress.staticcall(abi.encodeWithSignature("decimals()"));
         if (success && data.length == 32) {
             decimals = abi.decode(data, (uint8));
@@ -324,13 +307,13 @@ library TokenCalculationLib {
     }
 
     /**
-     * @dev Batch calculate tokens No try-catch
+     * @dev Batch calculate tokens
+     * @notice All Exhibition project tokens use 18 decimals (hardcoded)
      */
     function batchCalculateTokens(
         uint256[] calldata contributionAmounts,
         uint256 tokenPrice,
-        address contributionTokenAddress,
-        address projectTokenAddress
+        address contributionTokenAddress
     ) internal view returns (uint256[] memory tokensReceived) {
         tokensReceived = new uint256[](contributionAmounts.length);
         
@@ -339,16 +322,14 @@ library TokenCalculationLib {
             ITokenCalculation.ValidationResult memory validation = validateCalculation(
                 contributionAmounts[i],
                 tokenPrice,
-                contributionTokenAddress,
-                projectTokenAddress
+                contributionTokenAddress
             );
             
             if (validation.isValid) {
                 tokensReceived[i] = TokenCalculationLib.calculateTokensDue(
                     contributionAmounts[i],
                     tokenPrice,
-                    contributionTokenAddress,
-                    projectTokenAddress
+                    contributionTokenAddress
                 );
             } else {
                 tokensReceived[i] = 0;
@@ -367,7 +348,6 @@ library TokenCalculationLib {
         return ITokenCalculation.SystemConstants({
             minTokenPrice: MIN_TOKEN_PRICE,
             maxTokenPrice: MAX_TOKEN_PRICE,
-            maxTokenDecimals: MAX_TOKEN_DECIMALS,
             priceDecimals: PRICE_DECIMALS
         });
     }
@@ -441,5 +421,152 @@ library TokenCalculationLib {
         if (price == 0) revert ZeroTokenPrice();
         if (price < MIN_TOKEN_PRICE) revert TokenPriceTooLow();
         if (price > MAX_TOKEN_PRICE) revert TokenPriceTooHigh();
+    }
+
+    // ========================================
+    // VALIDATION FUNCTIONS (OPTIMIZED)
+    // ========================================
+
+    /**
+     * @dev Validates that tokensForSale = fundingGoal / tokenPrice
+     * @notice All Exhibition project tokens use 18 decimals (hardcoded)
+     */
+    function validateTokensForSale(
+        uint256 _fundingGoal,
+        uint256 _tokenPrice,
+        uint256 _amountTokensForSale,
+        address _contributionTokenAddress
+    ) internal view {
+        uint8 contributionDecimals = IERC20Metadata(_contributionTokenAddress).decimals();
+
+        // Normalize funding goal to 18 decimals
+        uint256 fundingGoalNormalized = scaleToDecimals(_fundingGoal, contributionDecimals, 18);
+
+        // Expected tokens in 18 decimals
+        uint256 expectedTokensIn18Decimals = (fundingGoalNormalized * 1e18) / _tokenPrice;
+
+        // _amountTokensForSale is already in 18 decimals - direct comparison
+        // No need to normalize since project tokens are always 18 decimals
+
+        // Compare with 0.1% tolerance
+        uint256 difference = _amountTokensForSale > expectedTokensIn18Decimals
+            ? _amountTokensForSale - expectedTokensIn18Decimals
+            : expectedTokensIn18Decimals - _amountTokensForSale;
+
+        uint256 maxAllowedDifference = expectedTokensIn18Decimals / 1000;
+        if (maxAllowedDifference == 0) maxAllowedDifference = 1;
+
+        if (difference > maxAllowedDifference) revert TokensForSaleMismatch();
+    }
+
+    /**
+     * @dev Validates that softCap is at least 51% of fundingGoal
+     */
+    function validateSoftCap(
+        uint256 _fundingGoal,
+        uint256 _softCap
+    ) internal pure {
+        uint256 minimumSoftCap = (_fundingGoal * 51) / 100;
+        if (_softCap < minimumSoftCap) revert SoftCapBelowMinimum();
+    }
+
+    /**
+     * @dev Validates that totalSupply is sufficient for both sale and liquidity
+     * @notice All Exhibition project tokens use 18 decimals (hardcoded)
+     */
+    function validateLiquidityAllocation(
+        uint256 _initialTotalSupply,
+        uint256 _amountTokensForSale,
+        uint256 _fundingGoal,
+        uint256 _tokenPrice,
+        uint256 _liquidityPercentage,
+        address _contributionTokenAddress
+    ) internal view {
+        uint8 contributionDecimals = IERC20Metadata(_contributionTokenAddress).decimals();
+
+        // Normalize funding goal to 18 decimals
+        uint256 fundingGoalNormalized = scaleToDecimals(_fundingGoal, contributionDecimals, 18);
+
+        // Liquidity contribution tokens (no fee or denominator)
+        uint256 liquidityContributionTokens = (fundingGoalNormalized * _liquidityPercentage) / 10000;
+
+        // Project tokens needed for liquidity - already in 18 decimals
+        uint256 liquidityProjectTokens = (liquidityContributionTokens * 1e18) / _tokenPrice;
+
+        // Total tokens required - all in 18 decimals already
+        uint256 totalTokensNeeded = _amountTokensForSale + liquidityProjectTokens;
+        uint256 minimumRequired = totalTokensNeeded + (totalTokensNeeded / 100);
+
+        if (_initialTotalSupply < minimumRequired) revert InsufficientTokensForLiquidity();
+        if (_initialTotalSupply <= _amountTokensForSale) revert InsufficientTokensForLiquidity();
+
+        uint256 remainingTokens = _initialTotalSupply - _amountTokensForSale;
+        if (remainingTokens < liquidityProjectTokens) revert InsufficientTokensForLiquidity();
+    }
+
+    /**
+     * @dev Master validation function - validates all tokenomics at once
+     * @notice All Exhibition project tokens use 18 decimals (hardcoded)
+     */
+    function validateProjectTokenomics(
+        uint256 _initialTotalSupply,
+        uint256 _fundingGoal,
+        uint256 _softCap,
+        uint256 _amountTokensForSale,
+        uint256 _tokenPrice,
+        uint256 _liquidityPercentage,
+        address _contributionTokenAddress
+    ) internal view {
+        validateTokensForSale(
+            _fundingGoal,
+            _tokenPrice,
+            _amountTokensForSale,
+            _contributionTokenAddress
+        );
+        validateSoftCap(_fundingGoal, _softCap);
+        validateLiquidityAllocation(
+            _initialTotalSupply,
+            _amountTokensForSale,
+            _fundingGoal,
+            _tokenPrice,
+            _liquidityPercentage,
+            _contributionTokenAddress
+        );
+    }
+
+    /**
+     * @dev Helper view function to calculate correct values
+     * @notice All Exhibition project tokens use 18 decimals (hardcoded)
+     */
+    function calculateCorrectProjectValues(
+        uint256 _fundingGoal,
+        uint256 _tokenPrice,
+        uint256 _liquidityPercentage,
+        address _contributionTokenAddress
+    ) internal view returns (
+        uint256 tokensForSale,
+        uint256 softCap,
+        uint256 liquidityTokens,
+        uint256 minimumTotalSupply
+    ) {
+        uint8 contributionDecimals = IERC20Metadata(_contributionTokenAddress).decimals();
+
+        uint256 fundingGoalNormalized = scaleToDecimals(_fundingGoal, contributionDecimals, 18);
+
+        // Tokens for sale - already in 18 decimals
+        tokensForSale = (fundingGoalNormalized * 1e18) / _tokenPrice;
+
+        // Soft cap (51%)
+        softCap = (_fundingGoal * 51) / 100;
+
+        // Liquidity tokens - already in 18 decimals
+        uint256 liquidityContribution = (fundingGoalNormalized * _liquidityPercentage) / 10000;
+        liquidityTokens = (liquidityContribution * 1e18) / _tokenPrice;
+
+        // Minimum total supply (with 1% buffer)
+        minimumTotalSupply = tokensForSale + liquidityTokens;
+        minimumTotalSupply = minimumTotalSupply + (minimumTotalSupply / 100);
+
+        return (tokensForSale, softCap, liquidityTokens, minimumTotalSupply);
     }
 }

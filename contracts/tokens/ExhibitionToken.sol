@@ -6,14 +6,14 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 
 /**
- * @title Exh
+ * @title ExhibitionToken
  * @dev ERC20 token contract for the Exhibition platform (EXH).
  * This token can be used for various utilities within the platform,
  * such as a contribution token in launchpads, staking, or governance.
  * It is an Ownable token, allowing the deployer (owner) to manage the minter role.
  * This version includes a fixed maximum supply and an initial smaller mint.
  */
-contract Exh is ERC20, Ownable {
+contract ExhibitionToken is ERC20, Ownable {
     // Custom error for when the maximum supply is exceeded during minting.
     error MaxSupplyExceeded();
     // Custom error for when a non-minter attempts to mint.
@@ -40,7 +40,7 @@ contract Exh is ERC20, Ownable {
      * This is typically the deployer's address.
      */
     constructor(address initialOwner)
-        ERC20("Exh Token", "EXH") // Sets token name and symbol
+        ERC20("Exhibition Token", "EXH") // Sets token name and symbol
         Ownable(initialOwner) // Sets the initial owner of the contract
     {
         // Set the maximum supply. This is immutable and cannot be changed after deployment.
