@@ -229,7 +229,7 @@ abstract contract ExhibitionViews is ExhibitionBase {
         bool canContribute,
         uint256 requiredLiquidityTokens,
         uint256 depositedLiquidityTokens,
-       uint256 totalContributors
+        uint256 totalContributors
     ) {
         project = projects[projectId];
 

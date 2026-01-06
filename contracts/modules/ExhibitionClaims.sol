@@ -80,6 +80,11 @@ abstract contract ExhibitionClaims is ExhibitionBase {
             revert InvalidProjectStatus();
         }
 
+        if (project.status == ProjectStatus.Successful) {
+            project.status = ProjectStatus.Claimable;
+            emit ProjectStatusUpdated(_projectId, ProjectStatus.Claimable);
+        }
+
         _transferTokens(project.projectToken, address(this), msg.sender, amountToTransfer);
 
         userVestingInfo.releasedAmount += amountToTransfer;

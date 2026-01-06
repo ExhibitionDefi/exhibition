@@ -8,14 +8,12 @@
     "clean": "hardhat clean",
     "test": "hardhat test",
 
-    "deploy:nexus-testnet-iii": "hardhat run scripts/deploy.ts --network nexusTestnetIII",
-    "deploy:nexus-testnet": "hardhat run scripts/deploy.ts --network nexus-testnet",
-    "verify:nexus-testnet": "hardhat verify --network nexus-testnet",
-    "test:initial-liquidity": "hardhat run scripts/test-initial-liquidity.ts --network nexus-testnet",
-    "test:add-liquidity": "hardhat run scripts/test_addliquidity_swap_rm.ts --network nexus-testnet",
-
+    "faucet": "hardhat run scripts/faucet.ts --network nexusTestnet",
+    "batch": "hardhat run scripts/batchContribute.ts --network nexusTestnet",
+    "claim": "hardhat run scripts/batchClaim.ts --network nexusTestnet",
+  
     "node": "hardhat node",
-    "deploy": "hardhat run scripts/deploy.ts --network nexusTestnet",
+    "deploy": "hardhat run scripts/deploy.ts --network localhost",
     "request": "hardhat run scripts/request-faucet-add-contribution-token.ts --network localhost",
     "create": "hardhat run scripts/test-create-launchpad-liquidity-lock.ts --network localhost",
     "fullcircle": "hardhat run scripts/test-project-full-circle.ts --network localhost",
