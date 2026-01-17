@@ -16,6 +16,23 @@ const USER7_PRIVATE_KEY: string = process.env.PRIVATE_KEY_USER7 || "";
 const USER8_PRIVATE_KEY: string = process.env.PRIVATE_KEY_USER8 || "";
 const USER9_PRIVATE_KEY: string = process.env.PRIVATE_KEY_USER9 || "";
 
+// Helper function to build accounts array
+const buildAccountsArray = (): string[] => {
+  const keys = [
+    DEPLOYER_PRIVATE_KEY,
+    USER1_PRIVATE_KEY,
+    USER2_PRIVATE_KEY,
+    USER3_PRIVATE_KEY,
+    USER4_PRIVATE_KEY,
+    USER5_PRIVATE_KEY,
+    USER6_PRIVATE_KEY,
+    USER7_PRIVATE_KEY,
+    USER8_PRIVATE_KEY,
+    USER9_PRIVATE_KEY,
+  ];
+  return keys.filter(key => key !== "");
+};
+
 const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.20",
@@ -30,35 +47,32 @@ const config: HardhatUserConfig = {
   networks: {
     nexusTestnet: {
       url: NEXUS_TESTNET_III_RPC_URL,
-      accounts: DEPLOYER_PRIVATE_KEY ? [DEPLOYER_PRIVATE_KEY] : [],
+      accounts: buildAccountsArray(),
       timeout: 120000, // 2 minutes
+      chainId: 3945,
+      gas: "auto",
+      gasPrice: "auto",
     },
     hardhat: {
-      forking: {
+      forking: NEXUS_TESTNET_III_RPC_URL ? {
         url: NEXUS_TESTNET_III_RPC_URL,
-      },
+        enabled: true,
+      } : undefined,
       mining: {
         auto: true,
         interval: 0,
       },
-      accounts: [
-        DEPLOYER_PRIVATE_KEY ? { privateKey: DEPLOYER_PRIVATE_KEY, balance: "100000000000000000000000" } : undefined,
-        USER1_PRIVATE_KEY ? { privateKey: USER1_PRIVATE_KEY, balance: "100000000000000000000000" } : undefined,
-        USER2_PRIVATE_KEY ? { privateKey: USER2_PRIVATE_KEY, balance: "100000000000000000000000" } : undefined,
-        USER3_PRIVATE_KEY ? { privateKey: USER3_PRIVATE_KEY, balance: "100000000000000000000000" } : undefined,
-        USER4_PRIVATE_KEY ? { privateKey: USER4_PRIVATE_KEY, balance: "100000000000000000000000" } : undefined,
-        USER5_PRIVATE_KEY ? { privateKey: USER5_PRIVATE_KEY, balance: "100000000000000000000000" } : undefined,
-        USER6_PRIVATE_KEY ? { privateKey: USER6_PRIVATE_KEY, balance: "100000000000000000000000" } : undefined,
-        USER7_PRIVATE_KEY ? { privateKey: USER7_PRIVATE_KEY, balance: "100000000000000000000000" } : undefined,
-        USER8_PRIVATE_KEY ? { privateKey: USER8_PRIVATE_KEY, balance: "100000000000000000000000" } : undefined,
-        USER9_PRIVATE_KEY ? { privateKey: USER9_PRIVATE_KEY, balance: "100000000000000000000000" } : undefined,
-      ].filter(Boolean) as { privateKey: string; balance: string }[],
+      accounts: buildAccountsArray().map(privateKey => ({
+        privateKey,
+        balance: "100000000000000000000000" // 100,000 ETH
+      })),
+      chainId: 31337, // Default Hardhat chainId
     },
     localhost: {
       url: "http://127.0.0.1:8545",
-      timeout: 120000, // Add 2 minute timeout here too
+      timeout: 120000,
+      accounts: buildAccountsArray(),
     },
   },
 };
-
 export default config;
