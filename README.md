@@ -1,4 +1,4 @@
-# Exhibition Launchpad Platform
+# Exhibition Launchpad Infrastructure
 
 <div align="center">
 
@@ -17,7 +17,7 @@
 
 ## 🌟 Overview
 
-Exhibition is a next-generation launchpad platform built with security, transparency, and user protection at its core. The platform enables projects to launch tokens, raise funds, and provide instant liquidity through an integrated AMM, all while protecting both project creators and contributors.
+Exhibition is a deterministic next-generation token launch infrastructure built with security, transparency, and user protection at its core. The platform enables projects to launch tokens, raise funds, and provide instant liquidity through an integrated AMM, all while protecting both project and contributors.
 
 ### Key Highlights
 
