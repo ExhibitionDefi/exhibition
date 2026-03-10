@@ -1,4 +1,4 @@
-# Exhibition Launchpad Infrastructure
+# Exhibition Token Launch Infrastructure
 
 <div align="center">
 
@@ -17,7 +17,7 @@
 
 ## 🌟 Overview
 
-Exhibition is a deterministic next-generation token launch infrastructure built with security, transparency, and user protection at its core. The platform enables projects to launch tokens, raise funds, and provide instant liquidity through an integrated AMM, all while protecting both project and contributors.
+Exhibition is a deterministic next-generation token launch infrastructure built with security, transparency, verifiablity and user protection at its core. The platform enables projects to launch tokens, raise funds, and provide instant liquidity through an integrated AMM, all while protecting both project and contributors.
 
 ### Key Highlights
 
@@ -111,38 +111,43 @@ mapping(uint256 => address[]) public projectContributors;
 ```
 Exhibition Platform
 │
-├── 📦 Core Contracts
-│   ├── Exhibition.sol (Main Hub - combines all modules)
-│   ├── ExhibitionFactory.sol (Token Deployment)
-│   ├── ExhibitionAMM.sol (Decentralized Exchange)
-│   └── ExhibitionLPTokens.sol (Liquidity Token Management)
+├── 📦 Core Contracts (Orchestrators)
+│   ├── Exhibition.sol ........... Main Protocol Orchestrator (Unified entry point for all modules)
+│   ├── ExhibitionFactory.sol .... Registry & Deployment (Manages project token creation)
+│   ├── ExhibitionAMM.sol ........ AMM Orchestrator (Central hub for swap & liquidity logic)
+│   └── ExhibitionLPTokens.sol ... Pool State Manager (Handles LP minting & accounting)
 │
-├── 🧩 Exhibition Modules
-│   ├── ExhibitionBase.sol (State & Constants)
-│   ├── ExhibitionConfig.sol (Configuration)
-│   ├── ExhibitionTokenCalculation.sol (Price Calculations)
-│   ├── ExhibitionFaucet.sol (Testnet Tokens)
-│   ├── ExhibitionTokenDeployment.sol (Standalone Tokens)
-│   ├── ExhibitionProjectCore.sol (Project Creation)
-│   ├── ExhibitionContributions.sol (Fundraising)
-│   ├── ExhibitionClaims.sol (Token Distribution & Vesting)
-│   ├── ExhibitionRefunds.sol (Refund & Withdrawal)
-│   ├── ExhibitionLiquidity.sol (Liquidity Management)
-│   └── ExhibitionViews.sol (Query Functions)
+├── 🧩 Exhibition Modules (Platform logic inherited by Main Hub)
+│   ├── ExhibitionBase.sol ....... Inheritance Foundation (Shared state & constants)
+│   ├── ExhibitionConfig.sol ..... Protocol Configuration & Parameters
+│   ├── ExhibitionTokenCalc.sol .. Price Discovery & Tokenomic Calculations
+│   ├── ExhibitionFaucet.sol ..... Testnet Asset Distribution
+│   ├── ExhibitionTokenDeploy .... Standalone Token Implementation Logic
+│   ├── ExhibitionProjectCore .... Project Lifecycle & Metadata Management
+│   ├── ExhibitionContributions .. Fundraising & Capital Allocation
+│   ├── ExhibitionClaims ......... Distribution, Vesting & Locking Schedules
+│   ├── ExhibitionRefunds ........ Investor Protection & Withdrawal Logic
+│   ├── ExhibitionLiquidity ...... Bridge to AMM (Initial Liquidity Seeding)
+│   └── ExhibitionViews .......... External Query functions & Data Aggregation
 │
-├── 🔧 AMM Modules
-│   ├── ExhibitionAMMCore.sol (Core Logic)
-│   ├── ExhibitionAMMStorage.sol (State Management)
-│   ├── ExhibitionAMMFees.sol (Fee System)
-│   ├── ExhibitionAMMLocks.sol (Liquidity Locks)
-│   ├── ExhibitionAMMEarnings.sol (Fee Distribution)
-│   └── ExhibitionAMMViews.sol (Pool Queries)
+├── 🔧 AMM Modules (Internal logic inherited by AMM Hub)
+│   ├── ExhibitionAMMCore ........ Core Swap Logic & Curve Mathematics
+│   ├── ExhibitionAMMEarnings .... Revenue Tracking & Fee Distribution
+│   ├── ExhibitionAMMErrors ...... Unified Error Definitions & Reverts
+│   ├── ExhibitionAMMStorage ..... AMM State & Pool Management
+│   ├── ExhibitionAMMFees ........ Dynamic Fee Calculation System
+│   ├── ExhibitionAMMLibrary ..... Optimized Pure Mathematical Utilities
+│   ├── ExhibitionAMMLocks ....... Liquidity Provider Security & Time-Locks
+│   ├── ExhibitionAMMTypes ....... Protocol-wide Structs & Enums
+│   └── ExhibitionAMMViews ....... Real-time Pool Metrics & Pricing Queries
 │
-└── 📚 Libraries & Interfaces
-    ├── ExLibrary.sol (Utility Functions)
-    ├── IExhibitionAMM.sol (AMM Interface)
-    ├── IExhibitionPlatform.sol (Main Interfaces) 
-    └── IExhibitionMinimal.sol (ExhibitionPlatform mini Interface for AMM interaction)
+└── 📚 Libraries & Interfaces (Integration & Communication)
+    ├── ExLibrary.sol ............ Shared Utility Helper Functions
+    ├── IExhibitionAMM.sol ....... Full AMM Interface
+    ├── IExhibitionLPTokens.sol .. LP Token Standard Interface
+    ├── IExhibitionPlatform.sol .. Main Protocol Interface
+    └── IExhibitionMinimal.sol ... Cross-Contract Bridge (AMM-to-Platform communication)
+
 ```
 
 ### **Contract Interactions**
