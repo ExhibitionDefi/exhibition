@@ -204,13 +204,13 @@ uint256 public constant  LIQUIDITY_FINALIZATION_DEADLINE_BLOCKS = 604_800;
 
 ```solidity
 enum ProjectStatus {
-    Upcoming,    // Created, waiting for start block
-    Active,      // Accepting contributions
-    Successful,  // Funding goal met
-    Failed,      // Soft cap not met
+    Upcoming,    // Created, waiting token for sale deposit
+    Active,      // Token deposited, contributions open at start block
+    Successful,  // Funding goal met and claim is open
+    Failed,      // End block reached, soft cap not met
     Claimable,   // Tokens available to claim
-    Refundable,  // Refunds available
-    Completed    // Fully processed
+    Refundable,  // First refund requested — transitions from Failed
+    Completed    // Successful, Liquidity added and finalized
 }
 ```
 
@@ -368,6 +368,10 @@ function isEmergencyRefundAvailable(uint256 projectId) external view returns (bo
 function getLiquidityDeadlineBlock(uint256 projectId) external view returns (uint256);
 function getUserVestingInfo(uint256 projectId, address user) external view returns (...);
 function getRequiredLiquidityTokens(uint256 projectId) external view returns (uint256);
+function successBlock(uint256 projectId) external view returns (uint256);
+// Block number at which the project reached its funding goal (hard cap or finalization).
+// Returns 0 if the project has not yet succeeded.
+// Used as the reference point for vesting cliff and duration calculations.
 ```
 
 ### Project Owner
@@ -543,10 +547,10 @@ The block constants are baked into the contract. Block conversion are left for t
 
 | Constant | Value |
 |---|---|---|
-| `MIN_START_DELAY_BLOCKS` | 7,200 |
-| `MAX_END_DURATION_BLOCKS` | 1,296,000 |
+| `MIN_START_DELAY_BLOCKS` | 3,600 |
+| `MAX_END_DURATION_BLOCKS` | 691,200 |
 | `MIN_LOCK_DURATION_BLOCKS` | 1,209,600 |
-| `WITHDRAWAL_UNSOLD_DELAY_BLOCKS` | 172,800 |
+| `WITHDRAWAL_UNSOLD_DELAY_BLOCKS` | 86,400 |
 | `LIQUIDITY_FINALIZATION_DEADLINE_BLOCKS` | 604,800 |
 
 ```
