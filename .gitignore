@@ -1,0 +1,28 @@
+node_modules
+.env
+configure.txt
+
+# Hardhat files
+/cache
+/artifacts
+
+# TypeChain files
+/typechain
+/typechain-types
+
+# solidity-coverage files
+/coverage
+/coverage.json
+
+# Ignore Hardhat deployment artifacts 
+deployed_addresses.json
+deployed_full_platform_addresses_local.json
+
+scripts/verify.ts
+scripts/contr-Token.ts
+scripts/batchClaim.ts
+scripts/batchContribute.ts
+scripts/batchRequestRefund.ts
+scripts/faucet.ts
+
+DOC.md

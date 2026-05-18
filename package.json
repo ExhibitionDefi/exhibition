@@ -1,0 +1,43 @@
+{
+  "name": "exhibition",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "clean": "hardhat clean",
+    "test": "hardhat test",
+
+    "faucet": "hardhat run scripts/faucet.ts --network nexusTestnet",
+    "batch": "hardhat run scripts/batchContribute.ts --network nexusTestnet",
+    "claim": "hardhat run scripts/batchClaim.ts --network nexusTestnet",
+    "refund": "hardhat run scripts/batchRequestRefund.ts --network nexusTestnet",
+  
+    "node": "hardhat node",
+    "deploy": "hardhat run scripts/deployLocal.ts --network localhost",
+    "request": "hardhat run scripts/request-faucet-add-contribution-token.ts --network localhost",
+    "create": "hardhat run scripts/test-create-launch-liquidity-lock.ts --network localhost",
+    "fullcircle": "hardhat run scripts/test-project-full-circle.ts --network localhost",
+    "softcap": "hardhat run scripts/test-softcap-withdrawunsoldtokens.ts --network localhost",
+    "failed": "hardhat run scripts/test-failed-project-refund.ts --network localhost",
+    "emergency": "hardhat run scripts/emergency_refund.ts --network localhost",
+    "emergency_refund": "hardhat run scripts/emergency_refund_on_completed.ts --network localhost"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.9",
+    "@nomicfoundation/hardhat-toolbox": "^6.0.0",
+    "@types/node": "^24.0.13",
+    "dotenv": "^17.2.0",
+    "ethers": "^6.15.0",
+    "hardhat": "^2.25.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.3.0"
+  }
+}
