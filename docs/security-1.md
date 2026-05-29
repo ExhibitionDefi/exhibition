@@ -1,11 +1,14 @@
 ---
 description: >-
   Every guarantee Onchain Tokenomist makes — immutability, verifiability,
-  trustless distribution — is backed by a specific on-chain mechanism. No
-  property relies on off-chain enforcement, operator trust
+  trustless distribution — is backed by a specific on-chain mechanism.
 ---
 
 # Security
+
+{% hint style="info" %}
+#### No property relies on off-chain enforcement, operator trust, or ongoing protocol dependency.
+{% endhint %}
 
 #### Vault Immutability
 

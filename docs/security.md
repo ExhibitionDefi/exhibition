@@ -2,10 +2,14 @@
 description: >-
   Exhibition is built around a single security principle: the protocol enforces
   what the team commits to, and the team cannot override what the protocol
-  enforces. Every protection described on this page
+  enforces.
 ---
 
 # Security
+
+{% hint style="info" %}
+#### Every protection described on this page is implemented at the contract level — not by policy, not by admin action, not by trust.
+{% endhint %}
 
 #### Contributor Protections
 

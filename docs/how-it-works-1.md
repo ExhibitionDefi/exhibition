@@ -1,11 +1,14 @@
 ---
 description: >-
   Onchain Tokenomist is built around three core primitives: the vault, the pass,
-  and vesting. Everything the protocol does — locking, vesting, distributing,
-  enforcing — flows through these three concept
+  and vesting.
 ---
 
 # How It Works
+
+{% hint style="info" %}
+#### Everything the protocol does — locking, vesting, distributing, enforcing — flows through these three concepts.
+{% endhint %}
 
 #### Vaults
 

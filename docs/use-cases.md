@@ -2,10 +2,13 @@
 description: >-
   Onchain Tokenomist is built around a single flexible primitive — the vault.
   Three distinct use cases emerge from how that vault is configured at creation.
-  The protocol does not prescribe which use cas
 ---
 
 # Use Cases
+
+{% hint style="info" %}
+#### The protocol does not prescribe which use case a project chooses — it encodes whatever the project commits to.
+{% endhint %}
 
 #### Token Locker
 

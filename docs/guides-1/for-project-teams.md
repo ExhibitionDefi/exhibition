@@ -2,10 +2,16 @@
 description: >-
   Onchain Tokenomist gives project teams something that has never existed in
   Web3: a way to make tokenomics commitments that are verifiable before they are
-  trusted. This guide walks through every decisi
+  trusted.
 ---
 
 # For Project Teams
+
+{% hint style="info" %}
+This guide walks through every decision a project team makes when creating a vault — how to think about it, how to configure it, and what the world will be able to verify once it is on-chain.
+
+There are no do-overs after creation. Approach every parameter as a final commitment.
+{% endhint %}
 
 #### Designing Your Full Token Economy
 

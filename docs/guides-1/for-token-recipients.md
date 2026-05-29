@@ -1,11 +1,16 @@
 ---
 description: >-
   If you have been allocated tokens through a project using Onchain Tokenomist,
-  your entitlement is encoded on-chain. This guide explains what that means, how
-  to find your pass, how to read your vesting
+  your entitlement is encoded on-chain.
 ---
 
 # For Token Recipients
+
+{% hint style="info" %}
+This guide explains what that means, how to find your pass, how to read your vesting schedule, and how to claim your tokens.
+
+No technical knowledge is required. Everything is accessible through the app at [onchaintokenomist.vercel.app](https://onchaintokenomist.vercel.app).
+{% endhint %}
 
 #### Understanding Your Pass
 

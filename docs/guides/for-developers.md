@@ -1,11 +1,12 @@
 ---
-description: >-
-  Exhibition is deployed on Nexus Layer 1. This guide covers everything needed
-  to integrate Exhibition into your application — from reading project data to
-  creating launches, contributing, and interacti
+description: Exhibition is deployed on Nexus Layer 1.
 ---
 
 # For Developers
+
+{% hint style="info" %}
+#### This guide covers everything needed to integrate Exhibition into your application — from reading project data to creating launches, contributing, and interacting with the AMM.
+{% endhint %}
 
 #### Setup
 

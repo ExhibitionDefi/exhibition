@@ -1,5 +1,5 @@
 ---
-description: The Onchain Tokenomist app is live at onchaintokenomist.vercel.app
+description: The Onchain Tokenomist app is live at onchaintokenomist.vercel.app.
 ---
 
 # Using the App

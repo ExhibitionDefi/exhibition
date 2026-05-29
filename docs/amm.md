@@ -2,10 +2,14 @@
 description: >-
   Exhibition includes a native automated market maker — the Exhibition AMM. When
   a launch completes successfully, the protocol seeds a liquidity pool directly
-  from the raise. No external DEX. No market
+  from the raise.
 ---
 
 # AMM
+
+{% hint style="info" %}
+#### No external DEX. No market maker agreement. No manual liquidity provision. The project launches with a live, verifiable market from the moment finalization executes.
+{% endhint %}
 
 #### How It Works
 

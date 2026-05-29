@@ -1,11 +1,12 @@
 ---
-description: >-
-  Onchain Tokenomist is deployed and accessible via its contract interface. This
-  guide covers everything needed to integrate Onchain Tokenomist into your
-  application — from creating vaults and managing
+description: Onchain Tokenomist is deployed and accessible via its contract interface.
 ---
 
 # For Developers
+
+{% hint style="info" %}
+#### This guide covers everything needed to integrate Onchain Tokenomist into your application — from creating vaults and managing proposals to minting passes and claiming tokens.
+{% endhint %}
 
 #### Setup
 

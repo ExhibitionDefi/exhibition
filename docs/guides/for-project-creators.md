@@ -1,11 +1,12 @@
 ---
-description: >-
-  Launching on Exhibition means making commitments that cannot be changed. This
-  guide walks through every decision a project creator makes before and during a
-  launch — what each parameter means in pract
+description: Launching on Exhibition means making commitments that cannot be changed.
 ---
 
 # For Project Creators
+
+{% hint style="info" %}
+#### &#x20;This guide walks through every decision a project creator makes before and during a launch — what each parameter means in practice, how to think about it, and what contributors will be evaluating when they read it.
+{% endhint %}
 
 #### Designing Your Launch Parameters
 

@@ -2,10 +2,16 @@
 description: >-
   Exhibition gives contributors something the primary market has never reliably
   offered: the ability to make a decision based on complete, verifiable
-  information. Every parameter governing a launch is o
+  information.
 ---
 
 # For Contributors
+
+{% hint style="info" %}
+Every parameter governing a launch is on-chain before contributions open. Nothing can change after you commit capital.
+
+This guide walks through how to evaluate a launch, how to contribute, how to claim your tokens, and what protections exist if something goes wrong.
+{% endhint %}
 
 #### How to Evaluate a Launch
 

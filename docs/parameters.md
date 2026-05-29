@@ -1,11 +1,14 @@
 ---
 description: >-
   Every parameter governing an Exhibition launch is configured at creation and
-  immutable once the project created. This page documents every parameter a
-  creator configures, what it controls, and what co
+  immutable once the project created.
 ---
 
 # Parameters
+
+{% hint style="info" %}
+#### This page documents every parameter a creator configures, what it controls, and what contributors should verify before committing capital.
+{% endhint %}
 
 #### Funding & Pricing
 
