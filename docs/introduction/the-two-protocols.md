@@ -6,7 +6,9 @@ description: >-
 
 # The Two Protocols
 
+{% hint style="info" %}
 #### They share one standard and one guarantee: that every parameter, every rule, and every commitment a project makes is encoded on-chain, immutable from the moment it is created, and verifiable by anyone in the world without permission or expertise.
+{% endhint %}
 
 #### Exhibition
 

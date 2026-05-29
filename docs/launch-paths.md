@@ -2,10 +2,14 @@
 description: >-
   Exhibition supports two paths for bringing a token to market. Both paths share
   the same parameter set, the same lifecycle, and the same Single-State
-  Execution guarantee. The difference is whether the
+  Execution guarantee.
 ---
 
 # Launch Paths
+
+{% hint style="info" %}
+#### The difference is whether the token already exists before the launch is created.
+{% endhint %}
 
 #### New Token
 
