@@ -1,11 +1,14 @@
 ---
 description: >-
-  Exhibition operates on a model it calls Single-State Execution. The concept is
-  simple but the implications are significant: the state of a launch at the
-  moment capital enters is the state that execute
+  Exhibition operates on a model it calls Single-State Execution — the state at
+  the moment capital enters is the state that executes at the end.
 ---
 
 # How It Works
+
+{% hint style="info" %}
+#### The concept is simple but the implications are significant. Nothing in between can alter it. This is not a policy. It is not a promise from the team. It is a protocol-level enforcement — the contract itself is the guarantor.
+{% endhint %}
 
 #### Single-State Execution
 
