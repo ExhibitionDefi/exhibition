@@ -1,11 +1,12 @@
 ---
 description: >-
-  Perfect Information Labs has built two protocols. They are separate systems
-  with separate purposes — but they share one vision, one standard, and one
-  guarantee: that every parameter, every rule, and e
+  Perfect Information Labs has built two protocols. Separate systems, separate
+  purposes — one vision.
 ---
 
 # The Two Protocols
+
+#### They share one standard and one guarantee: that every parameter, every rule, and every commitment a project makes is encoded on-chain, immutable from the moment it is created, and verifiable by anyone in the world without permission or expertise.
 
 #### Exhibition
 
