@@ -2,18 +2,18 @@
 description: >-
   Exhibition includes a native automated market maker — the Exhibition AMM. When
   a launch completes successfully, the protocol seeds a liquidity pool directly
-  from the raise.
+  from the launch capital.
 ---
 
 # AMM
 
 {% hint style="info" %}
-#### No external DEX. No market maker agreement. No manual liquidity provision. The project launches with a live, verifiable market from the moment finalization executes.
+No waiting. No external dependency for initial liquidity. The project launches with a live, verifiable market from the moment finalization executes — and every subsequent listing, partnership, or liquidity expansion is pursued from a position of strength.
 {% endhint %}
 
 #### How It Works
 
-The Exhibition AMM is a constant product market maker operating on the standard x × y = k curve. Every pool is created from launch capital — the liquidity percentage configured at project creation determines how much of the raised capital is paired with project tokens to seed the initial pool.
+The Exhibition AMM is a constant product market maker operating on the standard x × y = k curve. Every pool is created from launch capital — the liquidity percentage configured at project creation determines how much of the launch capital is paired with project tokens to seed the initial pool.
 
 Once seeded, the pool operates permissionlessly. Anyone can swap, add liquidity, or remove liquidity. The project owner has no special authority over the pool after finalization.
 

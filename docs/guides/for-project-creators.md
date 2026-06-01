@@ -12,15 +12,15 @@ description: Launching on Exhibition means making commitments that cannot be cha
 
 Before creating a launch on Exhibition, every parameter must be decided. There is no ability to adjust after creation. Approach this as a final commitment — not a starting point for negotiation.
 
-**Funding Goal** Set this as the exact capital your project needs, not the maximum you could extract. The funding goal is your hard cap — the raise closes the moment it is reached. Contributors read this as a signal of intent. A realistic funding goal communicates that the project has a clear use of capital. An inflated one signals the opposite.
+**Funding Goal** Set this as the exact amount required to bootstrap your initial on-chain liquidity. not the maximum you could extract. The funding goal is your hard cap — the raise closes the moment it is reached. Contributors read this as a signal of intent. A realistic funding goal communicates that the project has a clear use of capital. An inflated one signals the opposite.
 
-**Soft Cap** Must be at least 51% of your funding goal. Set it at the minimum raise that makes your project viable. If you cannot execute on less than 80% of your funding goal, set the soft cap at 80%. The soft cap is the floor below which contributors receive full refunds — it is your public commitment to what constitutes a meaningful raise.
+**Soft Cap** Must be at least 51% of your funding goal. Set it at the minimum that makes your launch viable. If you cannot execute on less than 80% of your funding goal, set the soft cap at 80%. The soft cap is the floor below which contributors receive full refunds — it is your public commitment to what constitutes a meaningful raise.
 
-**Token Price** All contributors pay the same fixed price. There is no tiered pricing, no early contributor discount, no discretionary allocation. Set the price that reflects your project's valuation honestly — it will be visible and immutable for the entire duration of the raise.
+**Token Price** All contributors pay the same fixed price. There is no tiered pricing, no early contributor discount, no discretionary allocation. Set the price that reflects your project's valuation honestly — it will be visible and immutable for the entire duration of the launch.
 
-**Contribution Limits** Minimum and maximum per-contributor limits shape who participates and how concentrated the raise becomes. A low maximum distributes capital more broadly. A high maximum allows larger participants to take significant positions. Neither is inherently correct — the right configuration depends on the community you are building.
+**Contribution Limits** Minimum and maximum per-contributor limits shape who participates and how concentrated the launch becomes. A low maximum distributes capital more broadly. A high maximum allows larger participants to take significant positions. Neither is inherently correct — the right configuration depends on the community you are building.
 
-**Start and End Blocks** The minimum delay between project creation and start block is 3,600 blocks — enough time for contributors to discover and evaluate the launch before it opens. The maximum fundraise window is 691,200 blocks. Set a window that gives your community sufficient time to participate without leaving the raise open indefinitely.
+**Start and End Blocks** The minimum delay between project creation and start block is 3,600 blocks — enough time for contributors to discover and evaluate the launch before it opens. The maximum launch window is 691,200 blocks. Set a window that gives your community sufficient time to participate without leaving the launch open indefinitely.
 
 ***
 
@@ -28,11 +28,11 @@ Before creating a launch on Exhibition, every parameter must be decided. There i
 
 Exhibition currently supports two contribution tokens:
 
-**USDX** — Nexus USD. A stable contribution currency. Contributors know exactly how much they are committing in dollar terms. Appropriate for raises where price stability matters to both sides.
+**USDX** — Nexus USD. A stable contribution currency. Contributors know exactly how much they are committing in dollar terms. Appropriate for launch where price stability matters to both sides.
 
-**WNEX** — Wrapped NEX, the native chain token. Contributors participate with native chain exposure. Appropriate for raises targeting the core Nexus ecosystem.
+**WNEX** — Wrapped NEX, the native chain token. Contributors participate with native chain exposure. Appropriate for launch targeting the core Nexus ecosystem.
 
-Choose the token that matches your target contributor base. Contributors must hold the selected token to participate — this choice shapes who can enter your raise.
+Choose the token that matches your target contributor base. Contributors must hold the selected token to participate — this choice shapes who can enter your launch.
 
 ***
 
@@ -56,13 +56,13 @@ Neither is wrong. Both are visible on-chain before any contributor commits capit
 
 #### Finalizing Liquidity
 
-After a successful raise, you have 604,800 blocks to deposit liquidity tokens and call finalization. This is the most time-sensitive action in the launch lifecycle.
+After a successful launch, you have 604,800 blocks to deposit liquidity tokens and call finalization. This is the most time-sensitive action in the launch lifecycle.
 
-**Do not delay finalization without reason.** The 604,800 block window exists as a contributor protection — if you miss it, the emergency refund path opens unconditionally and your raise unwinds regardless of its success. Plan your finalization well within the deadline.
+**Do not delay finalization without reason.** The 604,800 block window exists as a contributor protection — if you miss it, the emergency refund path opens unconditionally and your launch unwinds regardless of its success. Plan your finalization well within the deadline.
 
 **What finalization does:**
 
-* Pairs the configured liquidity percentage of raised capital with your project tokens
+* Pairs the configured liquidity percentage of launch capital with your project tokens
 * Seeds the Exhibition AMM pool atomically
 * Locks LP tokens for the configured lock duration
 * Releases remaining raised capital to you
