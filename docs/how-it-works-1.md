@@ -1,18 +1,18 @@
 ---
 description: >-
-  Onchain Tokenomist is built around three core primitives: the vault, the pass,
-  and vesting.
+  Onchain Tokenomist is built around the vault — a single on-chain object that
+  holds the complete token economy. Everything else flows from it.
 ---
 
 # How It Works
 
 {% hint style="info" %}
-#### Everything the protocol does — locking, vesting, distributing, enforcing — flows through these three concepts.
+#### Inside every vault: categories group the allocations, tiers define the sizes, and passes carry the entitlement. One vault. Complete economy. Immutable from creation.
 {% endhint %}
 
 #### Vaults
 
-A vault is the root object. It is the complete on-chain record of a project's entire token economy.
+A vault is the root object — the complete on-chain record of a project's entire token economy.
 
 Before creation, the project defines every parameter — token address, total amount, category structure, tier configurations, vesting schedules, distribution authority, and admin roles. Everything is submitted in a single atomic transaction. A registration fee in the chain's native token is required at creation.
 
@@ -20,13 +20,23 @@ At creation, the contract locks the full token amount and configuration atomical
 
 After creation, the only action available is pass distribution — minting passes to recipients within the defined tier supply caps. Once all passes across all categories are fully distributed, the vault status transitions to finalized and no further minting is possible.
 
-**A vault is structured in three layers:**
+***
 
-**Categories** — logical groupings of tiers. A project might have categories named Team, Investors, Advisors, Community, or Treasury. Each category carries its own independent vesting schedule — cliff, duration, interval, and initial release. A change in one category's vesting never affects another.
+#### Categories
 
-**Tiers** — defined allocation buckets within a category. Each tier has a per-pass allocation and a maximum supply. A Team category might contain a Diamond tier at 40,000 tokens per pass and a Gold tier at 5,000 tokens per pass. Both tiers vest on the same Team schedule but carry different allocation sizes.
+Categories are logical groupings of tiers within a vault. A project might have categories named Team, Investors, Advisors, Community, or Treasury — each reflecting a distinct group in the token economy.
 
-**Passes** — the on-chain record of each recipient's entitlement. Minted to recipients within the defined tier supply caps. Non-transferable. The pass is the proof.
+Each category carries its own independent vesting schedule — cliff, duration, interval, and initial release configured at vault creation. A change in one category's vesting never affects another. Each category is fully self-contained.
+
+***
+
+#### Tiers
+
+Tiers are defined allocation buckets within a category. Each tier has two parameters: a per-pass allocation and a maximum supply.
+
+A Team category might contain a Diamond tier at 40,000 tokens per pass with a maximum supply of 1, and a Gold tier at 5,000 tokens per pass with a maximum supply of 4. Both tiers vest on the same Team schedule but carry different allocation sizes. The total allocation for any tier is per-pass allocation × maximum supply.
+
+Once a tier's maximum supply is reached, no further passes can be minted for that tier under any condition.
 
 ***
 
@@ -38,7 +48,7 @@ The pass is soulbound — non-transferable by design. All entitlement state is t
 
 Once the full allocation has been claimed, the pass burns automatically. The record is complete and nothing remains to track.
 
-**There is no address tracking. No operator intervention. No ongoing dependency on the protocol after the vault is created and passes are minted.**
+There is no address tracking. No operator intervention. No ongoing dependency on the protocol after the vault is created and passes are minted.
 
 ***
 
@@ -54,7 +64,7 @@ Each category carries its own independent vesting schedule — configured at vau
 | `interval`       | Unlock frequency — tokens vest in discrete steps every N blocks after the cliff                                      |
 | `enabled`        | Toggle — if disabled, 100% is liquid at the start block                                                              |
 
-Pass holders call `claim` to collect vested tokens. The contract calculates the vested amount at the current block, subtracts previously claimed amounts, and transfers the difference. Claiming is cumulative — missed intervals are always collectable in the next claim. Once fully claimed, the pass burns automatically.
+Pass holders call `claim` to collect vested tokens. The contract calculates the vested amount at the current block, subtracts previously claimed amounts, and transfers the difference. Claiming is cumulative — any elapsed intervals are available the moment you claim, whether you claim during that interval or long after. Once fully claimed, the pass burns automatically.
 
 **Example vesting schedule — 20% initial release, 3 intervals:**
 
