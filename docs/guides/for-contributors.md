@@ -19,17 +19,17 @@ Before committing capital to any Exhibition launch, every parameter is readable 
 
 **What to read before contributing:**
 
-**Funding Goal and Soft Cap** The funding goal is the hard cap — the maximum the raise accepts. The soft cap is the minimum for success. If the raise closes below the soft cap, full refunds are available. Understand the range between these two numbers — it tells you the minimum viable outcome the project has committed to.
+**Funding Goal and Soft Cap** The funding goal is the hard cap — the maximum the launch accepts. The soft cap is the minimum for success. If the launch closes below the soft cap, full refunds are available. Understand the range between these two numbers — it tells you the minimum viable outcome the project has committed to.
 
-**Token Price** Fixed for the entire raise. Every contributor pays the same price. There is no insider pricing, no early discount, no discretionary allocation. The price you see is the price you pay.
+**Token Price** Fixed for the entire launch. Every contributor pays the same price. There is no insider pricing, no early discount, no discretionary allocation. The price you see is the price you pay.
 
 **Tokens For Sale and Total Supply** Read both. Tokens for sale tells you your allocation at any contribution amount. Total supply tells you what percentage of the entire token economy your allocation represents. For factory-deployed tokens, total supply is the absolute maximum — no additional minting is possible. For existing tokens, verify the token contract independently.
 
-**Liquidity Percentage and Lock Duration** The liquidity percentage tells you how much of the raised capital is going directly into the AMM pool at launch completion. The lock duration tells you how long that liquidity cannot be removed. These two numbers together tell you how protected the initial market is. Verify both before contributing.
+**Liquidity Percentage and Lock Duration** The liquidity percentage tells you how much of the launch capital is going directly into the AMM pool at launch completion. The lock duration tells you how long that liquidity cannot be removed. These two numbers together tell you how protected the initial market is. Verify both before contributing.
 
 **Vesting Schedule** If vesting is enabled, read the full schedule — initial release, cliff, duration, and interval. Calculate when you will have access to your full allocation. A vesting schedule is not a negative signal — it is a commitment the project has made on-chain. Read it as information, not as a restriction.
 
-**Start and End Blocks** The exact blocks contributions open and close. Convert to approximate time using the average block time on Nexus. Know when the raise ends so you can make your contribution decision within the window.
+**Start and End Blocks** The exact blocks contributions open and close. Convert to approximate time using the average block time on Nexus. Know when the launch ends so you can make your contribution decision within the window.
 
 ***
 
@@ -60,7 +60,9 @@ Once a project reaches Successful status, tokens become claimable according to t
 
 **If vesting is disabled** — your full allocation is claimable immediately at the success block.
 
-**If vesting is enabled** — your initial release is claimable at the success block. Subsequent tranches unlock at each interval after the cliff. Missed intervals are always collectable in the next claim — you do not lose vested tokens by claiming late.
+***
+
+If vesting is enabled — your initial release is claimable at the success block. Subsequent tranches unlock at each interval after the cliff. Claiming is cumulative — any elapsed intervals are available the moment you claim, whether you claim during that interval or long after. You never lose vested tokens by claiming late.
 
 solidity
 
@@ -102,7 +104,7 @@ solidity
 function requestRefund(uint256 projectId) external;
 ```
 
-**Emergency Refund — Missed Liquidity Deadline** If a project raises successfully but the project owner fails to finalize liquidity within 604,800 blocks, the emergency refund path opens unconditionally. You keep any tokens you have already claimed and receive a full refund of your contribution.
+**Emergency Refund — Missed Liquidity Deadline** If a launch successful but the project owner fails to finalize liquidity within 604,800 blocks, the emergency refund path opens unconditionally. You keep any tokens you have already claimed and receive a full refund of your contribution.
 
 solidity
 

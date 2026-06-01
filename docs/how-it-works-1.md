@@ -118,22 +118,6 @@ All vault mechanics — tier structure, vesting schedules, pass issuance, and cl
 
 ***
 
-Changes, cuts, or push further?
-
-
-
-### You said: next
-
-next
-
-4:07 AM
-
-### Claude responded: Here's the first draft of Use Cases:
-
-Here's the first draft of **Use Cases**:
-
-***
-
 ### Use Cases
 
 Onchain Tokenomist is built around a single flexible primitive — the vault. Three distinct use cases emerge from how that vault is configured at creation. The protocol does not prescribe which use case a project chooses — it encodes whatever the project commits to.
@@ -254,4 +238,4 @@ One vault. Five categories. Every commitment immutable from creation.
 
 **What this replaces:** the entire off-chain tokenomics execution layer. Spreadsheets. Manual distributions. Trusted multisigs. Vesting contracts that require team action. Tokenomics documents that cannot be verified. The gap between what was promised and what was delivered.
 
-The vault closes that gap permanently. From the moment it is created, anyone in the world can query the complete token economy of a project and verify — not trust — that what was committed is what is being enforced.
+The vault closes that gap permanently. From the moment it is created, anyone in the world can query the complete token economy of a project and verify — not trust — that what was committed is what is being enforced. No technical expertise required. No on-chain data extraction. No asking the team. The vault is readable, queryable, and verifiable by anyone through the app at [onchaintokenomist.vercel.app](https://onchaintokenomist.vercel.app).

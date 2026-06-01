@@ -283,7 +283,7 @@ await wnex.withdraw(ethers.parseEther('1000'));
 | Constant                                 | Blocks  | Purpose                              |
 | ---------------------------------------- | ------- | ------------------------------------ |
 | `MIN_START_DELAY_BLOCKS`                 | 3,600   | Minimum delay before launch starts   |
-| `MAX_END_DURATION_BLOCKS`                | 691,200 | Maximum fundraise window             |
+| `MAX_END_DURATION_BLOCKS`                | 691,200 | Maximum launch window                |
 | `WITHDRAWAL_UNSOLD_DELAY_BLOCKS`         | 86,400  | Delay before unsold token withdrawal |
 | `LIQUIDITY_FINALIZATION_DEADLINE_BLOCKS` | 604,800 | Window for owner to add liquidity    |
 
