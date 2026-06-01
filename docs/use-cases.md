@@ -124,4 +124,4 @@ One vault. Five categories. Every commitment immutable from creation.
 
 **What this replaces:** the entire off-chain tokenomics execution layer. Spreadsheets. Manual distributions. Trusted multisigs. Vesting contracts that require team action. Tokenomics documents that cannot be verified. The gap between what was promised and what was delivered.
 
-The vault closes that gap permanently. From the moment it is created, anyone in the world can query the complete token economy of a project and verify — not trust — that what was committed is what is being enforced.
+The vault closes that gap permanently. From the moment it is created, anyone in the world can query the complete token economy of a project and verify — not trust — that what was committed is what is being enforced. No technical expertise required. No on-chain data extraction. No asking the team. The vault is readable, queryable, and verifiable by anyone through the app at [onchaintokenomist.vercel.app](https://onchaintokenomist.vercel.app)
