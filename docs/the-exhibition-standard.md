@@ -24,13 +24,13 @@ This is not a design choice — it is an absence of design.
 
 Exhibition introduces a different standard. Not trust — commitment. Every action in the launch lifecycle has a defined window, a defined consequence, and a defined protection for contributors.
 
-The 7-day liquidity finalization window is not a grace period. It is a hard commitment boundary. When a project creates a public launch on Exhibition, they are declaring readiness — readiness to raise, readiness to finalize, readiness to launch. The protocol takes that declaration seriously.
+The 7-day liquidity finalization window is not a grace period. It is a hard commitment boundary. When a project creates a public launch on Exhibition, they are declaring readiness — readiness to launch, readiness to finalize, readiness to put initial liquidity on-chain. The protocol takes that declaration seriously.
 
 **Launch or lose.**
 
-Miss the deadline and the raise unwinds. Contributions return to contributors. Deposited liquidity is forfeited. There is no partial credit for partial completion — depositing liquidity without finalizing is an incomplete obligation, and the protocol treats it as such. The obligation is deposit and finalize. Not deposit as a show of intent.
+Miss the deadline and the launch unwinds. Contributions return to contributors. Deposited liquidity is forfeited. There is no partial credit for partial completion — depositing liquidity without finalizing is an incomplete obligation, and the protocol treats it as such. The obligation is deposit and finalize. Not deposit as a show of intent.
 
-This design solves a real Web3 problem — rug-by-inaction. A project that raises funds, goes silent, and leaves contributors waiting indefinitely with no recourse. Exhibition removes that possibility entirely. The contract is the enforcer. No governance vote. No multisig delay. Any contributor can trigger the emergency refund after the deadline — individually, permissionlessly, without asking anyone.
+This design solves a real Web3 problem — rug-by-inaction. A project that completes a public launch, goes silent, and leaves contributors waiting indefinitely with no recourse. Exhibition removes that possibility entirely. The contract is the enforcer. No governance vote. No multisig delay. Any contributor can trigger the emergency refund after the deadline — individually, permissionlessly, without asking anyone.
 
 And because finalization is still possible as long as no contributor has acted, the owner retains a window to make it right. The off-chain coordination layer remains social — a team that needs more time can communicate that to their community. But the on-chain enforcement layer is the contract. Contributors who trust the team wait. Contributors who don't pull out. The first to act ends it for everyone.
 
@@ -42,11 +42,11 @@ This turns every contributor into an independent enforcer. No admin required.
 
 Exhibition is a public launch infrastructure — not a development funding tool.
 
-There is a clear distinction in how projects raise capital:
+There is a clear distinction in how projects fund their journey to launch.
 
 **Pre-launch funding** — investor rounds, backer agreements, grants, and development capital are raised privately, before a public launch. This capital funds the building of the product. These arrangements happen off-chain, between parties, on agreed terms. Exhibition has no role here.
 
-**Public launch** — when a project is built, ready, and prepared to deliver — that is when Exhibition is the right infrastructure. The public raise on Exhibition is not to fund development. It is to bootstrap the initial on-chain liquidity and distribute tokens to the public from a position of readiness.
+**Public launch** — when a project is built, ready, and prepared to deliver — that is when Exhibition is the right infrastructure. The public launch on Exhibition is not to fund development. It is to bootstrap the initial on-chain liquidity and distribute tokens to the public from a position of readiness.
 
 A project that needs capital to finish building should not be creating a public launch on Exhibition. The 7-day finalization window exists precisely because Exhibition assumes the project is ready. The protocol is not designed to accommodate development timelines, unexpected delays, or incomplete products. It is designed for teams that have done the work and are ready to execute.
 
