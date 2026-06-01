@@ -14,7 +14,9 @@ description: >-
 
 The simplest use case. Vesting is disabled. The start block is set to the intended unlock block. The deposited amount is locked on-chain and released in full at that block — cryptographically enforced, with a verifiable on-chain record.
 
-This is not a promise to unlock at a future date. It is an on-chain guarantee. The block number is set at creation and immutable. No team action is required to release the funds — the protocol releases them when the block arrives.
+This is not a promise to unlock at a future date. It is an on-chain guarantee. The block number is set at creation and immutable.&#x20;
+
+> _No team action is required — the protocol releases the tokens when the block arrives._
 
 **The tier structure within the vault determines how the locked amount is distributed across recipients.**
 
