@@ -15,13 +15,15 @@ There are no do-overs after creation. Approach every parameter as a final commit
 
 #### Designing Your Full Token Economy
 
-Before creating a vault, the complete token economy must be defined. Every category, every tier, every allocation, every vesting schedule. The protocol encodes exactly what is submitted — nothing more, nothing less.
+Before creating a vault, the complete token economy must already be finalized — every category, every tier, every allocation, every vesting schedule. This is not the place to design the economy. That work happens in the documentation, with all involved parties, before the vault is ever created. The vault transforms what has already been decided into something immutable and verifiable on-chain.
 
-Start with the total supply. Everything flows from that number. Each category's allocation is a percentage of total supply. Each tier's per-pass allocation and maximum supply must fit within its category's total. The protocol validates that the sum of all tier allocations does not exceed the total amount deposited into the vault.
+The protocol encodes exactly what is submitted — nothing more, nothing less.
 
-**Think in categories first.** A category is a logical group — Team, Investors, Advisors, Community, Treasury. Each category gets its own vesting schedule. If two groups vest on different timelines, they belong in different categories. If two groups vest on the same timeline but at different allocation sizes, they belong in the same category as different tiers.
+**Start with the total supply.** Everything flows from that number. Each category's allocation is a percentage of total supply. Each tier's per-pass allocation and maximum supply must fit within its category's total. The protocol validates that the sum of all tier allocations does not exceed the total amount deposited into the vault.
 
-**Then think in tiers.** A tier is an allocation bucket within a category. Define the per-pass allocation and the maximum number of passes for each tier. The total allocation for a tier is per-pass allocation × maximum supply. Verify that the sum of all tier totals within a category matches your intended category allocation.
+**Categories reflect the distinct groups in your finalized documentation.** Team, Investors, Advisors, Backers, Partners, Community, Treasury — whatever groups exist in your tokenomics document become categories in the vault. A category is defined by the group's identity, not its vesting schedule. Two groups with the same vesting timeline but different identities in your documentation belong in separate categories. Each category carries its own independent vesting schedule regardless.
+
+**Tiers reflect the allocation sizes within each group.** Each tier has a per-pass allocation and a maximum supply. Tier naming should reflect your actual documentation — an Investors category might have tiers named Lead, Seed, and Angel rather than generic ranking labels. The total allocation for a tier is per-pass allocation × maximum supply. Verify that the sum of all tier totals within a category matches the intended category allocation in your documentation exactly.
 
 ***
 
@@ -39,9 +41,9 @@ Three vault configurations are available. Choose the one that matches your proje
 
 #### Setting Up Categories and Tiers
 
-**Category name** — a human-readable label for the group. Team, Investors, Advisors, Community, Treasury. Choose names that reflect your actual tokenomics documentation — the vault is the on-chain version of that document.
+**Category name** — reflects the group's identity in your tokenomics documentation. Team, Investors, Advisors, Community, Treasury, Backers, Partners — name it exactly as it appears in your documentation. The vault is the on-chain version of that document.
 
-**Tier name** — a label for the allocation bucket within the category. Diamond, Gold, Silver, Bronze, or whatever naming convention fits your project.
+**Tier name** — reflects the allocation size within the category. Name tiers according to your documentation — Lead, Seed, Angel for an Investors category, or Core, Early Hire for a Team category. Generic ranking labels are not required.
 
 **Per-pass allocation** — the exact number of tokens each pass in this tier represents. Set this to reflect the actual allocation size for each recipient group within the tier.
 
@@ -57,13 +59,13 @@ Three vault configurations are available. Choose the one that matches your proje
 
 #### Configuring Vesting Schedules
 
-Each category carries its own independent vesting schedule. Configure it to reflect your actual distribution intent — it is immutable after creation.
+Each category carries its own independent vesting schedule. Configure it to reflect your finalized documentation exactly — it is immutable after creation.
 
-**Initial Release** — the percentage of each pass's allocation unlocked immediately at the start block, before the cliff begins. Set this at whatever your project genuinely intends to release at the token generation event. Expressed in basis points — 2000 = 20%.
+**Initial Release** — the percentage of each pass's allocation unlocked immediately at the start block, before the cliff begins. Expressed in basis points — 2000 = 20%.
 
-**Cliff** — the number of blocks after the start block before interval vesting begins. During the cliff, no additional tokens beyond the initial release are claimable. Set a cliff that reflects your actual development and lock-up commitments.
+**Cliff** — the number of blocks after the start block before interval vesting begins. During the cliff, no additional tokens beyond the initial release are claimable.
 
-**Duration** — the total vesting period in blocks from the start block. All tokens in the category are fully vested by the end of this period. Set a duration that matches the long-term nature of your project's commitments to each group.
+**Duration** — the total vesting period in blocks from the start block. All tokens in the category are fully vested by the end of this period.
 
 **Interval** — how frequently tokens unlock after the cliff. Every N blocks after the cliff, another tranche becomes claimable. Shorter intervals distribute more continuously. Longer intervals create discrete unlock events.
 
@@ -81,7 +83,7 @@ At vault creation, choose how passes will be minted:
 
 **AI Agent Executor** — optionally configure an executor address to handle operational tasks. The executor can compose recipient sets, generate Merkle proofs, submit proposals, and trigger minting — but cannot approve proposals or alter any vault parameter. Approval authority stays with the configured admins.
 
-**Admin roles are immutable after creation.** Choose your distribution authority model carefully before submitting the vault creation transaction.
+Admin roles are immutable after creation. Choose your distribution authority model carefully before submitting the vault creation transaction.
 
 ***
 
@@ -92,11 +94,11 @@ Once the vault creation transaction is submitted, nothing can change. Run throug
 * Total deposit amount matches the sum of all tier allocations across all categories
 * Every category name and tier name reflects your actual tokenomics documentation
 * Every per-pass allocation and maximum supply is correct
-* Every vesting schedule — initial release, cliff, duration, interval — reflects your actual commitments
+* Every vesting schedule — initial release, cliff, duration, interval — reflects your finalized commitments
 * Distribution authority model is correctly configured — creator mode or dual-admin mode
 * Admin addresses are correct if dual-admin mode is configured
 * Executor address is correct if an executor is being used
 * Token address is correct — ERC-20 contract address or native token sentinel
 * Start block is set to the correct block for your token generation event
 
-The vault you create is the vault that executes. There are no amendments.
+**The vault you create is the vault that executes. There are no amendments.**
