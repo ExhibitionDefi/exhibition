@@ -23,6 +23,6 @@ We do this through two protocols:
 
 **Onchain Tokenomist** — verifiable token economy infrastructure. Every allocation, every vesting schedule, every distribution rule encoded in a single on-chain vault. No spreadsheets. No operator trust. No off-chain source of truth.
 
-Together they cover the full lifecycle — from the moment a token launches to how its economy is governed for years after. Every stage verifiable. Every parameter immutable. Every participant operating with the same information.
+Together they cover the full lifecycle — from the moment a token is born to how its economy is governed for years after. Every stage is verified. Every parameter is fixed. Every participant operates with the same information.
 
 That is what perfect information looks like on-chain.
