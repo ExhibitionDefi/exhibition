@@ -7,7 +7,7 @@ description: >-
 # The Two Protocols
 
 {% hint style="info" %}
-#### They share one standard and one guarantee: that every parameter, every rule, and every commitment a project makes is encoded on-chain, immutable from the moment it is created, and verifiable by anyone in the world without permission or expertise.
+#### While designed to operate independently, they share one standard and one guarantee: that every parameter, every rule, and every commitment a project makes is encoded on-chain, immutable from the moment it is created, and verifiable by anyone in the world without permission or expertise.
 {% endhint %}
 
 #### Exhibition
@@ -38,6 +38,10 @@ Onchain Tokenomist serves three use cases — token lockers, vesting schedules, 
 
 #### One Vision
 
-Exhibition owns the launch. Onchain Tokenomist owns the entire economy and what comes after. Together they cover the complete lifecycle of a token — from the first contribution to the final vesting claim — with no moment where a participant must trust rather than verify.
+{% hint style="info" %}
+**Whether used as standalone tools or deployed together, they redefine the token lifecycle.**&#x20;
+{% endhint %}
+
+Exhibition owns the launch. Onchain Tokenomist owns the entire economy and what comes after. **Together, they offer complete end-to-end certainty — though each protocol delivers absolute enforcement on its own.**
 
 This is what Perfect Information Labs is building. Not a better launchpad. Not a smarter vesting tool. A new standard for how token economies are created, launched, and governed — where the game is finally fair for everyone playing it.
