@@ -17,12 +17,12 @@ The name is intentional. In game theory, a game of perfect information is one wh
 
 Perfect Information Labs exists to close that gap.
 
-We do this through two protocols:
+We do this through two **independent** protocols:
 
 **Exhibition** — deterministic token launch infrastructure. Every parameter governing a launch is declared on-chain before capital enters and cannot be changed. What you see at the start is mathematically guaranteed at the end.
 
 **Onchain Tokenomist** — verifiable token economy infrastructure. Every allocation, every vesting schedule, every distribution rule encoded in a single on-chain vault. No spreadsheets. No operator trust. No off-chain source of truth.
 
-Together they cover the full lifecycle — from the moment a token is born to how its economy is governed for years after. Every stage is verified. Every parameter is fixed. Every participant operates with the same information.
+**Operating as standalone systems or seamlessly together**, they cover the full token lifecycle — from the moment a token is born to how its economy is governed for years after. With either protocol, every stage is verified, every parameter is fixed, and every participant operates with the same information.
 
 That is what perfect information looks like on-chain.
