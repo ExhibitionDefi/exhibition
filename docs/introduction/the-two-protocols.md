@@ -26,7 +26,7 @@ Exhibition is a pure tool. The only protocol-enforced boundaries are the soft ca
 
 Onchain Tokenomist is a verifiable token economy protocol — the on-chain infrastructure for a project's entire token economic system.
 
-It solves the token economy problem. A token economy that lives in a spreadsheet is unverifiable, mutable, and dependent on operator trust. Are the team's tokens actually locked? Is the vesting schedule actually enforced? Are the community allocations actually fixed? Without on-chain enforcement, none of these questions have verifiable answers — not before a token exist, not after.
+It solves the token economy problem. A token economy that lives in a spreadsheet is unverifiable, mutable, and dependent on operator trust. Are the team's tokens actually locked? Is the vesting schedule actually enforced? Are the community allocations actually fixed? Without on-chain enforcement, none of these questions have verifiable answers — not before a token exists, not after.
 
 Onchain Tokenomist answers all of them. A project composes its entire token economy — every category, every tier, every vesting schedule, every allocation — into a single vault. Not a template. Not a predefined structure. The project's exact tokenomics, as they exist in their documentation, encoded on-chain in one atomic creation. From that moment, the vault is the source of truth. Immutable, queryable, and verifiable by anyone at any time.
 
