@@ -20,7 +20,7 @@ In game theory, a game of perfect information is one where every participant see
 
 That is what Web3 was supposed to be. The blockchain is a public ledger. Every transaction is visible. Every contract is auditable. The infrastructure for perfect information already exists — it just was never enforced at the protocol level where it matters most.
 
-Exhibition and Onchain Tokenomist enforce it.
+Projects use Exhibition, Onchain Tokenomist, or both to enforce it.
 
 **Exhibition** ensures that the state you see at the beginning of a launch is mathematically guaranteed at the end. Every parameter — funding target, token price, vesting schedule, liquidity allocation — declared on-chain before capital enters and immutable from that point forward. No discretionary execution. No post-launch amendments. Public contributors become the initial liquidity — automatically and atomically at launch completion. The hunt for initial liquidity is over before it begins. No broken agreements. No dependency on external arrangements before a token can trade. And because that foundation is already live and verifiable on-chain, every subsequent listing — on a CEX, an external DEX, additional pairs, or deeper pools on Exhibition itself — is pursued from a position of strength, not desperation. The contract is the guarantee.
 
@@ -30,7 +30,7 @@ Both protocols are pure tools. Exhibition imposes no mandatory minimum liquidity
 
 Before creation, you are free to build anything. After creation, what you built is permanent. The protocols do not dictate how you build. They only guarantee that what you build cannot be silently changed afterward.
 
-Together they close the full loop. There is no longer a moment in the lifecycle of a token where a participant must trust rather than verify.
+**Whether deployed as standalone tools or combined, they close the loop.** There is no longer a moment in the lifecycle where a participant must trust rather than verify.
 
 {% hint style="info" %}
 _**Perfect information is not just fairer — it is the foundation mass adoption was always waiting for.**_
