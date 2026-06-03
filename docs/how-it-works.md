@@ -12,11 +12,11 @@ description: >-
 
 #### Single-State Execution
 
-Traditional token launches have multiple execution states. The team can change allocations after the raise. Vesting terms can be amended. Liquidity can be delayed, reduced, or never added. Token supply can be expanded. Each of these is a hidden variable contributors cannot price in — a risk they cannot see, cannot measure, and cannot protect against.
+Traditional token launches have multiple execution states. The team can change allocations after a successful launch. Vesting terms can be amended. Liquidity can be delayed, reduced, or never added. Token supply can be expanded. Each of these is a hidden variable contributors cannot price in — a risk they cannot see, cannot measure, and cannot protect against.
 
 Exhibition removes all of them.
 
-At the moment a project creator deposits tokens into the protocol, every parameter locks permanently. From that point forward, the contract governs execution. The creator cannot change the funding target. The contributor limits cannot be adjusted. The vesting schedule cannot be amended. The liquidity percentage cannot be reduced. The lock duration cannot be shortened.
+From the moment a launch is created, every parameter is permanently locked. The token deposit activates the project — it does not set the parameters. Those were fixed at creation. From that point forward, the contract governs execution. The creator cannot change the funding target. The contributor limits cannot be adjusted. The vesting schedule cannot be amended. The liquidity percentage cannot be reduced. The lock duration cannot be shortened.
 
 What was configured is what executes. Every time. Without exception.
 
@@ -38,7 +38,7 @@ A launch on Exhibition moves through a defined sequence of states. Each transiti
 
 **Refundable** — Refunds are active. Triggered either by a failed project or by the project owner missing the liquidity finalization deadline on a successful raise.
 
-**Completed** — Liquidity has been added and locked. Raised funds have been released to the project owner. The launch is complete.
+**Completed** — Liquidity has been added and finalized. Remaining launch capital has been released to the project owner. The launch is complete.
 
 ***
 
@@ -60,3 +60,4 @@ For reference, block-to-time conversion is straightforward:
 | Maximum fundraise window        | 691,200 | Maximum duration of a fundraise                            |
 | Unsold token withdrawal delay   | 86,400  | Blocks after end before owner may withdraw unsold tokens   |
 | Liquidity finalization deadline | 604,800 | Window for owner to add liquidity after a successful raise |
+
