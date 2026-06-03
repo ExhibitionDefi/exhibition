@@ -15,7 +15,7 @@ The token economy problem in Web3 is not talked about enough. A project's token 
 
 Onchain Tokenomist replaces that entirely.
 
-A project brings their existing token economy documentation — every category, every tier, every vesting schedule, every allocation — and composes it into a single on-chain vault, exactly as it was designed. Not a template. Not a predefined structure imposed by the protocol. The project's exact tokenomics transformed into on-chain reality in one atomic creation. From that moment, the vault is the source of truth. Immutable, queryable, and verifiable by anyone at any time — without asking the team, without trusting a spreadsheet, without needing technical expertise to extract the data.
+A project brings their existing token economy documentation — every category, every tier, every vesting schedule, every allocation — and composes it into a single on-chain vault, exactly as it was designed. Not a template. Not a predefined structure imposed by the protocol. The project's exact tokenomics transformed into on-chain reality in one atomic creation. From that moment, the vault is the source of truth. Immutable, queryable, and verifiable by anyone at any time — without asking the team, without relying on anything off-chain, without needing technical expertise to extract the data.
 
 Onchain Tokenomist does not dictate how a project designs its token economy. That decision belongs entirely to the team. The protocol exists to transform whatever the team has committed to in their documentation into something the world can verify — when the team chooses to use it.
 
@@ -51,8 +51,24 @@ Every vault on Onchain Tokenomist is built on the same primitive — the same va
 
 #### Who It Is For
 
-Onchain Tokenomist is built for any project that has made commitments about how its token economy works and wants those commitments to be verifiable rather than trusted. The choice to use it belongs to the project. The timing belongs to the project.
+Onchain Tokenomist is built for anyone who needs to encode, enforce, and verify an on-chain commitment — and wants that commitment to be immutable from the moment it is created.
 
-It is a separate protocol from Exhibition — a different tool, the same vision. Projects launching on Exhibition are not required to use Onchain Tokenomist, and projects using Onchain Tokenomist are not required to launch on Exhibition. Both protocols are independent. Both enforce the same standard of verifiability. Both are built under the same belief — that Web3 works better when nothing has to be trusted because everything can be verified.
+That includes:
+
+**Projects** — encoding their entire token economy on-chain before their token enters public trading. Team allocations, investor tranches, community distributions, treasury reserves — all verifiable, all enforced without operator trust.
+
+**Network foundations** — managing native token allocations, ecosystem grants, validator rewards, or any treasury distribution that requires on-chain enforcement and public verifiability.
+
+**Institutions** — using vaults as programmable on-chain infrastructure for any structured commitment. Token allocations, distribution agreements, time-locked positions, partner arrangements, or any use case where an institution needs a verifiable, tamper-proof record of what was committed and what has been executed. Full flexibility in design. Full immutability after creation.
+
+**Any entity, in any context** — where the requirement is simple: a commitment that cannot be changed, cannot be disputed, and can be verified by anyone in the world without permission or expertise.
+
+The choice to use it belongs entirely to the entity. The timing belongs entirely to the entity. Onchain Tokenomist does not prescribe the use case — it enforces whatever is committed to it.
+
+> It is a separate protocol from Exhibition — a different tool, the same vision.
+
+Projects launching on Exhibition are not required to use Onchain Tokenomist, and projects using Onchain Tokenomist are not required to launch on Exhibition.&#x20;
+
+Both protocols are independent. Both enforce the same standard of verifiability. Both are built under the same belief — that Web3 works better when nothing has to be trusted because everything can be verified.
 
 The protocol accepts both ERC-20 tokens and native tokens as the deposited asset. The same vault mechanics apply equally to both.
