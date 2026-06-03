@@ -23,7 +23,7 @@ This is what Exhibition calls **Single-State Execution** — the state at the be
 
 **For contributors** — a level playing field. Every parameter is readable from the chain before, during, and after a launch. No insider advantage. No hidden variables. The contributor who reads the contract has exactly the same information as the project team.
 
-**For the ecosystem** — a new standard. Every launch on Exhibition is a public, auditable, immutable record of what was promised and what was delivered. Over time, this builds a verifiable history of how token launches should work.
+**For the ecosystem** — a new standard. Every launch on Exhibition is a public, auditable, immutable record of what was promised and what was delivered. Over time, every completed launch raises the bar for what participants should expect from any launch — on Exhibition or anywhere else.
 
 ***
 
