@@ -1,6 +1,6 @@
 ---
 description: >-
-  Exhibition gives contributors something the primary market has never reliably
+  Exhibition gives contributors something token launches have never reliably
   offered: the ability to make a decision based on complete, verifiable
   information.
 ---
@@ -120,4 +120,4 @@ solidity
 function isEmergencyRefundAvailable(uint256 projectId) external view returns (bool, uint256, uint256);
 ```
 
-**Your capital is never silently stranded.** Either the project completes — and liquidity is locked, funds are released, and tokens vest as configured — or a refund path is available. There is no outcome where your capital is held by the protocol indefinitely with no recourse.
+**Your capital is never silently stranded.** Either the project completes — and liquidity is finalized, and remaining launch capital is released, and tokens claim or vest as configured — or a refund path is available. There is no outcome where your capital is held by the protocol indefinitely with no recourse.
