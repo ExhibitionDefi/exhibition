@@ -12,9 +12,11 @@ The industry standard has always been trust. Exhibition replaces it with on-chai
 
 #### The Industry Standard
 
-The industry standard for token launches has always been trust. Trust that the team will add liquidity. Trust that they will honor the vesting schedule. Trust that the funds raised will be used as stated. Trust that the project will follow through within a reasonable timeframe.
+The industry standard for token launches has always been trust. Trust that the team will add liquidity. Trust that they will honor the vesting schedule. Trust that the launch capital will be used as stated. Trust that the project will follow through within a reasonable timeframe.
 
-There is no enforcement. There is no deadline. There is no penalty for inaction. A project can raise funds, go silent for weeks, and contributors have no recourse except to wait and hope. The contract holds the capital. The team holds the keys. The contributor holds nothing but a promise.
+In many cases, the token does not even exist at the point contributors commit capital. There is no product. There is no on-chain asset. There is only a promise — a whitepaper, an announcement, a team asking for capital in exchange for tokens that have yet to be created. Contributors are not buying a token. They are funding the possibility of one.
+
+In the traditional model, the contract holds the capital — and the moment a raise is deemed successful, it flows directly to the team. No liquidity requirement. No finalization deadline. No conditions. The team holds the keys and the contributor holds nothing but a promise.
 
 This is not a design choice — it is an absence of design.
 
@@ -30,7 +32,7 @@ The 7-day liquidity finalization window is not a grace period. It is a hard comm
 
 Miss the deadline and the launch unwinds. Contributions return to contributors. Deposited liquidity is forfeited. There is no partial credit for partial completion — depositing liquidity without finalizing is an incomplete obligation, and the protocol treats it as such. The obligation is deposit and finalize. Not deposit as a show of intent.
 
-This design solves a real Web3 problem — rug-by-inaction. A project that completes a public launch, goes silent, and leaves contributors waiting indefinitely with no recourse. Exhibition removes that possibility entirely. The contract is the enforcer. No governance vote. No multisig delay. Any contributor can trigger the emergency refund after the deadline — individually, permissionlessly, without asking anyone.
+This design solves a real Web3 problem — rug-by-inaction. A project that reaches a successful launch, goes silent, and leaves contributors waiting indefinitely with no recourse. Exhibition removes that possibility entirely. The contract is the enforcer. No governance vote. No multisig delay. Any contributor can trigger the emergency refund after the deadline — individually, permissionlessly, without asking anyone.
 
 And because finalization is still possible as long as no contributor has acted, the owner retains a window to make it right. The off-chain coordination layer remains social — a team that needs more time can communicate that to their community. But the on-chain enforcement layer is the contract. Contributors who trust the team wait. Contributors who don't pull out. The first to act ends it for everyone.
 
