@@ -21,9 +21,9 @@ This is what Exhibition calls **Single-State Execution** — the state at the be
 
 **For project creators** — a credible, verifiable launch. Parameters declared on-chain before capital enters signal seriousness and intent in a way no whitepaper or announcement ever can. The protocol enforces what the team commits to, removing the burden of trust from the contributor relationship entirely.
 
-**For contributors** — a level playing field. Every parameter is readable from the chain before, during, and after a launch. No insider advantage. No hidden variables. The contributor who reads the contract has exactly the same information as the project team.
+**For every participant** — a shift from speculation to strategy. When every parameter is fixed and every outcome is predictable, decisions replace bets. A contributor who reads an Exhibition launch knows exactly what executes under every scenario before committing a single unit of capital. If the hard cap is hit, the launch closes instantly. If the soft cap is not met, full refunds are available. If the liquidity deadline is missed, the emergency refund path opens unconditionally. There are no surprise outcomes. No hidden variables. No information only the team holds. Every participant — developer, investor, community member — operates from the same complete, verifiable foundation. That is not speculation. That is strategy.
 
-**For the ecosystem** — a new standard. Every launch on Exhibition is a public, auditable, immutable record of what was promised and what was delivered. Over time, every completed launch raises the bar for what participants should expect from any launch — on Exhibition or anywhere else.
+**For the ecosystem** — a new standard. Every launch on Exhibition is a public, auditable, immutable record of what was promised and what was delivered. Over time, every completed launch becomes proof that token launches can work differently — that immutable parameters, predictable outcomes, and contributor protection are not ideals to aspire to, but guarantees a protocol can enforce. The standard exists. It is on-chain. Anyone can verify it.
 
 ***
 
