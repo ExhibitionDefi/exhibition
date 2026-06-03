@@ -1,13 +1,14 @@
 ---
 description: >-
   Onchain Tokenomist is built around a single flexible primitive — the vault.
-  Three distinct use cases emerge from how that vault is configured at creation.
+  Three distinct use cases emerge from how that vault is configured at
+  deployment.
 ---
 
 # Use Cases
 
 {% hint style="info" %}
-#### The protocol does not prescribe which use case a project chooses — it encodes whatever the project commits to.
+#### The protocol does not prescribe which use case a creator chooses — it encodes whatever is committed to it.
 {% endhint %}
 
 #### Token Locker
@@ -74,7 +75,7 @@ Vesting: disabled — 100% liquid at start block
 Three independent timelines. One vault. One source of truth.
 ```
 
-**What this replaces:** vesting contracts that require manual execution, off-chain vesting trackers, spreadsheets that track who has received what, and any arrangement where a recipient must trust the team to honor a vesting commitment.
+**What this replaces:** the entire off-chain tokenomics execution layer. Manual distributions. Trusted multisigs. Vesting contracts that require team action. Tokenomics documents that cannot be verified. The gap between what was committed and what was delivered.
 
 ***
 
@@ -126,4 +127,4 @@ One vault. Five categories. Every commitment immutable from creation.
 
 **What this replaces:** the entire off-chain tokenomics execution layer. Spreadsheets. Manual distributions. Trusted multisigs. Vesting contracts that require team action. Tokenomics documents that cannot be verified. The gap between what was promised and what was delivered.
 
-The vault closes that gap permanently. From the moment it is created, anyone in the world can query the complete token economy of a project and verify — not trust — that what was committed is what is being enforced. No technical expertise required. No on-chain data extraction. No asking the team. The vault is readable, queryable, and verifiable by anyone through the app at [onchaintokenomist.vercel.app](https://onchaintokenomist.vercel.app)
+The vault closes that gap permanently. From the moment it is deployed, anyone in the world can query the complete record of what was committed and verify — not trust — that what was committed is what is being enforced. No technical expertise required. No on-chain data extraction. No asking the team. The vault is readable, queryable, and verifiable by anyone through the app at [onchaintokenomist.vercel.app](https://onchaintokenomist.vercel.app/)
