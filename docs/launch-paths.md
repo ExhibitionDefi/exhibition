@@ -13,7 +13,7 @@ description: >-
 
 #### New Token
 
-The new token path deploys a fresh ERC-20 token and registers the launch in a single transaction. The factory deploys the token, transfers ownership to the creator, and the launch is configured atomically.
+The new token path deploys a fresh ERC-20 token and registers the launch in a single transaction. The factory deploys the token, mints the initial supply directly to the creator, and the launch is configured atomically.
 
 This path is the simpler of the two. Because the token is deployed by Exhibition's own factory, contributors can verify its origin on-chain with a single call:
 
