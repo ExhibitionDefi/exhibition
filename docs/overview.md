@@ -7,7 +7,7 @@ description: >-
 
 # Overview
 
-The primary market has always had one fundamental problem: the rules governing a launch are not fixed at the moment contributors commit capital. Parameters change. Tokenomics are amended. Liquidity disappears. The contributor is always the last to know and the first to lose.
+Token launches have always had one fundamental problem. the rules governing a launch are not fixed at the moment contributors commit capital. Parameters change. Tokenomics are amended. Liquidity disappears. The contributor is always the last to know and the first to lose.
 
 Exhibition is built on a single principle: **if it matters, it must be configured before capital enters.**
 
