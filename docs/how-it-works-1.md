@@ -12,19 +12,19 @@ description: >-
 
 #### Vaults
 
-A vault is the root object — the complete on-chain record of a project's entire token economy.
+A vault is the root object — the complete on-chain record of any token economy or structured commitment.
 
-Before creation, the project defines every parameter — token address, total amount, category structure, tier configurations, vesting schedules, distribution authority, and admin roles. Everything is submitted in a single atomic transaction. A registration fee in the chain's native token is required at creation.
+Before deployment, the project defines every parameter — token address, total amount, category structure, tier configurations, vesting schedules, distribution authority, and admin roles. Everything is submitted in a single atomic transaction. A registration fee in the chain's native token is required at deployment.
 
-At creation, the contract locks the full token amount and configuration atomically. From this point, everything is immutable — allocations, tiers, vesting parameters, and admin roles are permanently fixed on-chain and cannot be changed under any condition.
+At deployment, the contract locks the full token amount and configuration atomically. From this point, everything is immutable — allocations, tiers, vesting parameters, and admin roles are permanently fixed on-chain and cannot be changed under any condition.
 
-After creation, the only action available is pass distribution — minting passes to recipients within the defined tier supply caps. Once all passes across all categories are fully distributed, the vault status transitions to finalized and no further minting is possible.
+After deployment, the only action available is pass distribution — minting passes to recipients within the defined tier supply caps. Once all passes across all categories are fully distributed, the vault status transitions to finalized and no further minting is possible.
 
 ***
 
 #### Categories
 
-Categories are logical groupings of tiers within a vault. A project might have categories named Team, Investors, Advisors, Community, or Treasury — each reflecting a distinct group in the token economy.
+Categories are logical groupings of tiers within a vault — defined entirely by whoever creates it. A project might have categories named Team, Investors, Advisors, Community, or Treasury. A foundation might have categories named Ecosystem, Grants, and Validators. The naming and structure reflect the creator's documentation, not a protocol-prescribed format.
 
 Each category carries its own independent vesting schedule — cliff, duration, interval, and initial release configured at vault creation. A change in one category's vesting never affects another. Each category is fully self-contained.
 
@@ -34,7 +34,7 @@ Each category carries its own independent vesting schedule — cliff, duration, 
 
 Tiers are defined allocation buckets within a category. Each tier has two parameters: a per-pass allocation and a maximum supply.
 
-A Team category might contain a Diamond tier at 40,000 tokens per pass with a maximum supply of 1, and a Gold tier at 5,000 tokens per pass with a maximum supply of 4. Both tiers vest on the same Team schedule but carry different allocation sizes. The total allocation for any tier is per-pass allocation × maximum supply.
+A Team category might contain a Founder tier at 40,000 tokens per pass with a maximum supply of 1, and a Core Team tier at 5,000 tokens per pass with a maximum supply of 4 — but the naming is entirely the creator's choice. Tier names reflect whatever the project's documentation defines. Both tiers vest on the same Team schedule but carry different allocation sizes. The total allocation for any tier is per-pass allocation × maximum supply.
 
 Once a tier's maximum supply is reached, no further passes can be minted for that tier under any condition.
 
@@ -48,7 +48,7 @@ The pass is soulbound — non-transferable by design. All entitlement state is t
 
 Once the full allocation has been claimed, the pass burns automatically. The record is complete and nothing remains to track.
 
-There is no address tracking. No operator intervention. No ongoing dependency on the protocol after the vault is created and passes are minted.
+There is no address tracking. No operator intervention. No ongoing dependency on the protocol after the vault is deployed and passes are minted.
 
 ***
 
@@ -75,6 +75,8 @@ Pass holders call `claim` to collect vested tokens. The contract calculates the 
 | Cliff + 2 intervals | +26.67%   |
 | Cliff + 3 intervals | +26.67%   |
 | Total               | 100%      |
+
+
 
 ***
 
