@@ -21,7 +21,8 @@ solidity
 
 ```solidity
 isFactoryDeployedToken(project.projectToken)
-// true → deployed by Exhibition Factory, fixed supply, no additional minting possible
+// true  → deployed by Exhibition Factory, fixed supply, no additional minting possible
+// false → existing token, verify contract independently before contributing
 ```
 
 A factory-deployed token carries an absolute supply guarantee. The total supply configured at creation is the maximum that will ever exist. No additional minting is possible under any condition.
