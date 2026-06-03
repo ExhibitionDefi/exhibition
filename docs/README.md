@@ -13,7 +13,7 @@ A foundation for the mass adoption Web3 has always promised but never delivered.
 
 We build protocols first. The frontend is the interface — the protocol is the guarantee. What the interface shows you, the protocol enforces. No team, no admin, no dashboard update can change what is encoded on-chain. The distinction matters because in Web3, what is built at the protocol level is the only thing that cannot be taken back.
 
-The name is intentional. In game theory, a game of perfect information is one where every participant has access to the same complete information before making a decision. Chess is a game of perfect information. Web3 is not — and that gap is not a technical accident. It is a structural failure that has defined how value flows, how trust is built, and how adoption stalls in this industry.
+The name is intentional. In game theory, a game of perfect information is one where every participant has access to the same complete information before making a decision. Chess is a game of perfect information. Web3 has never enforced it — and that gap is not a technical accident. It is a structural failure that has defined how value flows, how trust is built, and how adoption stalls in this industry.
 
 Perfect Information Labs exists to close that gap.
 
