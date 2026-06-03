@@ -14,11 +14,11 @@ description: >-
 
 Exhibition is a deterministic token launch protocol built on Nexus Layer 1.
 
-It solves the primary market problem at its root. Before a single unit of capital enters, every parameter governing the launch is declared on-chain — funding target, token price, soft cap, vesting schedule, liquidity allocation, lock duration, start block, end block. From that moment, nothing can change. No amendments. No discretionary execution. No post-hoc adjustments to distribution.
+It solves the token launch problem at its root. Before a single unit of capital enters, every parameter governing the launch is declared on-chain — funding target, token price, soft cap, vesting schedule, liquidity allocation, lock duration, start block, end block. From that moment, nothing can change. No amendments. No discretionary execution. No post-hoc adjustments to distribution.
 
 This is what Exhibition calls Single-State Execution. The state at the beginning of a launch is mathematically guaranteed at the end. Contributors do not need to trust the team. They do not need to monitor the project. They read the contract, make a decision, and know with certainty that the rules they agreed to are the rules that will execute.
 
-Exhibition is a pure tool. The only protocol-enforced boundaries are the soft cap minimum of 51% of the funding goal, maximum launch duration and liquidity finalization deadline. Everything else is configured by the project and executes exactly as intended.
+Exhibition is a pure tool. The only protocol-enforced boundaries are the soft cap minimum of 51% of the funding goal, maximum launch duration, and liquidity finalization deadline. Everything else is configured by the project and executes exactly as intended.
 
 ***
 
