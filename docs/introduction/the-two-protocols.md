@@ -12,7 +12,7 @@ description: >-
 
 #### Exhibition
 
-Exhibition is a deterministic token launch protocol built on Nexus Layer 1.
+Exhibition is a deterministic token launch protocol built on Arc Network.
 
 It solves the token launch problem at its root. Before a single unit of capital enters, every parameter governing the launch is declared on-chain — funding target, token price, soft cap, vesting schedule, liquidity allocation, lock duration, start block, end block. From that moment, nothing can change. No amendments. No discretionary execution. No post-hoc adjustments to distribution.
 
