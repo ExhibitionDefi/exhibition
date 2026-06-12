@@ -18,7 +18,7 @@ This asymmetry is not just unfair — it is the single biggest barrier to mass a
 
 **Perfect Information Labs is built on a different premise.**
 
-In game theory, a game of perfect information is one where every participant sees the complete state of the game before making a move. No hidden variables. No private information. No asymmetric advantage. Every decision made on the same foundation of complete, verifiable fact.
+In game theory, a game of perfect information is one where every participant sees the complete state of the game before making a move. No hidden variables. No hidden information. No asymmetric advantage. Every decision made on the same foundation of complete, verifiable fact.
 
 That is what Web3 was supposed to be. The blockchain is a public ledger. Every transaction is visible. Every contract is auditable. The infrastructure for perfect information already exists — it just was never enforced at the protocol level where it matters most.
 
