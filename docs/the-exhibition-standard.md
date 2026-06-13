@@ -52,4 +52,4 @@ There is a clear distinction in how projects fund their journey to launch.
 
 A project that needs capital to finish building should not be creating a public launch on Exhibition. The 7-day finalization window exists precisely because Exhibition assumes the project is ready. The protocol is not designed to accommodate development timelines, unexpected delays, or incomplete products. It is designed for teams that have done the work and are ready to execute.
 
-**Public capital is not development capital. Exhibition is for projects that are ready —** Assessors verify this readiness, while Alpha Seekers and Capital Deployers fuel the liquidity. The protocol is designed to support this specific, mature ecosystem, not to bridge the gap for projects that are still under development.
+**Public capital is not development capital. Exhibition is for projects that are ready** — not for projects that are still under development.
