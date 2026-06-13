@@ -1,8 +1,7 @@
 ---
 description: >-
-  Exhibition is a deterministic token launch protocol built on Nexus Layer 1 — a
-  blockchain purpose-built for intelligent markets and high-performance
-  financial applications.
+  Exhibition is a deterministic token launch protocol built on ARC L1 blockchain
+  — Purpose-built to support real-world financial flows.
 ---
 
 # Overview

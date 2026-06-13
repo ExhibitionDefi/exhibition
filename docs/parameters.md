@@ -44,9 +44,9 @@ tokensForSale = fundingGoal / tokenPrice
 
 #### Timing
 
-**Start Block** The exact block at which contributions open. Must be at least 3,600 blocks after project creation. Before this block, the project is visible and verifiable but contributions are not accepted.
+**Start Block** The exact block at which contributions open. Must be at least 2,500 blocks after project creation. Before this block, the project is visible and verifiable but contributions are not accepted.
 
-**End Block** The exact block at which contributions close if the funding goal has not been reached. Maximum duration from start block is 691,200 blocks.
+**End Block** The exact block at which contributions close if the funding goal has not been reached. Maximum duration from start block is 1,444,000 blocks.
 
 ***
 
@@ -56,7 +56,7 @@ tokensForSale = fundingGoal / tokenPrice
 
 **Lock Duration** The number of blocks LP tokens remain locked after the pool is seeded. During this period, the project owner cannot remove liquidity. Contributors can verify this parameter before contributing to confirm how long the initial liquidity is protected.
 
-**Liquidity Finalization Deadline** After a successful raise, the project owner has 604,800 blocks to deposit liquidity tokens and finalize. If this deadline is missed, the emergency refund path opens unconditionally — contributors can claim full refunds regardless of whether they have already claimed tokens.
+**Liquidity Finalization Deadline** After a successful raise, the project owner has 1,260,000 blocks to deposit liquidity tokens and finalize. If this deadline is missed, the emergency refund path opens unconditionally — contributors can claim full refunds regardless of whether they have already claimed tokens.
 
 ***
 
@@ -81,6 +81,8 @@ tokensForSale = fundingGoal / tokenPrice
 | Cliff + 2 intervals | +26.67%   |
 | Cliff + 3 intervals | +26.67%   |
 | Total               | 100%      |
+
+
 
 ***
 

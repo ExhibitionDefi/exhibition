@@ -67,9 +67,7 @@ The creator must be the token owner at the time of launch registration.
 
 Both launch paths accept whitelisted ERC-20 tokens as the contribution currency. Each project selects one contribution token at creation — contributors must hold that token to participate.
 
-| Token    | Purpose                                  | Decimals |
-| -------- | ---------------------------------------- | -------- |
-| **USDX** | Nexus USD — stable contribution currency | 6        |
-| **WNEX** | Wrapped NEX — native chain token         | 18       |
-
-Native NEX can be wrapped to WNEX directly through the NEX Portal before contributing.
+| Token    | Purpose                                         | Decimals |
+| -------- | ----------------------------------------------- | -------- |
+| **USDC** | Circle USD Coin — stable contribution currency  | 6        |
+| **EURC** | Circle Euro Coin — stable contribution currency | 6        |

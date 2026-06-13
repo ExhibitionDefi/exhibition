@@ -46,18 +46,15 @@ A launch on Exhibition moves through a defined sequence of states. Each transiti
 
 All time-sensitive parameters in Exhibition are expressed in blocks, not timestamps. This is deliberate.
 
-Timestamps can be manipulated by validators within a narrow window. Blocks cannot. A block is a block — it either exists or it does not. Every deadline, every window, every schedule in Exhibition is anchored to a block number, making every time-sensitive parameter as deterministic as every other parameter in the protocol.
+At ARC's sub-second block speeds, wall-clock timestamp resolution is inherently too coarse for high-precision financial logic. Relying on timestamp tracking introduces ordering risks and timing unpredictability between close blocks. A block number, however, is sequential and absolute. Every deadline, every window, every schedule in Exhibition is anchored to an explicit block height, ensuring that every time-sensitive parameter remains completely deterministic.
 
 For reference, block-to-time conversion is straightforward:
 
 > blocks = target duration in seconds ÷ average block time in seconds
 
-
-
-| Parameter                       | Blocks  | Purpose                                                    |
-| ------------------------------- | ------- | ---------------------------------------------------------- |
-| Minimum start delay             | 3,600   | Minimum gap between project creation and start             |
-| Maximum fundraise window        | 691,200 | Maximum duration of a fundraise                            |
-| Unsold token withdrawal delay   | 86,400  | Blocks after end before owner may withdraw unsold tokens   |
-| Liquidity finalization deadline | 604,800 | Window for owner to add liquidity after a successful raise |
-
+| Parameter                       | Blocks    | Purpose                                                     |
+| ------------------------------- | --------- | ----------------------------------------------------------- |
+| Minimum start delay             | 2,500     | Minimum gap between project creation and start              |
+| Maximum launch window           | 1,440,000 | Maximum duration of a launch                                |
+| Unsold token withdrawal delay   | 180,000   | Blocks after end before owner may withdraw unsold tokens    |
+| Liquidity finalization deadline | 1,260,000 | Window for owner to add liquidity after a successful launch |

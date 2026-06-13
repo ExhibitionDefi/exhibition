@@ -29,7 +29,7 @@ Before committing capital to any Exhibition launch, every parameter is readable 
 
 **Vesting Schedule** If vesting is enabled, read the full schedule — initial release, cliff, duration, and interval. Calculate when you will have access to your full allocation. A vesting schedule is not a negative signal — it is a commitment the project has made on-chain. Read it as information, not as a restriction.
 
-**Start and End Blocks** The exact blocks contributions open and close. Convert to approximate time using the average block time on Nexus. Know when the launch ends so you can make your contribution decision within the window.
+**Start and End Blocks** The exact blocks contributions open and close. Convert to approximate time using the average block time on Arc. Know when the launch ends so you can make your contribution decision within the window.
 
 ***
 
@@ -37,10 +37,9 @@ Before committing capital to any Exhibition launch, every parameter is readable 
 
 Once you have evaluated the launch parameters and decided to participate:
 
-1. Ensure you hold the contribution token selected by the project — either USDX or WNEX
-2. If contributing with native NEX, wrap it to WNEX via the NEX Portal first
-3. Approve the Exhibition contract to spend your contribution token
-4. Call `contribute` with the project ID and your contribution amount
+1. Ensure you hold the contribution token selected by the project — either USDC or EURC
+2. Approve the Exhibition contract to spend your contribution token
+3. Call `contribute` with the project ID and your contribution amount
 
 solidity
 
@@ -104,7 +103,7 @@ solidity
 function requestRefund(uint256 projectId) external;
 ```
 
-**Emergency Refund — Missed Liquidity Deadline** If a launch successful but the project owner fails to finalize liquidity within 604,800 blocks, the emergency refund path opens unconditionally. You keep any tokens you have already claimed and receive a full refund of your contribution.
+**Emergency Refund — Missed Liquidity Deadline** If a launch successful but the project owner fails to finalize liquidity within 1,260,000 blocks, the emergency refund path opens unconditionally. You keep any tokens you have already claimed and receive a full refund of your contribution.
 
 solidity
 

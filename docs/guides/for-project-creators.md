@@ -20,17 +20,17 @@ Before creating a launch on Exhibition, every parameter must be decided. There i
 
 **Contribution Limits** Minimum and maximum per-contributor limits shape who participates and how concentrated the launch becomes. A low maximum distributes capital more broadly. A high maximum allows larger participants to take significant positions. Neither is inherently correct — the right configuration depends on the community you are building.
 
-**Start and End Blocks** The minimum delay between project creation and start block is 3,600 blocks — enough time for contributors to discover and evaluate the launch before it opens. The maximum launch window is 691,200 blocks. Set a window that gives your community sufficient time to participate without leaving the launch open indefinitely.
+**Start and End Blocks** The minimum delay between project creation and start block is 2,500 blocks — enough time for contributors to discover and evaluate the launch before it opens. The maximum launch window is 1,440,000 blocks. Set a window that gives your community sufficient time to participate without leaving the launch open indefinitely.
 
 ***
 
-#### Choosing Your Contribution Token
+#### **Choosing Your Contribution Token**
 
 Exhibition currently supports two contribution tokens:
 
-**USDX** — Nexus USD. A stable contribution currency. Contributors know exactly how much they are committing in dollar terms. Appropriate for launch where price stability matters to both sides.
+USDC — Circle USD Coin. A stable contribution currency. Contributors know exactly how much they are committing in dollar terms. Appropriate for launches where price stability matters to both sides.
 
-**WNEX** — Wrapped NEX, the native chain token. Contributors participate with native chain exposure. Appropriate for launch targeting the core Nexus ecosystem.
+EURC — Circle Euro Coin. A euro-pegged stable contribution currency. Contributors participate with European fiat-denominated exposure. Appropriate for compliance-aligned or region-targeted financial flows.
 
 Choose the token that matches your target contributor base. Contributors must hold the selected token to participate — this choice shapes who can enter your launch.
 
@@ -56,9 +56,9 @@ Neither is wrong. Both are visible on-chain before any contributor commits capit
 
 #### Finalizing Liquidity
 
-After a successful launch, you have 604,800 blocks to deposit liquidity tokens and call finalization. This is the most time-sensitive action in the launch lifecycle.
+After a successful launch, you have 1,260,000 blocks to deposit liquidity tokens and call finalization. This is the most time-sensitive action in the launch lifecycle.
 
-**Do not delay finalization without reason.** The 604,800 block window exists as a contributor protection — if you miss it, the emergency refund path opens unconditionally and your launch unwinds regardless of its success. Plan your finalization well within the deadline.
+**Do not delay finalization without reason.** The 1,260,000 block window exists as a contributor protection — if you miss it, the emergency refund path opens unconditionally and your launch unwinds regardless of its success. Plan your finalization well within the deadline.
 
 **What finalization does:**
 
@@ -67,4 +67,4 @@ After a successful launch, you have 604,800 blocks to deposit liquidity tokens a
 * Locks LP tokens for the configured lock duration
 * Releases remaining launch capital to you
 
-After finalization, your token has a live, verifiable market on the Exhibition AMM. Every subsequent listing — CEX, external DEX, additional pairs — is pursued from a position of strength. The initial liquidity is already there, already locked, already verifiable by anyone.
+After finalization, your token has a live, verifiable market on the Exhibition AMM. Every subsequent listing — CEX, external DEX, additional pairs — is pursued from a position of established market credibility. The initial liquidity is already there, already locked, already verifiable by anyone.

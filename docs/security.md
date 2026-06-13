@@ -19,7 +19,7 @@ description: >-
 
 **Permissionless Refunds** Refunds are pull-based — contributors claim their own refunds directly from the contract. No intermediary. No admin approval. No waiting for the team to process anything. If refunds are available, they are available to every contributor permissionlessly.
 
-**Emergency Refund Path** If a project raises successfully but the project owner fails to finalize liquidity within 604,800 blocks of the successful raise, the emergency refund path opens unconditionally. Contributors who have already claimed tokens keep them and still receive full contribution refunds. The project owner's failure to act cannot strand contributor capital.
+**Emergency Refund Path** If a project raises successfully but the project owner fails to finalize liquidity within 1,260,000 blocks of the successful raise, the emergency refund path opens unconditionally. Contributors who have already claimed tokens keep them and still receive full contribution refunds. The project owner's failure to act cannot strand contributor capital.
 
 solidity
 
@@ -44,7 +44,7 @@ isFactoryDeployedToken(project.projectToken)
 
 #### Platform Protections
 
-**Fee Timelocks** All platform fee changes are subject to a 691,200 block timelock. AMM fee changes are subject to a 259,200 block timelock. No fee change can take effect until the timelock expires. Both fee percentage and fee recipient are managed independently and subject to the same timelock enforcement.
+**Fee Timelocks** All platform fee changes are subject to a 1,260,000 block timelock. AMM fee changes are subject to a 540,000 block timelock. No fee change can take effect until the timelock expires. Both fee percentage and fee recipient are managed independently and subject to the same timelock enforcement.
 
 **Reentrancy Guards** All state-changing functions are protected by OpenZeppelin's ReentrancyGuard. No function can be re-entered mid-execution.
 
@@ -52,7 +52,7 @@ isFactoryDeployedToken(project.projectToken)
 
 **Pool Creation Restriction** For tokens launched through Exhibition, only the Exhibition contract can create the initial liquidity pool on the Exhibition AMM. This prevents price frontrunning — no external actor can create a pool for a project token before the protocol seeds it at launch completion. After the initial pool is seeded, the AMM operates permissionlessly.
 
-**Minimal Admin Surface** The only admin functions available on Exhibition are fee percentage updates, fee recipient updates, and contribution token additions. There is no admin function that can alter a live launch, override contributor refunds, modify vesting schedules, or intervene in any project's lifecycle. Fee and recipient changes are governed by a 691,200 block timelock and are fully queryable on-chain at any time — any pending change is visible before it takes effect. The protocol's admin surface is intentionally minimal and its boundaries are enforced by the contract itself.
+**Minimal Admin Surface** The only admin functions available on Exhibition are fee percentage updates, fee recipient updates, and contribution token additions. There is no admin function that can alter a live launch, override contributor refunds, modify vesting schedules, or intervene in any project's lifecycle. Fee and recipient changes are governed by a 1,260,000 block timelock and are fully queryable on-chain at any time — any pending change is visible before it takes effect. The protocol's admin surface is intentionally minimal and its boundaries are enforced by the contract itself.
 
 **Token Price Bounds**
 

@@ -95,23 +95,10 @@ The AMM operates with two configurable fee layers:
 
 **Protocol fee** — a percentage of the trading fee routed to the protocol fee recipient, configurable up to a maximum of 3,000 basis points (30% of the trading fee).
 
-All fee configuration changes are subject to a 259,200 block timelock. A proposed fee change cannot take effect until the timelock expires — protecting traders and liquidity providers from sudden fee adjustments.
+All fee configuration changes are subject to a 540,000 block timelock. A proposed fee change cannot take effect until the timelock expires — protecting traders and liquidity providers from sudden fee adjustments.
 
 ***
 
 #### TWAP Oracle
 
 The Exhibition AMM maintains a time-weighted average price oracle for every pool. TWAP accuracy improves with trading volume — pools should be allowed a warm-up period after creation before TWAP data is used for any price-sensitive application.
-
-***
-
-#### Wrapping NEX
-
-The Exhibition AMM operates with ERC-20 tokens. Native NEX must be wrapped to WNEX before it can be used in swaps or liquidity operations.
-
-solidity
-
-```solidity
-function deposit() external payable;   // NEX → WNEX
-function withdraw(uint256 amount) external; // WNEX → NEX
-```

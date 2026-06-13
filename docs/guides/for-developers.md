@@ -1,5 +1,5 @@
 ---
-description: Exhibition is deployed on Nexus Layer 1.
+description: Exhibition is deployed on Arc L1.
 ---
 
 # For Developers
@@ -27,9 +27,9 @@ const amm        = await ethers.getContractAt('ExhibitionAMM', AMM_ADDRESS);
 env
 
 ```env
-NEXUS_TESTNET_RPC_URL=https://testnet.rpc.nexus.xyz
-NEXUS_TESTNET_CHAIN_ID=3945
-NEXUS_TESTNET_EXPLORER_URL=https://testnet.explorer.nexus.xyz
+ARC_TESTNET_RPC_URL="https://rpc.testnet.arc.network"
+ARC_TESTNET_CHAIN_ID="5042002"
+ARC_TESTNET_EXPLORER_URL="https://testnet.arcscan.app/"
 ```
 
 ***
@@ -264,28 +264,14 @@ await amm.removeLiquidity(
 
 ***
 
-#### Wrapping and Unwrapping NEX
-
-typescript
-
-```typescript
-// Wrap native NEX → WNEX
-await wnex.deposit({ value: ethers.parseEther('1000') });
-
-// Unwrap WNEX → native NEX
-await wnex.withdraw(ethers.parseEther('1000'));
-```
-
-***
-
 #### Block Parameter Reference
 
-| Constant                                 | Blocks  | Purpose                              |
-| ---------------------------------------- | ------- | ------------------------------------ |
-| `MIN_START_DELAY_BLOCKS`                 | 3,600   | Minimum delay before launch starts   |
-| `MAX_END_DURATION_BLOCKS`                | 691,200 | Maximum launch window                |
-| `WITHDRAWAL_UNSOLD_DELAY_BLOCKS`         | 86,400  | Delay before unsold token withdrawal |
-| `LIQUIDITY_FINALIZATION_DEADLINE_BLOCKS` | 604,800 | Window for owner to add liquidity    |
+| Constant                                 | Blocks    | Purpose                              |
+| ---------------------------------------- | --------- | ------------------------------------ |
+| `MIN_START_DELAY_BLOCKS`                 | 2,500     | Minimum delay before launch starts   |
+| `MAX_END_DURATION_BLOCKS`                | 1,440,000 | Maximum launch window                |
+| `WITHDRAWAL_UNSOLD_DELAY_BLOCKS`         | 180,000   | Delay before unsold token withdrawal |
+| `LIQUIDITY_FINALIZATION_DEADLINE_BLOCKS` | 1,260,000 | Window for owner to add liquidity    |
 
 ***
 
