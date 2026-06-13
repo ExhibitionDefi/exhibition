@@ -13,6 +13,7 @@
 * [Overview](overview.md)
 * [The Exhibition Standard](the-exhibition-standard.md)
 * [How It Works](how-it-works.md)
+* [Roles](roles.md)
 * [Launch Paths](launch-paths.md)
 * [Parameters](parameters.md)
 * [AMM](amm.md)
