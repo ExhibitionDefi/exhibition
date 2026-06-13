@@ -16,7 +16,7 @@ Actors with deep technical or market expertise—ranging from data analysts and 
 
 #### The Alpha Seeker
 
-The participant focused on capturing upside; they either perform their own evaluation or rely on the transparency provided by The Assessor to identify and target high-potential launches.
+The participant focused on capturing upside — either performing their own evaluation or relying on The Assessor's published findings to identify and act on high-potential launches before the broader market does.
 
 #### The Capital Deployer (The Conviction Backer)
 
