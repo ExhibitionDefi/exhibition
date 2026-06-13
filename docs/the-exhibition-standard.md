@@ -32,9 +32,9 @@ The 7-day liquidity finalization window is not a grace period. It is a hard comm
 
 Miss the deadline and the launch unwinds. Contributions return to contributors. Deposited liquidity is forfeited. There is no partial credit for partial completion — depositing liquidity without finalizing is an incomplete obligation, and the protocol treats it as such. The obligation is deposit and finalize. Not deposit as a show of intent.
 
-This design solves a real Web3 problem — rug-by-inaction. A project that reaches a successful launch, goes silent, and leaves contributors waiting indefinitely with no recourse. Exhibition removes that possibility entirely. The contract is the enforcer. No governance vote. No multisig delay. Any contributor can trigger the emergency refund after the deadline — individually, permissionlessly, without asking anyone.
+This design solves a real Web3 problem — rug-by-inaction. A project that reaches a successful launch, goes silent, and leaves contributors waiting indefinitely with no recourse. Exhibition removes that possibility entirely. The contract is the enforcer. No governance vote. No multisig delay. Any contributor can trigger the emergency refund after the deadline. It is an individual, permissionless action that requires no consensus.
 
-And because finalization is still possible as long as no contributor has acted, the owner retains a window to make it right. The off-chain coordination layer remains social — a team that needs more time can communicate that to their community. But the on-chain enforcement layer is the contract. Contributors who trust the team wait. Contributors who don't pull out. The first to act ends it for everyone.
+And because finalization is still possible as long as no contributor has acted, the owner retains a window to make it right. The off-chain coordination layer remains social — a team that needs more time can communicate that to their community. But the on-chain enforcement layer is the contract. Contributors who trust the team wait. If any contributor pulls the trigger, the launch ends for everyone.
 
 This turns every contributor into an independent enforcer. No admin required.
 
@@ -52,4 +52,4 @@ There is a clear distinction in how projects fund their journey to launch.
 
 A project that needs capital to finish building should not be creating a public launch on Exhibition. The 7-day finalization window exists precisely because Exhibition assumes the project is ready. The protocol is not designed to accommodate development timelines, unexpected delays, or incomplete products. It is designed for teams that have done the work and are ready to execute.
 
-**Public capital is not development capital. Exhibition is for projects that are ready — not projects that are getting there.**
+**Public capital is not development capital. Exhibition is for projects that are ready —** Assessors verify this readiness, while Alpha Seekers and Capital Deployers fuel the liquidity. The protocol is designed to support this specific, mature ecosystem, not to bridge the gap for projects that are still under development.

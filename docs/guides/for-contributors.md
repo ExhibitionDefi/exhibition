@@ -103,7 +103,7 @@ solidity
 function requestRefund(uint256 projectId) external;
 ```
 
-**Emergency Refund — Missed Liquidity Deadline** If a launch successful but the project owner fails to finalize liquidity within 1,260,000 blocks, the emergency refund path opens unconditionally. You keep any tokens you have already claimed and receive a full refund of your contribution.
+**Emergency Refund — Missed Liquidity Deadline** If a launch is successful but the project owner fails to finalize liquidity within 1,260,000 blocks, the emergency refund path opens unconditionally. You keep any tokens you have already claimed and receive a full refund of your contribution.
 
 solidity
 

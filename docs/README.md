@@ -17,13 +17,13 @@ The name is intentional. In game theory, a game of perfect information is one wh
 
 Perfect Information Labs exists to close that gap, ensuring that uncertainty is eliminated for the active actors within the loop. This ecosystem operates through three distinct market roles.
 
-* The Pure Assessor (The Analyst): Actors with deep technical or market expertise—ranging from data analysts and smart contract auditors to Web3 influencers and KOLs—who audit the immutable on-chain data, analyze the tokenomics, and publish their findings. They provide value by verifying the truth of the "perfect information" as a decentralized curation filter, without needing to deploy capital.
-* The Assessor + Capital Deployer (The Conviction Backer): Actors who perform the analytical assessment and directly deploy capital. They verify the parameters are sound, then execute the capital deployment function to push the launch toward its successful completion threshold.
-* The Pure Capital Deployer (The Capital Follower): Capital allocators who rely on the track record of trusted Assessors. Once an Assessor verifies a launch, the Capital Deployer commits liquidity based on that open verification.
+* **The Assessor (The Analyst):** Actors with deep technical or market expertise—ranging from data analysts and smart contract auditors to Web3 influencers and KOLs—who audit the immutable on-chain data, analyze the tokenomics, and publish their findings. They provide value by verifying the truth of the "perfect information" as a decentralized curation filter, without needing to deploy capital.
+* **The Alpha Seeker**: The participant focused on capturing upside; they either perform their own evaluation or rely on the transparency provided by The Assessor to identify and target high-potential launches.
+* **The Capital Deployer (The Conviction Backer):** Sophisticated actors—including institutions, professional investors, DAOs, and high-conviction influencers—who perform deep analytical assessments and directly deploy capital. They verify on-chain parameters and audit tokenomics before executing the capital deployment function, acting with conviction to push a launch toward its successful completion threshold.
 
 We do this through two **independent** protocols:
 
-**Exhibition** — deterministic token launch infrastructure. Every parameter governing a launch is declared on-chain before capital enters and cannot be changed. The protocol leaves the curation entirely to the market; Assessors provide open verification, while Capital Deployers determine the financial viability of the launch. What you see at the start is mathematically guaranteed at the end.
+**Exhibition** — deterministic token launch infrastructure. What you see at the start is mathematically guaranteed at the end. Every parameter governing a launch is declared on-chain before capital enters and cannot be changed. The protocol leaves the curation entirely to the market: The **Assessor** provides open verification, while both The **Alpha Seeker** and The **Capital Deployer** validate the project’s viability through their respective capital contributions.
 
 Onchain Tokenomist — verifiable token economy infrastructure. Every allocation, every vesting schedule, every distribution rule encoded in a single on-chain vault. **From spreadsheet transformation to an executable system.** No operator trust. No off-chain source of truth.
 

@@ -107,9 +107,9 @@ const vestingConfigs = [
         category: ethers.encodeBytes32String('Team'),
         enabled: true,
         initialRelease: 0,        // 0% at start block
-        cliff: 259200,            // ~90 days in blocks
-        duration: 1036800,        // ~360 days in blocks
-        interval: 86400           // ~30 days in blocks
+        cliff: 16200000,            // ~90 days in blocks
+        duration: 64800000,        // ~360 days in blocks
+        interval: 5400000           // ~30 days in blocks
     },
     {
         category: ethers.encodeBytes32String('Community'),
