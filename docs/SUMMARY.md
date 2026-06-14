@@ -41,3 +41,9 @@
 * [For Project Teams](guides-1/for-project-teams.md)
 * [For Token Recipients](guides-1/for-token-recipients.md)
 * [For Developers](guides-1/for-developers.md)
+
+## $PER
+
+***
+
+* [$PER — Perfect Reward Token](usdper-perfect-reward-token.md)
