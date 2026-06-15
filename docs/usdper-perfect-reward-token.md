@@ -8,4 +8,4 @@ description: The reward token of the Perfect Information ecosystem
 
 <figure><img src=".gitbook/assets/piChart.png" alt=""><figcaption></figcaption></figure>
 
-$PER follows a proof-of-work concept. Full details coming soon. For partnership inquiries, contact [✉](mailto:contact@perfectinformationlabs.com)
+$PER follows a proof-of-work concept. Full details coming soon.
