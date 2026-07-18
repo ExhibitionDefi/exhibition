@@ -589,7 +589,7 @@ OpenZeppelin for secure contract libraries. Uniswap V2 for AMM architecture. Nex
 
 <div align="center">
 
-**Built by the Exhibition Developer**
+**Architect by Adetubji**
 
 [App](https://app.exhibition.xyz) • [GitHub](https://github.com/exhibitiondefi) • [Twitter](https://twitter.com/ExhibitionDefi)
 
