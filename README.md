@@ -1,7 +1,7 @@
 # 📢 Documentation Has Moved!
 The latest and most accurate documentation for Exhibition is now hosted externally. 
 
-### 👉 [Read the Updated Docs Here]([[https://docs.perfectinformationlabs.com/overview/])
+### 👉 [Read the Updated Docs Here](https://docs.perfectinformationlabs.com/overview/)
 
 ---
 
